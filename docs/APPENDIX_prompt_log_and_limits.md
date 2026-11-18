@@ -1,10 +1,11 @@
 # Appendix: vibe-coding prototype
 
-**Prototype 1:** "Selling satellite insight: how a data signal loses value as more funds buy it". Public link: [paste]
-**Prototype 2 (question A):** "Could a student rebuild Orbital Insight's car counter?". Public link: [paste]
-**Prototype 3 (train our own model):** "Training our own car counter from scratch". Public link: [paste]
-**Prototype 4 (Englos over time):** in progress, see `prototypes/4_englos_timeseries`.
-**Code:** `satellite-insight` project folder (all prototypes: web pages, Colab notebooks, scripts, figures)
+**Prototype 1:** "Selling satellite insight: how a data signal loses value as more funds buy it". Public link: https://raphlt.github.io/Satellite-insights/signal-decay.html
+**Prototype 2 (question A):** "Could a student rebuild Orbital Insight's car counter?". Public link: https://raphlt.github.io/Satellite-insights/car-counter.html
+**Prototype 3 (train our own model):** "Training our own car counter from scratch". Public link: https://raphlt.github.io/Satellite-insights/own-model.html
+**Prototype 4 (Englos over time):** unfinished, https://raphlt.github.io/Satellite-insights/englos.html
+**Website (all prototypes):** https://raphlt.github.io/Satellite-insights/
+**Code:** https://github.com/RaphLT/Satellite-insights (the `satellite-insight` project folder ; all prototypes: web pages, Colab notebooks, scripts, figures)
 **Tool:** Claude (Anthropic), model Claude Opus 5.5, used through the Claude app (claude.ai)
 
 ## A. Prompt log
