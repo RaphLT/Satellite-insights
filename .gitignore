@@ -1,0 +1,9 @@
+.DS_Store
+__pycache__/
+.ipynb_checkpoints/
+*.npy
+prototypes/4_englos_timeseries/out/
+yolo11*.pt
+!prototypes/3_own_model/own_cowc_yolo11n.pt
+# COWC photos (~10 MB each) are not redistributed; download links are in CLAUDE.md
+top_potsdam_*_RGB.png

@@ -1,0 +1,44 @@
+Dear Raphael, Dinis, Dorian and Gabin,
+Thank you for your Session 7 update. Below are three ideas for a small vibe-coding project on real-world data. All three test the free route (Sentinel-2 imagery plus open models) that you proposed to focus on. In each one an AI assistant (Claude, ChatGPT, or Gemini in Colab) writes the code and you direct it. I have marked them easy, medium or ambitious. After the three ideas you will find more free data sources and six other questions you might enjoy.
+Can free 10 m imagery see a car park fill up? (medium)
+Pull Sentinel-2 images over a few large retail car parks: US stores like those in the article, or the Auchan hypermarkets around Lille. The Copernicus Browser lets you look first without any code, and Microsoft's Planetary Computer gives access from Python. Outline each car park with OpenStreetMap and compare ordinary days with known busy days (Black Friday, the Saturdays before Christmas) and with days when the store is closed. Also count how many cloud-free images you really get per quarter. A car is far smaller than one 10 m pixel, so this tests your main question directly: what can the free route replace, and what still needs paid imagery?
+Look: https://browser.dataspace.copernicus.eu
+Code: https://planetarycomputer.microsoft.com/dataset/sentinel-2-l2a
+Simulate how a data signal loses value (easy to medium)
+A toy market in which one vendor sells the same signal to k funds. Start from the article's 4.76% return over three days when few funds have the data, and let that edge shrink as k grows. How fast it shrinks is your assumption, so label it and try several versions. Plot the vendor's possible revenue and each fund's profit against k. Where is the vendor's best number of clients, and what price does that imply? This turns "exclusive to a few funds or open to all" into a curve, and helps explain how about $130 million of funding ended with $9.5 million of expected revenue.
+What open models are good at: slow signals (medium)
+Google's AlphaEarth embeddings are free in Earth Engine for non-commercial use: 10 m resolution, one layer per year from 2017. Ask the assistant to map where the embedding changes most from one year to the next around something that grows slowly, such as the data-centre campuses in Loudoun County, Virginia, or the battery factories built in Hauts-de-France. Yearly data cannot help anyone trade around quarterly earnings, but it suits customers who care about construction or land use. That is the kind of customer who still values the data when others have it too, which is what your note says a new entrant needs.
+Data: https://developers.google.com/earth-engine/datasets/catalog/GOOGLE_SATELLITE_EMBEDDING_V1_ANNUAL
+More free data you could use
+Aerial photos sharp enough to see cars: NAIP for the US (about 60 cm, a new image every two to three years) and IGN's BD ORTHO for France (20 cm). They show what Sentinel-2 cannot, but only once every few years, so you can see exactly what paid daily imagery adds.
+https://planetarycomputer.microsoft.com/dataset/naip
+https://cartes.gouv.fr/rechercher-une-donnee/dataset/IGNF_BD-ORTHO
+Sentinel-1 radar: free, 10 m, works at night and through cloud. Ships show up as bright dots on dark water.
+https://planetarycomputer.microsoft.com/dataset/sentinel-1-rtc
+NASA Black Marble: daily night-time lights at 500 m, a common proxy for economic activity.
+https://blackmarble.gsfc.nasa.gov/
+Sentinel-5P: daily maps of nitrogen dioxide and methane, a proxy for industrial activity.
+https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_S5P_OFFL_L3_NO2
+Hansen Global Forest Change: forest loss for every year from 2000 to 2025 at 30 m.
+https://developers.google.com/earth-engine/datasets/catalog/UMD_hansen_global_forest_change_2025_v1_13
+Labelled images for training a detector: COWC (32,716 cars marked in 15 cm aerial images) and Airbus's oil-storage set (about 100 satellite images with some 13,500 tanks marked).
+https://gdo152.llnl.gov/cowc/
+https://www.kaggle.com/datasets/airbusgeo/airbus-oil-storage-detection-dataset
+Commercial-quality samples given away for free: Umbra's open radar data (down to 25 cm, more than 20 sites imaged again and again) and Vantor's (formerly Maxar) open data for disasters.
+https://umbra.space/open-data/
+https://vantor.com/company/open-data-program/
+Other questions you might enjoy
+A. Could a student rebuild Orbital Insight's car counter today? Train or reuse an open car detector on COWC, then count the cars in a free IGN or NAIP photo of a hypermarket. If that takes you an afternoon, the model was never the moat, and your note can ask what was.
+B. Can free radar follow a supply-chain crisis? Count the ships waiting off Los Angeles and Long Beach in autumn 2021 with Sentinel-1. Students at Wesleyan University did this in Earth Engine and came close to the reported numbers. A container ship is hundreds of metres long, so 10 m is enough. A car is not. Compare your counts with the IMF's PortWatch.
+https://qac.blogs.wesleyan.edu/2021/11/26/counting-ships
+https://portwatch.imf.org/
+C. Do night lights contradict official GDP? Martinez (2022, Journal of Political Economy) finds that autocracies overstate growth by about 35% compared with what their night lights suggest. Pick a country or region and compare the lights with the reported figures.
+D. Who pays when the images are free? The EU Deforestation Regulation applies from 30 December 2026: importers of cocoa, coffee, palm oil, soy, beef, wood and rubber must show that their plots were not deforested after 2020. Check a few plantation coordinates against the Hansen map. The customer pays for a compliance answer, not for exclusive data, which is one route for your new entrant.
+E. Can you see a company's pollution from space? Carbon Mapper's open portal maps individual methane plumes down to the site they come from, and the UN Environment Programme notifies the governments and companies concerned.
+https://data.carbonmapper.org/
+F. Did the tax office find the pool? The French tax office ran AI on IGN aerial photos and found more than 20,000 undeclared swimming pools in nine départements in 2022, worth about EUR 10 million in extra local tax for that year alone, before extending the system to the whole country. Here a government is the customer and the images are public. Could you reproduce it for one commune?
+For an overview of how economists use satellite data, read Donaldson and Storeygard (2016), "The View from Above", Journal of Economic Perspectives.
+https://www.aeaweb.org/articles?id=10.1257/jep.30.4.171
+You don't need to do all of this. Pick the one idea or question that helps your argument most. Whichever you choose, say clearly in your note which numbers come from real data and which are your own assumptions, and check the results yourselves before you cite them: code written by an AI can look convincing and still be wrong.
+
+I'm happy to talk through any of these.

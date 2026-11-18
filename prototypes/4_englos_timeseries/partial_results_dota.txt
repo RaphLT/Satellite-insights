@@ -1,0 +1,2 @@
+2004 {'total': 0, 'auchan': 0, 'date': '2004 (day not published)', 'native_cm': 50}
+2009 {'total': 24, 'auchan': 0, 'date': '2009 (day not published)', 'native_cm': 50}

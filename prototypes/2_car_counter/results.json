@@ -1,0 +1,17 @@
+{
+ "cowc": {
+  "true": 113,
+  "detected": 98,
+  "tp": 92,
+  "fp": 6,
+  "fn": 21
+ },
+ "ign": {
+  "detected": 2217,
+  "check_true": 103,
+  "check_detected": 90,
+  "check_tp": 89,
+  "check_fp": 1,
+  "check_fn": 14
+ }
+}
