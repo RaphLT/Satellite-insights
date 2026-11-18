@@ -11,12 +11,12 @@ A student project for the course *AI for Business & Society* (SKEMA Business Sch
 Our thesis: the signal was worth most while few funds had it. It lost value as it spread, so the exclusive-data business could not carry ~$130M of venture capital (2023 revenue was ~$9.5M). A new entrant needs customers who do not need exclusivity.
 
 ## The official prototype: "Car Counter from Above" (question A)
-`site/tool/` (moved from `prototypes/0_car_counter_tool/` so it is published with the site) is a static web app (open `index.html` through any web server, e.g. `python -m http.server`; opening it as a plain file will not load the models).
+`site/` (moved from `prototypes/0_car_counter_tool/`) is a static web app (open `index.html` through any web server, e.g. `python -m http.server`; opening it as a plain file will not load the models).
 - Runs the AI **in the browser** with onnxruntime-web (wasm, single thread). Engine files are hosted next to the page.
 - Two models, stored as `.wasm` files only so the hosting would accept them (they are ONNX): `own-model.wasm` (YOLO11n trained by us on COWC; input 640, works at 0.10 m/px, conf 0.25) and `dota-n-obb-model.wasm` (YOLO11n-OBB from Ultralytics/DOTA; input 1024, 0.07 m/px, conf 0.25, sharpening recommended).
 - Features: upload or sample photo (IGN Englos 2018/2021/2025), metres-per-pixel input, draw a zone or use the "Auchan car parks" preset, count, two-photo % change, scale self-check using median detection size (expected ~5.2 m for ours, ~4.5 m for ready-made).
 - `ref_pipeline.py` is the Python copy of the exact browser method (it expects the ONNX files under `w/`). Browser counts were within ~5% of it: 2021 Auchan zone 166 vs 168; 2025 zone 875 vs 896.
-- Live at https://raphlt.github.io/Satellite-insights/tool/ (also published earlier as a claude.ai artifact).
+- Live at https://raphlt.github.io/Satellite-insights/ (the old /tool/ address redirects there).
 
 The professor's rules (all must hold): 1) public link, no login; 2) uses our case data; 3) prompt log appendix with every prompt, tool and date (`docs/APPENDIX_prompt_log_and_limits.md`; **keep adding prompts**); 4) one honest limits paragraph including who did what (team: Raphael Le Theo, Dinis Ramalhao, Dorian Barrier, Gabin Routier; who did what still to fill in); 5) the prototype appears in the three-page note and on slide 9. The user handles rule 5 themselves.
 Only ONE prototype counts. Question A is on the professor's list. Prototypes 1–3 are supporting work; the time series (4) is NOT on the list and needs his written yes.
@@ -36,16 +36,14 @@ Only ONE prototype counts. Question A is on the professor's list. Prototypes 1�
 2012 image: `https://data.geopf.fr/wms-r/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&STYLES=&CRS=EPSG:4326&BBOX=50.62586,2.96105,50.63214,2.97095&WIDTH=2576&HEIGHT=2576&FORMAT=image/jpeg&LAYERS=ORTHOIMAGERY.ORTHOPHOTOS2012`
 
 ## Website (live)
-- https://raphlt.github.io/Satellite-insights/ , repo https://github.com/RaphLT/Satellite-insights
-- `site/`: static HTML. Home puts the tool first, then supporting pages 1–4, conclusion, appendix. Images in `site/img/`; simulator JS `site/assets/signal-decay.js` (copied unchanged from P1).
-- `site/car-counter.html` and `site/own-model.html` are converted from the P2/P3 results pages (base64 images swapped for files in `site/img/`); if those pages change, update the site copies.
-- `site/appendix.html` is generated: `python3 site/build_appendix.py` (from the prompt log + `site/appendix_template.html`). Do not edit it by hand.
+- https://raphlt.github.io/Satellite-insights/ is the car counter only (user's choice, 18 Nov). Repo: https://github.com/RaphLT/Satellite-insights
+- An earlier multi-page site (home, supporting pages, conclusion, appendix page) was removed from `site/`; it is in git history (commit "Merge updated project...") if ever needed.
+- The tool links to the prompt log on GitHub (`docs/APPENDIX_prompt_log_and_limits.md`).
 - Publish: commit, `git push`, then `git subtree push --prefix site origin gh-pages`. No GitHub Actions: the user's token cannot push workflow files.
-- P4 on the site shows only the post-fix tool counts (2021: 166, 2025: 875 in the Auchan zone). Re-run P4 only if the professor approves it.
 
 ## Folder map
 - `prototypes/1_signal_decay/`: `index.html` (interactive, Chart.js), `signal_decay_simulation.ipynb`, `build.py` (generates the notebook), figures.
-- `site/tool/`: the official prototype (see above).
+- `site/`: the official prototype, Car Counter from Above (see above).
 - `prototypes/2_car_counter/`: `carcount.py` (**shared library, colour bug fixed**: tiling, detection, de-duplication, COWC label reading, matching), `run_eval.py`, Colab notebook, results page and images.
 - `prototypes/3_own_model/`: `train_prep.py` (COWC dots → YOLO dataset), `train.py`, `eval_own.py`, `train_own_model.ipynb`, trained weights `own_cowc_yolo11n.pt`, `results.csv`, results page.
 - `prototypes/4_englos_timeseries/`: `count_years.py`, partial results.

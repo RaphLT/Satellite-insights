@@ -3,9 +3,7 @@
 Was selling AI-processed satellite data to investors a viable business for a startup like Orbital Insight?
 Group 7 (AI for Business & Society, SKEMA Lille): Raphael Le Theo, Dinis Ramalhao, Dorian Barrier, Gabin Routier.
 
-**Website:** https://raphlt.github.io/Satellite-insights/
-
-The official prototype is **Car Counter from Above** (`site/tool/`, live at https://raphlt.github.io/Satellite-insights/tool/), an in-browser car counter. Supporting work:
+The official prototype is **Car Counter from Above** (`site/`, live at https://raphlt.github.io/Satellite-insights/), an in-browser car counter. Supporting work:
 
 1. How a data signal loses value as more funds buy it: `prototypes/1_signal_decay/`
 2. Can a student rebuild Orbital Insight's car counter? `prototypes/2_car_counter/`
@@ -14,4 +12,4 @@ The official prototype is **Car Counter from Above** (`site/tool/`, live at http
 
 Prompt log and limits: `docs/APPENDIX_prompt_log_and_limits.md`. Start with `CLAUDE.md`.
 
-To update the live site: `python3 site/build_appendix.py`, commit, `git push`, then `git subtree push --prefix site origin gh-pages`.
+To update the live site: commit, `git push`, then `git subtree push --prefix site origin gh-pages`.

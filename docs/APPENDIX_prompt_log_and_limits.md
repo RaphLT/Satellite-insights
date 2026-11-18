@@ -1,12 +1,11 @@
 # Appendix: vibe-coding prototype
 
-**Main prototype (question A): "Car Counter from Above"**, an in-browser tool that counts cars in an aerial photo and compares two dates. Public link: https://raphlt.github.io/Satellite-insights/tool/
+**Main prototype (question A): "Car Counter from Above"**, an in-browser tool that counts cars in an aerial photo and compares two dates. Public link: https://raphlt.github.io/Satellite-insights/
 Supporting work:
-**Prototype 1:** "Selling satellite insight: how a data signal loses value as more funds buy it". Public link: https://raphlt.github.io/Satellite-insights/signal-decay.html
-**Prototype 2 (question A):** "Could a student rebuild Orbital Insight's car counter?". Public link: https://raphlt.github.io/Satellite-insights/car-counter.html
-**Prototype 3 (train our own model):** "Training our own car counter from scratch". Public link: https://raphlt.github.io/Satellite-insights/own-model.html
-**Prototype 4 (Englos over time):** unfinished, https://raphlt.github.io/Satellite-insights/englos.html
-**Website (all of the above):** https://raphlt.github.io/Satellite-insights/
+**Prototype 1:** "Selling satellite insight: how a data signal loses value as more funds buy it". Interactive page and notebook: https://github.com/RaphLT/Satellite-insights/tree/main/prototypes/1_signal_decay
+**Prototype 2 (question A):** "Could a student rebuild Orbital Insight's car counter?". Results page and notebook: https://github.com/RaphLT/Satellite-insights/tree/main/prototypes/2_car_counter
+**Prototype 3 (train our own model):** "Training our own car counter from scratch". Results page and notebook: https://github.com/RaphLT/Satellite-insights/tree/main/prototypes/3_own_model
+**Prototype 4 (Englos over time):** unfinished, https://github.com/RaphLT/Satellite-insights/tree/main/prototypes/4_englos_timeseries
 **Code:** https://github.com/RaphLT/Satellite-insights (all prototypes: web pages, Colab notebooks, scripts, figures)
 **Tool:** Claude (Anthropic), model Claude Opus 5.5, used through the Claude app (claude.ai) and Claude Code
 
@@ -40,7 +39,8 @@ Every prompt we sent, in order. Prompts are copied verbatim, including typos.
 | 22 | 18 Nov 2026, 11:48 | Claude (Opus 5.5) | "the first one is the best build this" | Built "Car Counter from Above". Exported both models to run in the browser, wrote a Python copy of the browser method to choose and check settings, and tested the live page in a browser. Its counts were within ~5% of the Python copy. **Found a bug** while checking: our earlier test code passed image colours in the wrong order. Re-ran and corrected Prototypes 2 and 3: ready-made 106 of 113 right on COWC; our own model 102 of 113 with 4 false alarms, matching the ready-made one on Potsdam images. Republished both pages with a correction note. |
 | 23 | 18 Nov 2026, ~12:13 | Claude Code (Opus 5.5) | "Can i give you an updated file" | Said yes and asked which file it was. |
 | 24 | 18 Nov 2026, ~12:14 | Claude Code (Opus 5.5) | "/Users/raph/Downloads/satellite-insight\ 2" | Found that the folder was a newer copy of the whole project from the parallel Claude app session (rows 20–22): corrected Prototype 2 and 3 results after the colour-order bug, and the new main prototype, the in-browser car counter. Merged it with the website version: kept Group 7 and the team names, merged the two prompt logs in time order, put the tool on the site as the main prototype, replaced every old score with the corrected one, withdrew the Englos counts made before the bug fix, and republished. |
-| 25 | [date] | [tool] | [add every further prompt here, verbatim] | |
+| 25 | 18 Nov 2026, ~12:35 | Claude Code (Opus 5.5) | "we only need the car counter page" | Made the public website the car counter alone, at the main address, with a redirect from the old /tool/ address. Removed the other site pages (their code and pages stay in the repository) and pointed the tool's links to the prompt log and code on GitHub. |
+| 26 | [date] | [tool] | [add every further prompt here, verbatim] | |
 
 ## B. What works, what does not, what it was tested on, who did what
 
