@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4. Englos over time · Satellite Insight</title>
+<link rel="stylesheet" href="assets/style.css">
+</head><body>
+<header class="site"><div class="in">
+  <a class="brand" href="index.html">Satellite Insight</a>
+  <nav><a href="index.html">Home</a><a href="signal-decay.html">1. Signal decay</a><a href="car-counter.html">2. Ready-made counter</a><a href="own-model.html">3. Our own model</a><a class="on" href="englos.html">4. Englos over time</a><a href="conclusion.html">Conclusion</a><a href="appendix.html">Appendix</a></nav>
+</div></header>
+<main>
+<p class="kicker">Prototype 4 · The images</p>
+<h1>Auchan Englos over time, 2004–2025 <span class="tag todo">UNFINISHED</span></h1>
+<p class="sub">Prototypes 2 and 3 showed that counting cars is now cheap. But a fund does not want one count; it wants to know whether this quarter was better than the last one. So we took every free aerial photo the French mapping agency IGN has of the Auchan Englos retail park near Lille, and asked what an investor could learn from them.</p>
+
+<div class="verdict warn"><b>Status: unfinished.</b> We have the photos for six of the seven years IGN flew over Englos. Car counts exist only for 2004 and 2009, and those two are <b>not usable</b> (see below). The counts for 2015, 2018, 2021 and 2025 have not been run yet. The point of this page does not depend on them: one photo every ~3 years, taken on days nobody publishes, cannot tell an investor how Auchan's quarter went.</div>
+
+<h2>1. The same car park, seen by IGN</h2>
+<p>Every photo covers the same 700 m × 700 m box. Click a year. The orange rectangles are what we call the "Auchan zone": Auchan's own car parks. The rest of the photo is the wider retail park, roads included.</p>
+<div class="years" id="years"></div>
+<figure>
+  <div class="viewer" id="viewer">
+    <img id="yimg" src="img/englos_2025.jpg" alt="IGN aerial photo of the Auchan Englos retail park" width="1400" height="1400">
+    <div class="zone" style="left:50%;top:0%;width:18.5%;height:30%"></div>
+    <div class="zone" style="left:66%;top:30%;width:34%;height:23%"></div>
+  </div>
+  <figcaption><label><input type="checkbox" id="zt" checked> show the Auchan zone</label> · <span id="ycap"></span><br>Source: IGN BD ORTHO / ORTHOIMAGERY.ORTHOPHOTOS, Licence Ouverte. Resized to 1,400 px for the web.</figcaption>
+</figure>
+
+<h2>2. What we know about each photo</h2>
+<div class="tblwrap"><table>
+<thead><tr><th>Year</th><th>Sharpness (IGN original)</th><th>Day the photo was taken</th><th class="num">Cars counted, whole photo</th><th class="num">Cars counted, Auchan zone</th></tr></thead>
+<tbody>
+<tr><td>2004</td><td>50 cm per pixel</td><td>not published</td><td class="num">0 <span class="tag assum">NOT USABLE</span></td><td class="num">0</td></tr>
+<tr><td>2009</td><td>50 cm per pixel</td><td>not published</td><td class="num">24 <span class="tag assum">NOT USABLE</span></td><td class="num">0</td></tr>
+<tr><td>2012</td><td>—</td><td>—</td><td class="num" colspan="2"><span class="tag todo">PHOTO MISSING</span> our download was a copy of 2025</td></tr>
+<tr><td>2015</td><td>20 cm per pixel</td><td>11 Jun (Thu), 30 Jun (Tue), 1 Jul (Wed) or 10 Jul (Fri)</td><td class="num"><span class="tag todo">NOT RUN YET</span></td><td class="num">—</td></tr>
+<tr><td>2018</td><td>20 cm per pixel</td><td>8 May (Tue, <b>public holiday</b>), 29 Jun (Fri) or 26 Jul (Thu)</td><td class="num"><span class="tag todo">NOT RUN YET</span></td><td class="num">—</td></tr>
+<tr><td>2021</td><td>20 cm per pixel</td><td>1 Jun (Tue), 7 Jun (Mon), 9 Jun (Wed) or 13 Jun (<b>Sun</b>, store closed)</td><td class="num"><span class="tag todo">NOT RUN YET</span></td><td class="num">—</td></tr>
+<tr><td>2025</td><td>20 cm per pixel</td><td>20 May (Tue)</td><td class="num"><span class="tag todo">NOT RUN YET</span></td><td class="num">—</td></tr>
+</tbody></table></div>
+<p class="note">Counts: the ready-made model from Prototype 2 (YOLO11m-OBB trained on DOTA), zoom ×5 plus sharpening, confidence 0.20. Candidate days come from IGN's mosaic layer, which lists the flight days for a département but does not say which day applies to which spot. <span class="tag real">REAL</span> photos, years and candidate days. The 2025 count of 2,217 cars in Prototype 2 used a different copy of the 2025 photo, so it is not repeated in this table.</p>
+
+<h2>3. Why the 2004 and 2009 counts are not real counts</h2>
+<p>At 50 cm per pixel a car is only about 4 × 9 pixels. The detector found <b>0</b> cars in 2004 and <b>24</b> in 2009, while many parked cars are visible by eye in both photos. The model is not seeing the cars, so these numbers say nothing about how busy Englos was.</p>
+<figure><img loading="lazy" src="img/dota_2009.jpg" alt="2009 photo with the 24 detections"><figcaption>2009, with the detector's 24 finds (small blue rings) and the Auchan zone in orange. Compare with the cars you can see by eye, for example in the car parks at the bottom centre.</figcaption></figure>
+
+<h2>4. What this means for an investor</h2>
+<p><b>Too few photos.</b> IGN flies over each French département about every three years. That is seven photos in 21 years, while a listed retailer reports every quarter: over 80 quarters in the same period.</p>
+<p><b>Unknown days.</b> For most years we only know a list of possible days. One candidate in 2018 is a public holiday and one in 2021 is a Sunday, when the store is closed. A full or empty car park could be the day of the week, not the state of the business.</p>
+<p><b>So the costly input is the images.</b> Orbital Insight bought near-daily paid satellite images to build its series. Prototypes 2 and 3 show that the AI is now nearly free; this page shows that free images cannot replace the paid, frequent ones. And because any rival can buy the same paid images, the edge spreads, which brings us back to <a href="signal-decay.html">Prototype 1</a>.</p>
+
+<h2>5. Limits and what is left to do</h2>
+<p class="note">Still to do: run the counter on 2015, 2018, 2021 and 2025 (about 7 minutes per photo on a laptop processor), cross-check with our own model from Prototype 3, check one area by eye per year, and get the 2012 photo again. Even when done, the series will have only a handful of usable points, on unknown days, and the count includes cars on roads and at other shops. Prototype 2's hand check suggests the counter misses around 1 car in 7 on this kind of photo. We will not present any year-to-year change as a change in Auchan's sales.</p>
+
+<footer class="src">Data: IGN BD ORTHO historical aerial photos via the Géoplateforme WMS (<a href="https://cartes.gouv.fr/">cartes.gouv.fr</a>), Licence Ouverte. Model: Ultralytics YOLO11-OBB trained on DOTA. Code: <code>prototypes/4_englos_timeseries/count_years.py</code>. Built with Claude (Anthropic).</footer>
+
+<div class="pager"><a href="own-model.html">← 3. Training our own model</a><a href="conclusion.html">Conclusion: what a new entrant should do →</a></div>
+</main>
+<script>
+const Y = {2004:"2004 · 50 cm per pixel · day not published",
+           2009:"2009 · 50 cm per pixel · day not published",
+           2012:null,
+           2015:"2015 · 20 cm per pixel · one of 11 Jun, 30 Jun, 1 Jul or 10 Jul",
+           2018:"2018 · 20 cm per pixel · one of 8 May (public holiday), 29 Jun or 26 Jul",
+           2021:"2021 · 20 cm per pixel · one of 1, 7, 9 or 13 Jun (13 Jun is a Sunday)",
+           2025:"2025 · 20 cm per pixel · 20 May (Tue)"};
+const box = document.getElementById("years"), img = document.getElementById("yimg"), cap = document.getElementById("ycap");
+function show(y){
+  img.src = "img/englos_" + y + ".jpg"; cap.textContent = Y[y];
+  box.querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.y == y));
+}
+for (const y in Y){
+  const b = document.createElement("button"); b.textContent = y; b.dataset.y = y;
+  if (Y[y] === null){ b.disabled = true; b.title = "2012 photo missing: our download was a copy of 2025"; }
+  else b.onclick = () => show(y);
+  box.appendChild(b);
+}
+// preload so switching years is instant
+for (const y in Y) if (Y[y]) new Image().src = "img/englos_" + y + ".jpg";
+document.getElementById("zt").onchange = e => document.getElementById("viewer").classList.toggle("nozones", !e.target.checked);
+show(2025);
+</script>
+</body></html>

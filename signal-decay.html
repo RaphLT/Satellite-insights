@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1. How a data signal loses value · Satellite Insight</title>
+<link rel="stylesheet" href="assets/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head><body>
+<header class="site"><div class="in">
+  <a class="brand" href="index.html">Satellite Insight</a>
+  <nav><a href="index.html">Home</a><a class="on" href="signal-decay.html">1. Signal decay</a><a href="car-counter.html">2. Ready-made counter</a><a href="own-model.html">3. Our own model</a><a href="englos.html">4. Englos over time</a><a href="conclusion.html">Conclusion</a><a href="appendix.html">Appendix</a></nav>
+</div></header>
+<main class="wide">
+  <p class="kicker">Prototype 1 · The business</p>
+  <h1>How a data signal loses value as more funds buy it</h1>
+  <p class="sub">A toy market in which one vendor, like Orbital Insight, sells the same parking-lot signal to <i>k</i> hedge funds. The more funds trade on it, the less each one earns from it. Move the sliders to change our assumptions; the article's figures stay fixed.</p>
+
+  <div class="decision"><b>The decision this prototype supports:</b> how many funds should a vendor sell its signal to, at what price, and can that business ever carry the ~$130M of venture capital Orbital Insight raised? And would a new entrant do better selling to customers who don't need exclusivity?</div>
+
+  <div class="grid">
+    <div class="panel" id="controls">
+      <div class="ctrl"><label>Capital per fund per quarter <b id="v-cap"></b></label>
+        <input type="range" id="cap" min="5" max="300" step="5" value="50">
+        <div class="hint"><span class="tag assum">ASSUMPTION</span> money a fund can put into the 3-day long-short trade</div></div>
+      <div class="ctrl"><label>Each fund's own processing cost / yr <b id="v-proc"></b></label>
+        <input type="range" id="proc" min="0" max="1000" step="25" value="250">
+        <div class="hint"><span class="tag assum">ASSUMPTION</span> the article says processing costs are "significant"</div></div>
+      <div class="ctrl"><label>Price funds actually paid / yr <b id="v-obs"></b></label>
+        <input type="range" id="obs" min="100" max="900" step="50" value="500">
+        <div class="hint"><span class="tag real">REAL</span> range: "hundreds of thousands" (article, p. 556) · <span class="tag assum">ASSUMPTION</span> exact point</div></div>
+      <div class="ctrl"><label>Value per non-rival client / yr <b id="v-nr"></b></label>
+        <input type="range" id="nr" min="25" max="500" step="25" value="150">
+        <div class="hint"><span class="tag assum">ASSUMPTION</span> e.g. a deforestation-compliance or land-use client</div></div>
+      <div class="ctrl" style="font-size:13px;color:var(--ink2)">
+        Fixed from sources:<br>
+        <span class="tag real">REAL</span> edge when exclusive: <b>4.76%</b> per 3-day window (Table 3)<br>
+        <span class="tag real">REAL</span> 4 earnings events per year<br>
+        <span class="tag real">REAL</span> OI funding $130M; 2023 revenue $9.5M (Poulson, 2023)
+      </div>
+      <button class="reset" id="reset">Reset to baseline</button>
+    </div>
+
+    <div>
+      <div class="sim-verdict" id="verdict"></div>
+      <div class="panel">
+        <div class="tblwrap"><table id="tbl">
+          <thead><tr><th>How fast the edge shrinks <span class="tag assum">ASSUMPTION</span></th><th class="num">Best number of clients</th><th class="num">Price at best</th><th class="num">Vendor revenue at best</th><th class="num">Clients when price = real price</th><th class="num">Revenue at real price</th></tr></thead>
+          <tbody></tbody>
+        </table></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend" id="legend" style="margin-top:22px"></div>
+  <div class="charts" style="margin-top:10px">
+    <div class="panel chart"><h3>1. Each fund's edge per earnings event</h3><p>4.76% when one fund has the data; how fast it falls is the key unknown, so we try four curves.</p><div class="box"><canvas id="c1"></canvas></div></div>
+    <div class="panel chart"><h3>3. Most each client would pay per year</h3><p>Shaded: the price range the article reports. The price only gets that low once the signal is shared.</p><div class="box"><canvas id="c3"></canvas></div></div>
+    <div class="panel chart wide"><h3>2. Vendor's yearly revenue</h3><p>Filled dot: best number of clients. Hollow dot: where the price falls to the real price. Dashed line: Orbital Insight's real 2023 revenue (all products).</p><div class="box" style="height:320px"><canvas id="c2"></canvas></div></div>
+    <div class="panel chart wide"><h3>4. Selling exclusivity vs selling an answer</h3><p>Alpha-signal revenue peaks and falls as clients erode each other's edge; revenue from non-rival customers grows with every client.</p><div class="box" style="height:320px"><canvas id="c4"></canvas></div></div>
+  </div>
+
+  <h2>What the baseline shows</h2>
+  <p>With the default sliders, the three curves that fall fast enough reach the reported price at <b>7–13 clients</b>, which gives the vendor <b>$2–6M</b> a year. The "slow" curve looks better on paper (about $68M a year with 50 clients), but only because it charges each fund far more than funds actually paid: its price never falls to the reported range, so it does not fit the market the article describes. Chart 4 shows the way out: customers who do not compete with each other keep paying as the vendor adds more of them.</p>
+
+  <h2>The four curves</h2>
+  <p class="note"><b>Slow</b> 1/(1+0.1(k−1)): the edge fades gently. <b>Fixed pie</b> 1/k: a fixed amount of mispricing split equally. <b>Competition</b> 4/(k+1)²: funds race to trade first and together earn less than one exclusive fund would (Cournot competition with linear price impact). <b>Fast</b> e<sup>−0.3(k−1)</sup>: the edge collapses after a few clients. Price per client = that fund's yearly trading profit minus its own processing cost, assuming the vendor captures the whole surplus, so all revenues are <b>upper bounds</b>.</p>
+
+  <h2>What is real and what is assumed</h2>
+  <div class="tblwrap"><table>
+    <thead><tr><th>Input</th><th>Value</th><th>Status and source</th></tr></thead>
+    <tbody>
+      <tr><td>Edge when exclusive</td><td>4.76% per 3-day window around earnings</td><td><span class="tag real">REAL</span> Katona et al. (2025), Table 3, factor-adjusted buy-minus-sell</td></tr>
+      <tr><td>Earnings events per year</td><td>4</td><td><span class="tag real">REAL</span> quarterly reporting</td></tr>
+      <tr><td>Price of the data</td><td>"hundreds of thousands" $/yr</td><td><span class="tag real">REAL</span> Katona et al. (2025), p. 556</td></tr>
+      <tr><td>Funding raised / 2023 revenue</td><td>$130M / $9.5M</td><td><span class="tag real">REAL</span> Poulson (2023), leaked investor documents</td></tr>
+      <tr><td>Capital per fund, processing cost, exact price, non-rival client value</td><td>sliders</td><td><span class="tag assum">ASSUMPTION</span></td></tr>
+      <tr><td>Speed at which the edge shrinks</td><td>four curves</td><td><span class="tag assum">ASSUMPTION</span>: the central unknown</td></tr>
+      <tr><td>Vendor captures all of each fund's profit</td><td>—</td><td><span class="tag assum">ASSUMPTION</span>: makes revenue an upper bound</td></tr>
+    </tbody></table></div>
+
+  <h2>Limits</h2>
+  <p class="note">This is a toy model, not a forecast. It uses no satellite images and no Orbital Insight sales data. The 4.76% comes from RS Metrics data for 2011–2017, when some funds already had the signal, so the "exclusive" edge is if anything understated. It models one product (retail car counts), not Orbital Insight's oil or location-data products. The same model is in a Python notebook (<code>prototypes/1_signal_decay/signal_decay_simulation.ipynb</code>), which gives identical numbers and checks its own arithmetic.</p>
+
+  <footer class="src">Sources: Katona, Z., Painter, M. O., Patatoukas, P. N., &amp; Zeng, J. (2025). On the capital market consequences of big data: Evidence from outer space. <i>JFQA</i>, 60(2), 551–579, <a href="https://doi.org/10.1017/S0022109023001448">doi.org/10.1017/S0022109023001448</a>. Poulson, J. (2023). <a href="https://jackpoulson.substack.com/p/exclusive-google-backed-intelligence">All-Source Intelligence Fusion</a>. Charts: Chart.js. Built with Claude (Anthropic) by vibe-coding.</footer>
+
+  <div class="pager"><a href="index.html">← Home</a><a href="car-counter.html">2. Can a student rebuild the car counter? →</a></div>
+</main>
+<script src="assets/signal-decay.js"></script>
+</body></html>
