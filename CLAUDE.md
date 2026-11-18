@@ -55,7 +55,7 @@ Pages 2 and 3 embed their images as base64; for the site, prefer real image file
 - The point to make: one snapshot every ~3 years, taken on unknown days, cannot tell an investor how Auchan's quarter went. Orbital Insight bought near-daily paid imagery for that.
 
 ## Folder map
-- `site/`: the website (static HTML; images in `site/img/`, simulator JS in `site/assets/signal-decay.js`, copied unchanged from P1). `site/appendix.html` is generated from the prompt log by `site/build_appendix.py` + `appendix_template.html`; do not edit it by hand. Deployed by `.github/workflows/pages.yml`. Once P4 counts are run, update the table in `site/englos.html`.
+- `site/`: the website (static HTML; images in `site/img/`, simulator JS in `site/assets/signal-decay.js`, copied unchanged from P1). `site/appendix.html` is generated from the prompt log by `site/build_appendix.py` + `appendix_template.html`; do not edit it by hand. Published from the `gh-pages` branch: after committing, run `git push` then `git subtree push --prefix site origin gh-pages` (the user's token cannot push workflow files, so no GitHub Actions). Once P4 counts are run, update the table in `site/englos.html`.
 - `prototypes/1_signal_decay/`: `index.html` (interactive, Chart.js), `signal_decay_simulation.ipynb`, `build.py` (generates the notebook), figures.
 - `prototypes/2_car_counter/`: `carcount.py` (**shared library**: tiling, detection, de-duplication, COWC label reading, matching), `run_eval.py`, Colab notebook, results page and images.
 - `prototypes/3_own_model/`: `train_prep.py` (COWC dots → YOLO dataset), `train.py`, `eval_own.py`, `train_own_model.ipynb`, trained weights `own_cowc_yolo11n.pt`, `results.csv`, results page.
