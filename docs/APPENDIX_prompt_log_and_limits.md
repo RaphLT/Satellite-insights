@@ -25,7 +25,8 @@ Every prompt we sent, in order. Prompts are copied verbatim, including typos.
 | 10 | 18 Nov 2026, 11:08 | Claude (Opus 5.5) | "oc now can we export this to claude code, i would like to make a website" | Packaged all prototypes, data, results and a CLAUDE.md briefing into one folder for Claude Code. |
 | 11 | 18 Nov 2026, 11:27 | Claude Code (Opus 5.5) | "Read CLAUDE.md. Build the project website with the structure it suggests, using the existing pages and images. Then help me publish it on GitHub Pages so it opens without a login." | Built a seven-page static website in `site/` (home, the four prototypes, conclusion, appendix) from the existing pages, using the real image files instead of embedded copies. Added a year-by-year viewer of the IGN photos for Prototype 4, marked as unfinished, and a script that rebuilds the appendix page from this log. Prepared the folder for GitHub Pages. |
 | 12 | 18 Nov 2026 | Claude Code (Opus 5.5) | "names: Raphael Le Theo, Dinis Ramalhao, Dorian Barrier, Gabin Routier. i will worry aboit rule 5 don't worry, is p4 counts that important ?" | Added the team names to the site and the appendix (who did what still to fill in). Explained that the Prototype 4 counts are optional: the argument on that page rests on how often and on which days IGN takes its photos, not on the counts. |
-| 13 | [date] | [tool] | [add every further prompt here, verbatim] | |
+| 13 | 18 Nov 2026 | Claude Code (Opus 5.5) | "heres the url https://github.com/RaphLT/Satellite-insights.git and i don't need the p4 thanks" | Pushed the project to the GitHub repository so the website could be published on GitHub Pages. Prototype 4 stays unfinished, as stated on its page. |
+| 14 | [date] | [tool] | [add every further prompt here, verbatim] | |
 
 ## B. What works, what does not, what it was tested on, who did what
 
