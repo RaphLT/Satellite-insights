@@ -5,19 +5,19 @@
 </head><body>
 <header class="site"><div class="in">
   <a class="brand" href="index.html">Satellite Insight</a>
-  <nav><a href="index.html">Home</a><a href="signal-decay.html">1. Signal decay</a><a class="on" href="car-counter.html">2. Ready-made counter</a><a href="own-model.html">3. Our own model</a><a href="englos.html">4. Englos over time</a><a href="conclusion.html">Conclusion</a><a href="appendix.html">Appendix</a></nav>
+  <nav><a href="index.html">Home</a><a href="tool/index.html">The tool</a><a href="signal-decay.html">1. Signal decay</a><a class="on" href="car-counter.html">2. Ready-made counter</a><a href="own-model.html">3. Our own model</a><a href="englos.html">4. Englos over time</a><a href="conclusion.html">Conclusion</a><a href="appendix.html">Appendix</a></nav>
 </div></header>
 <main>
-<p class="kicker">Prototype 2 · The technology</p>
+<p class="kicker">Supporting prototype 2 · The technology</p>
 <h1>Could a student rebuild Orbital Insight's car counter today?</h1>
-<p class="sub">The professor's question A. Case: Orbital Insight, which sold car counts from parking-lot images to hedge funds. We used only free tools and free images, and trained nothing.</p>
+<p class="sub">Case: Orbital Insight, which sold car counts from parking-lot images to hedge funds. We used only free tools and free images, and trained nothing.</p>
 
-<div class="verdict"><b>Yes, mostly.</b> A free, pretrained detector finds about 8 cars in 10 in hand-labelled test images, and almost everything it counts is a real car. It counted <b>2,217 cars</b> in a free IGN photo of the Auchan Englos retail park near Lille. The <b>model was not the moat</b>: what took work was tuning it to each image source, and what it cannot give you is <b>fresh images</b>.</div>
+<div class="verdict"><b>Yes, mostly.</b> A free, pretrained detector finds more than 9 cars in 10 in hand-labelled test images, and about 9 in 10 of the things it counts are real cars. It counted <b>2,335 cars</b> in a free IGN photo of the Auchan Englos retail park near Lille. The <b>model was not the moat</b>: what took work was tuning it to each image source, and what it cannot give you is <b>fresh images</b>.</div>
 
 <div class="tiles">
- <div class="tile"><div class="n">81%</div><div class="l">of hand-labelled cars found<br>(COWC, Potsdam, 113 cars)</div></div>
- <div class="tile"><div class="n">94%</div><div class="l">of its counts are real cars<br>(COWC, 6 false alarms)</div></div>
- <div class="tile"><div class="n">2,217</div><div class="l">cars counted at Auchan Englos<br>(IGN photo, ~0.42 km²)</div></div>
+ <div class="tile"><div class="n">94%</div><div class="l">of hand-labelled cars found<br>(COWC, Potsdam, 113 cars)</div></div>
+ <div class="tile"><div class="n">91%</div><div class="l">of its counts are real cars<br>(COWC, 11 false alarms)</div></div>
+ <div class="tile"><div class="n">2,335</div><div class="l">cars counted at Auchan Englos<br>(IGN photo, ~0.42 km²)</div></div>
  <div class="tile"><div class="n">€0</div><div class="l">for data and model; ~7 min on a laptop CPU, ~2 min on a free Colab GPU</div></div>
 </div>
 
@@ -25,23 +25,23 @@
 <p>We took <b>YOLO11</b>, an open object detector from Ultralytics, already trained on DOTA, a public set of aerial images with a "small vehicle" class. We cut each large image into tiles, zoomed them so cars are a size the model likes, and merged cars found twice where tiles overlap. We then checked the counts two ways: against <b>COWC</b>, where researchers marked every car by hand, and by eye on part of the Englos photo.</p>
 
 <h2>2. Test against cars marked by hand (COWC)</h2>
-<p>COWC tile <i>top_potsdam_2_12</i>: Potsdam, Germany, about 300 m across at 13.5 cm per pixel, with <b>113 cars marked by hand</b>. At the best zoom (×1.5) the detector counted 98: <b>92 right, 6 false alarms, 21 missed</b>. The total is -15 cars (-13%) away from the truth.</p>
+<p>COWC tile <i>top_potsdam_2_12</i>: Potsdam, Germany, about 300 m across at 13.5 cm per pixel, with <b>113 cars marked by hand</b>. With no zoom, the setting that worked best, the detector counted 117: <b>106 right, 11 false alarms, 7 missed</b>. The total is +4 cars (+4%) away from the truth.</p>
 <div class="two">
 <figure><img loading="lazy" src="img/cowc_2_12.jpg" alt="COWC Potsdam tile with marked cars and detections"><figcaption><span class="dot" style="background:var(--orange)"></span> car marked by hand &nbsp; <span class="ring"></span> car found by the model. Full tile.</figcaption></figure>
-<figure><img loading="lazy" src="img/cowc_zoom.jpg" alt="Zoom on a street with parked cars"><figcaption>Zoom on one street. Most cars are found; the misses are mostly cars partly hidden under trees, plus one at the bottom edge.</figcaption></figure>
+<figure><img loading="lazy" src="img/cowc_zoom.jpg" alt="Zoom on a street with parked cars"><figcaption>Zoom on one street. Most cars are found; the few misses are mostly cars partly hidden under trees.</figcaption></figure>
 </div>
 <table><thead><tr><th>Zoom tested on COWC</th><th class="num">Counted</th><th class="num">Right</th><th class="num">False alarms</th><th class="num">Missed</th></tr></thead><tbody>
-<tr><td>×1.0 (no zoom)</td><td class="num">81</td><td class="num">75</td><td class="num">6</td><td class="num">38</td></tr>
-<tr><td><b>×1.5 (chosen)</b></td><td class="num">98</td><td class="num">92</td><td class="num">6</td><td class="num">21</td></tr>
-<tr><td>×2.0</td><td class="num">93</td><td class="num">88</td><td class="num">5</td><td class="num">25</td></tr>
-<tr><td>×1.5 + sharpening</td><td class="num">60</td><td class="num">54</td><td class="num">6</td><td class="num">59</td></tr>
+<tr><td><b>×1.0 (no zoom, chosen)</b></td><td class="num">117</td><td class="num">106</td><td class="num">11</td><td class="num">7</td></tr>
+<tr><td>×1.5</td><td class="num">116</td><td class="num">103</td><td class="num">13</td><td class="num">10</td></tr>
+<tr><td>×2.0</td><td class="num">117</td><td class="num">106</td><td class="num">11</td><td class="num">7</td></tr>
+<tr><td>×1.5 + sharpening</td><td class="num">114</td><td class="num">97</td><td class="num">17</td><td class="num">16</td></tr>
 </tbody></table>
-<p class="note">All rows: same model, confidence 0.25, a detection is right if within 1.5 m of a marked car. Reproduced in the Colab notebook.</p>
+<p class="note">All rows: same model, confidence 0.25, a detection is right if within 1.5 m of a marked car. <b>Correction (18 Nov):</b> an earlier version of this page reported lower scores (92 right, 21 missed) because our code passed the image colours in the wrong order (red-green-blue instead of the blue-green-red the library expects). We found the bug when our browser tool scored better than this page; all numbers here are re-run with it fixed.</p>
 
 <h2>3. Counting the cars at Auchan Englos (IGN, free)</h2>
-<p>IGN's BD ORTHO aerial photo of the Englos retail park, which holds Auchan, other big stores and their car parks, about 650 m across. Without changes the model found almost nothing here: the photo is softer and lower-contrast than COWC. After zooming ×5 and sharpening, it counted <b>2,217 cars</b>. Car lengths measured from the detections put the photo at about 0.25 m per pixel. The median car comes out at 4.4 m, as it should.</p>
+<p>IGN's BD ORTHO aerial photo of the Englos retail park, which holds Auchan, other big stores and their car parks, about 650 m across. Without changes the model found almost nothing here: the photo is softer and lower-contrast than COWC. After zooming ×5 and sharpening, it counted <b>2,335 cars</b>. Car lengths measured from the detections put the photo at about 0.25 m per pixel. The median car comes out at 4.4 m, as it should.</p>
 <figure><img loading="lazy" src="img/ign_overview.jpg" alt="Auchan Englos retail park with detected cars"><figcaption><span class="ring"></span> each blue ring is one detected car. The orange box is the area we checked by eye (below). The count includes cars on the roads and at other shops in the retail park, not only Auchan's.</figcaption></figure>
-<p><b>Hand check.</b> COWC has no labels for Englos, so we checked the orange box ourselves. Of about <b>103 cars</b>, the model found <b>89</b>, raised <b>1</b> false alarm and missed <b>14</b>, mostly dark cars in shadow. That's about <b>86% found and 99% right</b>, close to the COWC result. One area, counted once by eye, so treat it as a rough check.</p>
+<p><b>Hand check.</b> COWC has no labels for Englos, so we checked the orange box ourselves. Of about <b>103 cars</b>, the model found about <b>93</b>, raised about <b>2</b> false alarms and missed about <b>10</b>, mostly dark cars in shadow. That's about <b>90% found and 98% right</b>, close to the COWC result. One area, counted once by eye (numbers rounded), so treat it as a rough check.</p>
 <div class="two">
 <figure><img loading="lazy" src="img/ign_check0.jpg" alt="check panel 1"><figcaption>Top left of the box</figcaption></figure>
 <figure><img loading="lazy" src="img/ign_check1.jpg" alt="check panel 2"><figcaption>Top right</figcaption></figure>
@@ -58,7 +58,7 @@
 <p class="note"><span class="tag real">REAL</span> COWC labels (113 cars, one Potsdam tile), the IGN photo, the open YOLO11 model trained on DOTA. <span class="tag assum">OUR CHOICES</span> a detection counts as right if it is within 1.5 m of a marked car; zoom ×1.5 for COWC and ×5 plus sharpening for IGN, chosen by looking at results; the Englos check is one area counted once by eye.</p>
 <p class="note">We tested on one labelled tile only; COWC has five more sites we did not use. The Englos image is a copy at about 25 cm per pixel, not the full 20 cm IGN download, and its date is unknown. We count all cars in the retail park, including on roads, not Auchan's customers. We did not train or fine-tune the model, which would likely improve the dark-car misses. Results come from code written with an AI assistant and checked by us against the hand labels and by eye.</p>
 
-<footer class="src">Data: COWC, Mundhenk et al. (2016), Lawrence Livermore National Laboratory, <a href="https://gdo152.llnl.gov/cowc/">gdo152.llnl.gov/cowc</a> · ISPRS Potsdam imagery · IGN BD ORTHO via <a href="https://cartes.gouv.fr/">cartes.gouv.fr</a> (Licence Ouverte) · Model: Ultralytics YOLO11-OBB trained on DOTA v1 (<a href="https://docs.ultralytics.com/tasks/obb/">docs.ultralytics.com</a>, AGPL-3.0). Built with Claude (Anthropic). Code: <i>car_counter_question_A.ipynb</i> in <code>prototypes/2_car_counter/</code> of the project folder.</footer>
+<footer class="src">Data: COWC, Mundhenk et al. (2016), Lawrence Livermore National Laboratory, <a href="https://gdo152.llnl.gov/cowc/">gdo152.llnl.gov/cowc</a> · ISPRS Potsdam imagery · IGN BD ORTHO via <a href="https://cartes.gouv.fr/">cartes.gouv.fr</a> (Licence Ouverte) · Model: Ultralytics YOLO11-OBB trained on DOTA v1 (<a href="https://docs.ultralytics.com/tasks/obb/">docs.ultralytics.com</a>, AGPL-3.0). Built with Claude (Anthropic). Code: <i>car_counter_question_A.ipynb</i> in <code>prototypes/2_car_counter/</code> of the <a href="https://github.com/RaphLT/Satellite-insights">project repository</a>.</footer>
 
 <div class="pager"><a href="signal-decay.html">← 1. How a data signal loses value</a><a href="own-model.html">3. Training our own model →</a></div>
 </main></body></html>

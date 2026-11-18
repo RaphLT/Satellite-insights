@@ -31,7 +31,7 @@ CONF = best[0]; res["own_conf"] = CONF; print("chosen conf", CONF)
 
 # 2. held-out test tile
 img = load_rgb("data/top_potsdam_2_12_RGB.png"); gt = gt_points("data/top_potsdam_2_12_RGB_Annotated_Cars.png")
-for name, m, kw in [("own", own, dict(scale=OWN_SCALE_COWC, conf=CONF)), ("dota", dota, dict(scale=1.5, conf=0.25))]:
+for name, m, kw in [("own", own, dict(scale=OWN_SCALE_COWC, conf=CONF)), ("dota", dota, dict(scale=1.0, conf=0.25))]:
     d = detect_cars(m, img, dedup_px=R / COWC_GSD, **kw)
     tp, fp, fn = match(d[:, :2], gt, R / COWC_GSD)
     res[f"test_{name}"] = dict(true=len(gt), detected=len(d), tp=tp, fp=fp, fn=fn)

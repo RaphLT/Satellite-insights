@@ -1,19 +1,19 @@
 {
- "own_conf": 0.20000000000000004,
+ "own_conf": 0.5500000000000002,
  "test_own": {
   "true": 113,
-  "detected": 110,
-  "tp": 73,
-  "fp": 37,
-  "fn": 40
+  "detected": 106,
+  "tp": 102,
+  "fp": 4,
+  "fn": 11
  },
  "test_dota": {
   "true": 113,
-  "detected": 98,
-  "tp": 92,
-  "fp": 6,
-  "fn": 21
+  "detected": 117,
+  "tp": 106,
+  "fp": 11,
+  "fn": 7
  },
- "ign_box_own": 90,
- "ign_box_dota": 90
+ "ign_box_own": 69,
+ "ign_box_dota": 95
 }

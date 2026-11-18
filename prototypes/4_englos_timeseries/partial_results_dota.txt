@@ -1,2 +1,4 @@
+Counts below were made BEFORE the colour-order fix (18 Nov) and must be re-run:
 2004 {'total': 0, 'auchan': 0, 'date': '2004 (day not published)', 'native_cm': 50}
 2009 {'total': 24, 'auchan': 0, 'date': '2009 (day not published)', 'native_cm': 50}
+2015 {'total': 811, 'auchan': 200, 'date': '11 Jun (Thu), 30 Jun (Tue), 1 Jul (Wed) or 10 Jul (Fri) 2015', 'native_cm': 20}

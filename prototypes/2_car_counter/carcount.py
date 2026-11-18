@@ -53,7 +53,8 @@ def detect_cars(model, img, scale=1.0, tile=1024, overlap=160, conf=0.25, imgsz=
             crop = im[y:y + tile, x:x + tile]
             if crop.shape[0] < 32 or crop.shape[1] < 32:
                 continue
-            r = model.predict(crop, imgsz=imgsz, conf=conf, classes=cls, verbose=False)[0]
+            # Ultralytics treats numpy input as BGR (OpenCV order): flip our RGB crop
+            r = model.predict(np.ascontiguousarray(crop[..., ::-1]), imgsz=imgsz, conf=conf, classes=cls, verbose=False)[0]
             if r.obb is not None:                      # oriented boxes (DOTA model)
                 if len(r.obb) == 0:
                     continue

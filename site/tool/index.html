@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Car Counter from Above: rebuild Orbital Insight's signal</title>
+<script src="ort.wasm.min.js"></script>
+<style>
+:root{--bg:#fcfcfb;--ink:#0b0b0b;--ink2:#52514e;--muted:#8a8984;--line:#e4e3de;--card:#fff;--blue:#2a78d6;--orange:#eb6834;--green:#1baf7a;--red:#d03b3b}
+@media (prefers-color-scheme:dark){:root{--bg:#1a1a19;--ink:#f0efec;--ink2:#c3c2b7;--muted:#8f8e86;--line:#353532;--card:#222220;--blue:#3987e5;--orange:#d95926}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1280px;margin:0 auto;padding:26px 18px 60px}
+h1{font-size:27px;line-height:1.2;margin:0 0 6px}
+h2{font-size:18px;margin:30px 0 8px}
+.sub{color:var(--ink2);max-width:880px;margin:0}
+.bar{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin:18px 0}
+.bar label{font-size:13px;color:var(--ink2);display:flex;gap:8px;align-items:center}
+select,input[type=number]{font:inherit;font-size:14px;padding:5px 8px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+input[type=number]{width:92px}
+button{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:7px 13px;border-radius:7px;cursor:pointer}
+button.primary{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:600}
+button:disabled{opacity:.5;cursor:default}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.slot{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;min-width:0}
+.slot h3{margin:0 0 8px;font-size:15px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
+.drop{border:2px dashed var(--line);border-radius:8px;padding:16px;text-align:center;color:var(--ink2);font-size:13px;cursor:pointer}
+.drop.over{border-color:var(--blue)}
+.view{position:relative;margin-top:10px;max-height:640px;overflow:auto;border-radius:6px;background:#0002}
+.view canvas{display:block;width:100%;cursor:crosshair;touch-action:none}
+.view.full canvas{width:auto;max-width:none}
+.stat{display:flex;gap:18px;flex-wrap:wrap;margin-top:10px}
+.stat .n{font-size:28px;font-weight:650;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat .l{font-size:12.5px;color:var(--ink2)}
+.prog{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:8px;display:none}
+.prog div{height:100%;width:0;background:var(--blue)}
+.msg{font-size:13px;color:var(--ink2);margin-top:6px;min-height:1.2em}
+.warn{color:var(--red)}
+.compare{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--blue);border-radius:8px;padding:14px 18px;margin-top:16px;font-size:15.5px}
+.note{font-size:13.5px;color:var(--ink2);max-width:900px}
+table{border-collapse:collapse;width:100%;font-size:13.5px;background:var(--card);border:1px solid var(--line)}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line)} th{color:var(--ink2);font-size:12.5px} td.num{text-align:right;font-variant-numeric:tabular-nums}
+a{color:var(--blue)} footer{margin-top:34px;font-size:12.5px;color:var(--muted)}
+.legend{font-size:12.5px;color:var(--ink2)} .ring{display:inline-block;width:11px;height:11px;border-radius:50%;border:2px solid #00a2ff;vertical-align:-1px} .zone{display:inline-block;width:12px;height:9px;border:2px solid var(--orange);vertical-align:0}
+</style>
+</head>
+<body>
+<main>
+  <p style="margin:0 0 10px;font-size:13.5px"><a href="../index.html">← Satellite Insight: the project site</a> · <a href="../appendix.html">prompt log and limits</a></p>
+  <h1>Car Counter from Above</h1>
+  <p class="sub">Group 7 · AI for Business &amp; Society, SKEMA Lille. <b>The decision this tool supports:</b> could a student rebuild the signal Orbital Insight sold to hedge funds, the change in cars parked at a retailer from one photo to the next, using only free images and free AI? Load an aerial photo and the AI counts the cars <b>inside your browser</b>; nothing is uploaded anywhere.</p>
+
+  <div class="bar">
+    <span class="legend">AI model:</span>
+    <label><input type="radio" name="model" value="own" checked> Ours (trained by us on 515 hand-labelled cars)</label>
+    <label><input type="radio" name="model" value="dota"> Ready-made (trained on DOTA, 188,282 labelled objects)</label>
+    <label><input type="checkbox" id="sharpen"> Sharpen soft photos (helps the ready-made model on IGN)</label>
+    <label>Confidence cut-off <input type="number" id="conf" min="0.05" max="0.9" step="0.05"></label>
+    <button class="primary" id="countBoth">Count both photos</button>
+  </div>
+
+  <div class="grid">
+    <div class="slot" data-slot="A"></div>
+    <div class="slot" data-slot="B"></div>
+  </div>
+  <div class="compare" id="compare">Count two photos of the same car park to see the change, the number Orbital Insight sold.</div>
+
+  <h2>How to use it</h2>
+  <p class="note">1. Pick a sample (Auchan Englos near Lille, free IGN aerial photos) or drop your own aerial photo. 2. Set the <b>ground size of one pixel</b> in metres; the samples fill it in. 3. Optionally drag a rectangle on the photo to count one zone only (for the samples, “Auchan car parks” draws the store's own lots). 4. Press Count. A blue ring marks each car found. <b>Check the “median detection size”</b>: it should be close to the value shown (real cars are about 4.5 m; our model draws slightly bigger boxes). If it is far off, your metres-per-pixel is probably wrong; press the suggested fix and count again.</p>
+  <p class="note">Your own photo: on <a href="https://www.geoportail.gouv.fr/">geoportail.gouv.fr</a> take a screenshot of a car park zoomed in close, and measure a known distance with the ruler tool to work out metres per pixel. Or download an exact image from IGN's free WMS service: for a box W metres wide saved at P pixels, metres per pixel = W / P.</p>
+
+  <h2>How accurate is it? (tested by us, not claimed by the tool)</h2>
+  <table id="acc"><thead><tr><th>Test</th><th>Model</th><th class="num">Counted</th><th class="num">Right</th><th class="num">False alarms</th><th class="num">Missed</th></tr></thead>
+  <tbody>
+    <tr><td>COWC Potsdam tile 2_12, 113 cars marked by hand (never used for training)</td><td>Ours</td><td class="num">124</td><td class="num">108</td><td class="num">16</td><td class="num">5</td></tr>
+    <tr><td>Same tile</td><td>Ready-made (nano)</td><td class="num">114</td><td class="num">104</td><td class="num">10</td><td class="num">9</td></tr>
+    <tr><td>IGN Auchan Englos 2025, one area counted by eye: about 100 cars</td><td>Ours</td><td class="num">95</td><td colspan="3" class="note">counts only; positions not labelled</td></tr>
+    <tr><td>Same area</td><td>Ready-made (nano), with sharpening</td><td class="num">89</td><td colspan="3" class="note">without sharpening it finds almost nothing on IGN photos</td></tr>
+  </tbody></table>
+  <p class="note">Numbers from our Python copy of this page's method, at the default settings. In our test the browser gave counts within about 5% of the Python copy (it resizes images slightly differently). On the Englos photos the two models disagree more than on Potsdam: the ready-made nano model misses many cars on the softer French photos, which is why ours is the default.</p>
+
+  <h2>Limits</h2>
+  <p class="note">Works best on sharp, top-down photos with cars about 20 px long or more (25 cm per pixel or better); free photos of 50 cm per pixel (IGN before 2012) are too coarse. It counts every car in the area, on roads too, unless you draw a zone. It cannot tell a customer from an employee or a car-dealer's stock. Two photos are only comparable if taken at a similar time of day and day of week: IGN does not say on which day each photo was flown, and the 2021 candidates include a Sunday, when the store is closed. Orbital Insight bought near-daily paid images for exactly this reason. Tested on one COWC tile and one hand-checked IGN area.</p>
+
+  <footer>Images: IGN BD ORTHO (Licence Ouverte 2.0), via <a href="https://cartes.gouv.fr/">cartes.gouv.fr</a>. Training data: COWC, Mundhenk et al. (2016), LLNL. Ready-made model: Ultralytics YOLO11n-OBB trained on DOTA v1, Xia et al. (2018). Runs on onnxruntime-web. Built by vibe-coding with Claude (Anthropic); prompt log in our <a href="../appendix.html">appendix</a>.</footer>
+</main>
+
+<script>
+"use strict";
+// ---------- model settings (chosen and checked in Python, see ref_pipeline.py) ----------
+const MODELS = {
+  own:  {file: "models/own-model.wasm",        size: 640,  obb: false, car: 0,  target: 0.10, conf: 0.25, box: [3.8, 7.0, 5.2], label: "our"},
+  dota: {file: "models/dota-n-obb-model.wasm", size: 1024, obb: true,  car: 10, target: 0.07, conf: 0.25, box: [3.6, 5.6, 4.5], label: "the ready-made"},
+};
+const SAMPLES = {
+  "2025": {file: "samples/englos_2025.jpg", gsd: 700 / 2576, label: "Auchan Englos, IGN, 20 May 2025 (Tue)"},
+  "2021": {file: "samples/englos_2021.jpg", gsd: 700 / 2576, label: "Auchan Englos, IGN, June 2021 (day unknown: Tue, Mon, Wed or Sun)"},
+  "2018": {file: "samples/englos_2018.jpg", gsd: 700 / 2576, label: "Auchan Englos, IGN, 2018 (8 May holiday, 29 Jun or 26 Jul)"},
+};
+const AUCHAN_ZONES = [[0.50, 0.00, 0.685, 0.30], [0.66, 0.30, 1.00, 0.53]];   // fractions of the sample photos
+const OVERLAP = 96;   // box: [lowest OK, highest OK, typical] median detection size in metres, measured by us
+
+ort.env.wasm.wasmPaths = new URL("./", location.href).href;
+ort.env.wasm.numThreads = 1;
+const sessions = {};
+async function getSession(name) {
+  if (!sessions[name]) sessions[name] = fetch(MODELS[name].file)        // model weights (ONNX, stored with a .wasm name for hosting)
+    .then(r => { if (!r.ok) throw new Error("model download failed (" + r.status + ")"); return r.arrayBuffer(); })
+    .then(buf => ort.InferenceSession.create(new Uint8Array(buf), {executionProviders: ["wasm"]}));
+  return sessions[name];
+}
+const $ = (s, el = document) => el.querySelector(s);
+const modelSel = {get value() { return document.querySelector("input[name=model]:checked").value; }}, confIn = $("#conf"), sharpIn = $("#sharpen");
+function syncDefaults() { confIn.value = MODELS[modelSel.value].conf; sharpIn.checked = modelSel.value === "dota"; }
+document.querySelectorAll("input[name=model]").forEach(r => r.addEventListener("change", () => { syncDefaults(); slots.forEach(s => s.clearResult()); }));
+syncDefaults();
+
+// ---------- unsharp mask on an RGBA tile (approximation of PIL UnsharpMask radius 3, 150%, threshold 2) ----------
+function boxBlur(src, dst, w, h, r) {             // separable box blur, 3 interleaved channels
+  const tmp = new Float32Array(src.length);
+  for (let y = 0; y < h; y++) for (let c = 0; c < 3; c++) {
+    let acc = 0, cnt = 0;
+    for (let x = 0; x <= r && x < w; x++) { acc += src[3*(y*w+x)+c]; cnt++; }
+    for (let x = 0; x < w; x++) {
+      tmp[3*(y*w+x)+c] = acc / cnt;
+      const xo = x - r, xi = x + r + 1;
+      if (xo >= 0) { acc -= src[3*(y*w+xo)+c]; cnt--; }
+      if (xi < w) { acc += src[3*(y*w+xi)+c]; cnt++; }
+    }
+  }
+  for (let x = 0; x < w; x++) for (let c = 0; c < 3; c++) {
+    let acc = 0, cnt = 0;
+    for (let y = 0; y <= r && y < h; y++) { acc += tmp[3*(y*w+x)+c]; cnt++; }
+    for (let y = 0; y < h; y++) {
+      dst[3*(y*w+x)+c] = acc / cnt;
+      const yo = y - r, yi = y + r + 1;
+      if (yo >= 0) { acc -= tmp[3*(yo*w+x)+c]; cnt--; }
+      if (yi < h) { acc += tmp[3*(yi*w+x)+c]; cnt++; }
+    }
+  }
+}
+function sharpenTile(d, w, h) {
+  const n = w * h, src = new Float32Array(n * 3);
+  for (let i = 0; i < n; i++) { src[3*i] = d[4*i]; src[3*i+1] = d[4*i+1]; src[3*i+2] = d[4*i+2]; }
+  let a = src, b = new Float32Array(n * 3);
+  for (let pass = 0; pass < 3; pass++) { boxBlur(a, b, w, h, 2); [a, b] = [b, pass === 0 ? new Float32Array(n * 3) : a]; }
+  for (let i = 0; i < 3 * n; i++) {
+    const diff = src[i] - a[i];
+    if (Math.abs(diff) >= 2) d[4*Math.floor(i/3) + (i%3)] = Math.max(0, Math.min(255, src[i] + 1.5 * diff));
+  }
+}
+
+// ---------- detection ----------
+async function detect(bitmap, gsd, region, onProgress) {
+  const name = modelSel.value, m = MODELS[name], S = m.size, conf = +confIn.value || m.conf;
+  const session = await getSession(name);
+  const sc = gsd / m.target;                       // source pixels -> model pixels
+  const srcTile = S / sc, srcStep = (S - OVERLAP) / sc;
+  const [rx0, ry0, rx1, ry1] = region || [0, 0, bitmap.width, bitmap.height];
+  const cv = new OffscreenCanvas(S, S), ctx = cv.getContext("2d", {willReadFrequently: true});
+  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = "high";
+  const xs = [], ys = [];
+  for (let x = rx0; x < Math.max(rx1 - OVERLAP / sc, rx0 + 1); x += srcStep) xs.push(x);
+  for (let y = ry0; y < Math.max(ry1 - OVERLAP / sc, ry0 + 1); y += srcStep) ys.push(y);
+  const total = xs.length * ys.length; let done = 0;
+  const input = new Float32Array(3 * S * S), dets = [];
+  for (const y of ys) for (const x of xs) {
+    const sw = Math.min(srcTile, rx1 - x), sh = Math.min(srcTile, ry1 - y);
+    const dw = Math.round(sw * sc), dh = Math.round(sh * sc);
+    ctx.fillStyle = "rgb(114,114,114)"; ctx.fillRect(0, 0, S, S);
+    ctx.drawImage(bitmap, x, y, sw, sh, 0, 0, dw, dh);
+    const img = ctx.getImageData(0, 0, S, S), d = img.data;
+    if (sharpIn.checked) sharpenTile(d, S, S);
+    for (let i = 0, n = S * S; i < n; i++) { input[i] = d[4*i] / 255; input[n + i] = d[4*i+1] / 255; input[2*n + i] = d[4*i+2] / 255; }
+    const out = (await session.run({images: new ort.Tensor("float32", input, [1, 3, S, S])})).output0;
+    const N = out.dims[2], o = out.data, base = (4 + m.car) * N;
+    for (let i = 0; i < N; i++) {
+      const s = o[base + i]; if (s <= conf) continue;
+      const cx = o[i], cy = o[N + i]; if (cx >= dw || cy >= dh) continue;
+      const len = Math.max(o[2*N + i], o[3*N + i]);
+      const X = x + cx / sc, Y = y + cy / sc;
+      if (X < rx0 || Y < ry0 || X >= rx1 || Y >= ry1) continue;
+      dets.push([X, Y, s, len / sc]);
+    }
+    done++; onProgress(done / total);
+    await new Promise(r => setTimeout(r, 0));
+  }
+  // merge duplicates: keep the most confident detection within 1.5 m
+  const R = 1.5 / gsd, cell = R, grid = new Map(), keep = [];
+  dets.sort((a, b) => b[2] - a[2]);
+  for (const p of dets) {
+    const gx = Math.floor(p[0] / cell), gy = Math.floor(p[1] / cell); let clash = false;
+    for (let i = -1; i <= 1 && !clash; i++) for (let j = -1; j <= 1 && !clash; j++) {
+      for (const q of grid.get((gx+i) + "," + (gy+j)) || []) if (Math.hypot(p[0]-q[0], p[1]-q[1]) <= R) { clash = true; break; }
+    }
+    if (!clash) { keep.push(p); const k = gx + "," + gy; if (!grid.has(k)) grid.set(k, []); grid.get(k).push(p); }
+  }
+  return keep;
+}
+
+// ---------- photo slots ----------
+class Slot {
+  constructor(el) {
+    this.el = el; this.name = el.dataset.slot; this.bitmap = null; this.zones = []; this.dets = null; this.sample = null;
+    el.innerHTML = `<h3>Photo ${this.name}</h3>
+      <div class="row"><select class="sample"><option value="">Choose a sample…</option>${Object.entries(SAMPLES).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join("")}</select>
+      <span class="legend">or</span></div>
+      <div class="drop">Drop an aerial photo here, or click to choose a file<input type="file" accept="image/*" hidden></div>
+      <div class="row"><label class="legend">Metres per pixel <input type="number" class="gsd" step="0.005" min="0.02" max="2"></label>
+        <button class="auchan" disabled>Auchan car parks</button><button class="clearzone" disabled>Whole photo</button>
+        <button class="fullsize" disabled>Full size</button><button class="primary go" disabled>Count</button></div>
+      <div class="prog"><div></div></div><div class="msg"></div>
+      <div class="view"><canvas></canvas></div>
+      <div class="stat"></div>`;
+    this.canvas = $("canvas", el); this.ctx = this.canvas.getContext("2d");
+    const drop = $(".drop", el), file = $("input[type=file]", el);
+    drop.onclick = () => file.click();
+    file.onchange = () => file.files[0] && this.loadFile(file.files[0]);
+    drop.ondragover = e => { e.preventDefault(); drop.classList.add("over"); };
+    drop.ondragleave = () => drop.classList.remove("over");
+    drop.ondrop = e => { e.preventDefault(); drop.classList.remove("over"); e.dataTransfer.files[0] && this.loadFile(e.dataTransfer.files[0]); };
+    $(".sample", el).onchange = e => e.target.value && this.loadSample(e.target.value);
+    $(".go", el).onclick = () => this.count();
+    $(".auchan", el).onclick = () => { const W = this.bitmap.width, H = this.bitmap.height; this.zones = AUCHAN_ZONES.map(([a,b,c,d]) => [a*W, b*H, c*W, d*H]); this.clearResult(); };
+    $(".clearzone", el).onclick = () => { this.zones = []; this.clearResult(); };
+    $(".fullsize", el).onclick = () => $(".view", el).classList.toggle("full");
+    $(".gsd", el).onchange = () => this.clearResult();
+    this.drag(); this.draw();
+  }
+  async loadFile(f) { this.sample = null; $(".sample", this.el).value = ""; await this.setBitmap(await createImageBitmap(f), null); this.msg("Loaded " + f.name + ". Set metres per pixel, then Count."); }
+  async loadSample(k) {
+    const s = SAMPLES[k]; this.sample = k; $(".sample", this.el).value = k; this.msg("Loading sample…");
+    const b = await createImageBitmap(await (await fetch(s.file)).blob());
+    await this.setBitmap(b, s.gsd); this.msg(s.label + ". Ground size filled in.");
+  }
+  async setBitmap(b, gsd) {
+    this.bitmap = b; this.zones = []; this.dets = null;
+    if (gsd) $(".gsd", this.el).value = gsd.toFixed(4);
+    const maxSide = 3000, f = Math.min(1, maxSide / Math.max(b.width, b.height));
+    this.f = f; this.canvas.width = Math.round(b.width * f); this.canvas.height = Math.round(b.height * f);
+    ["go","clearzone","fullsize"].forEach(c => $("."+c, this.el).disabled = false);
+    $(".auchan", this.el).disabled = !this.sample;
+    this.clearResult();
+  }
+  clearResult() { this.dets = null; $(".stat", this.el).innerHTML = ""; this.draw(); updateCompare(); }
+  msg(t, warn) { const m = $(".msg", this.el); m.textContent = t; m.classList.toggle("warn", !!warn); }
+  draw() {
+    const c = this.ctx, f = this.f || 1;
+    if (!this.bitmap) { this.canvas.width = 600; this.canvas.height = 340; c.fillStyle = "#8884"; c.fillRect(0,0,600,340); c.fillStyle = "#888"; c.font = "16px system-ui"; c.fillText("No photo yet", 245, 175); return; }
+    c.drawImage(this.bitmap, 0, 0, this.canvas.width, this.canvas.height);
+    c.lineWidth = Math.max(3, 4 * f); c.strokeStyle = "#eb6834";
+    for (const [x0,y0,x1,y1] of this.zones) c.strokeRect(x0*f, y0*f, (x1-x0)*f, (y1-y0)*f);
+    if (this.dets) {
+      const gsd = +$(".gsd", this.el).value, r = Math.max(4, 1.6 / gsd * f);
+      c.lineWidth = Math.max(1.5, r / 4); c.strokeStyle = "#00a2ff";
+      for (const [x, y] of this.dets) { c.beginPath(); c.arc(x*f, y*f, r, 0, 7); c.stroke(); }
+    }
+    if (this.dragBox) { const [x0,y0,x1,y1] = this.dragBox; c.setLineDash([8,6]); c.strokeStyle = "#eb6834"; c.strokeRect(x0*f,y0*f,(x1-x0)*f,(y1-y0)*f); c.setLineDash([]); }
+  }
+  drag() {
+    const toImg = e => { const r = this.canvas.getBoundingClientRect(); return [(e.clientX - r.left) / r.width * this.canvas.width / this.f, (e.clientY - r.top) / r.height * this.canvas.height / this.f]; };
+    let start = null;
+    this.canvas.onpointerdown = e => { if (!this.bitmap) return; start = toImg(e); this.canvas.setPointerCapture(e.pointerId); };
+    this.canvas.onpointermove = e => { if (!start) return; const p = toImg(e); this.dragBox = [Math.min(start[0],p[0]), Math.min(start[1],p[1]), Math.max(start[0],p[0]), Math.max(start[1],p[1])]; this.draw(); };
+    this.canvas.onpointerup = () => {
+      if (start && this.dragBox && (this.dragBox[2]-this.dragBox[0]) * (this.dragBox[3]-this.dragBox[1]) > 400) { this.zones = [this.dragBox.map(v => Math.max(0, v))]; this.dets = null; $(".stat", this.el).innerHTML = ""; updateCompare(); }
+      start = null; this.dragBox = null; this.draw();
+    };
+  }
+  async count() {
+    const gsd = +$(".gsd", this.el).value;
+    if (!this.bitmap) return;
+    if (!(gsd > 0.02 && gsd < 2)) { this.msg("Set metres per pixel first (e.g. 0.27 for the IGN samples).", true); return; }
+    const go = $(".go", this.el); go.disabled = true;
+    const prog = $(".prog", this.el), bar = $(".prog div", this.el); prog.style.display = "block";
+    const t0 = performance.now();
+    try {
+      this.msg("Loading the AI model (first time only)…");
+      await getSession(modelSel.value);
+      const regions = this.zones.length ? this.zones : [[0, 0, this.bitmap.width, this.bitmap.height]];
+      let all = [];
+      for (let k = 0; k < regions.length; k++) {
+        this.msg(`Looking for cars${regions.length > 1 ? ` (zone ${k+1} of ${regions.length})` : ""}…`);
+        all = all.concat(await detect(this.bitmap, gsd, regions[k], p => bar.style.width = ((k + p) / regions.length * 100).toFixed(1) + "%"));
+      }
+      this.dets = all; this.draw();
+      const lens = all.map(d => d[3] * gsd).sort((a, b) => a - b), med = lens.length ? lens[Math.floor(lens.length / 2)] : 0;
+      const areaHa = regions.reduce((s, [a,b,c,d]) => s + (c-a)*(d-b), 0) * gsd * gsd / 1e4;
+      const [lo, hi, typ] = MODELS[modelSel.value].box, ok = med >= lo && med <= hi;
+      $(".stat", this.el).innerHTML = `<div><div class="n">${all.length.toLocaleString("en")}</div><div class="l">cars counted ${this.zones.length ? "in the zone" : "in the photo"}</div></div>
+        <div><div class="n">${areaHa.toFixed(1)} ha</div><div class="l">area searched</div></div>
+        <div><div class="n" style="color:${ok ? "inherit" : "var(--red)"}">${med ? med.toFixed(1) + " m" : "–"}</div><div class="l">median detection size (about ${typ} m expected for this model)</div></div>`;
+      const secs = ((performance.now() - t0) / 1000).toFixed(0);
+      if (all.length > 5 && !ok) {
+        const fix = gsd * typ / med;
+        this.msg(`Detections are ${med.toFixed(1)} m across instead of about ${typ} m, so the metres per pixel may be wrong. Try ${fix.toFixed(3)}.`, true);
+        const b = document.createElement("button"); b.textContent = `Use ${fix.toFixed(3)} and count again`; b.onclick = () => { $(".gsd", this.el).value = fix.toFixed(4); this.count(); };
+        $(".msg", this.el).appendChild(document.createTextNode(" ")); $(".msg", this.el).appendChild(b);
+      } else this.msg(`Done in ${secs} s with ${MODELS[modelSel.value].label} model.`);
+    } catch (e) { console.error(e); this.msg("Something went wrong: " + e.message, true); }
+    go.disabled = false; prog.style.display = "none"; bar.style.width = "0"; updateCompare();
+  }
+}
+const slots = [...document.querySelectorAll(".slot")].map(el => new Slot(el));
+function updateCompare() {
+  const [a, b] = slots, el = $("#compare");
+  if (!a || !b) return;
+  if (!(a.dets && b.dets)) { el.innerHTML = "Count two photos of the same car park to see the change, the number Orbital Insight sold."; return; }
+  const na = a.dets.length, nb = b.dets.length, ch = na ? (nb - na) / na * 100 : 0;
+  const same = (a.zones.length > 0) === (b.zones.length > 0);
+  el.innerHTML = `<b>Photo A: ${na.toLocaleString("en")} cars · Photo B: ${nb.toLocaleString("en")} cars · change ${ch >= 0 ? "+" : ""}${ch.toFixed(0)}%.</b>
+    This is the kind of number Orbital Insight sold: fuller or emptier car parks than before, ahead of the retailer's results.
+    ${same ? "" : "<br><span class='warn'>One photo is counted in a zone and the other in full: draw the same zone on both before comparing.</span>"}
+    <br>Before trusting it, ask: were both photos taken at a similar hour and day of the week? Free IGN photos come every ~3 years on unknown days, so a change like this can just reflect a Sunday or a holiday. That is why Orbital Insight paid for near-daily images.`;
+}
+document.getElementById("countBoth").onclick = async () => { for (const s of slots) if (s.bitmap) await s.count(); };
+// preload the two most recent samples so the tool works with one click
+slots[0].loadSample("2021").then(() => slots[1].loadSample("2025"));
+</script>
+</body>
+</html>
