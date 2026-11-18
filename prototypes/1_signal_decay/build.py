@@ -5,7 +5,7 @@ md = lambda s: C.append(nbf.v4.new_markdown_cell(s))
 code = lambda s: C.append(nbf.v4.new_code_cell(s))
 
 md("""# How a data signal loses value as more funds buy it
-**Group [N], Session 8 vibe-coding part.** A toy market: one vendor (think Orbital Insight) sells the same parking-lot signal to *k* hedge funds.
+**Group 7, Session 8 vibe-coding part.** A toy market: one vendor (think Orbital Insight) sells the same parking-lot signal to *k* hedge funds.
 
 **Question:** how many clients should the vendor sell to, what price does that imply, and can this market ever support a company that raised ~$130M?
 

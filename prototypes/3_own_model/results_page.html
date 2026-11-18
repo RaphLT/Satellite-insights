@@ -14,7 +14,7 @@ figcaption{font-size:13px;color:var(--ink2);margin-top:8px} .two{display:grid;gr
 .note{font-size:13.5px;color:var(--ink2)} a{color:var(--blue)} footer{margin-top:40px;font-size:12.5px;color:var(--muted)}
 </style></head><body><main>
 <h1>Can we train our own car counter from scratch?</h1>
-<p class="sub">Group [N] · AI for Business &amp; Society, SKEMA Lille · Prototype 3. Case: Orbital Insight. In Prototype 2 we reused a ready-made model; here we train one ourselves.</p>
+<p class="sub">Group 7 · AI for Business &amp; Society, SKEMA Lille · Prototype 3. Case: Orbital Insight. In Prototype 2 we reused a ready-made model; here we train one ourselves.</p>
 <div class="verdict"><b>Yes, but it is clearly worse, and the reason is the labels.</b> We trained a small model on <b>515 cars</b> marked by hand in four COWC tiles, in about an hour on a laptop-class CPU. On a tile it never saw, it found <b>65%</b> of the cars and <b>66%</b> of its detections were real cars. The ready-made model, trained on the DOTA dataset of <b>188,282</b> labelled objects, scored <b>81%</b> and <b>94%</b>. The algorithm is free and the same; the difference is how much labelled data each one learned from.</div>
 
 <h2>1. What we did</h2>

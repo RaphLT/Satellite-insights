@@ -1,4 +1,4 @@
-# Satellite Insight: Group [N]
+# Satellite Insight: Group 7
 
 Was selling AI-processed satellite data to investors a viable business for a startup like Orbital Insight?
 Four vibe-coded prototypes test the question with real data and free tools. Start with `CLAUDE.md`.

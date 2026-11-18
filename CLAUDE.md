@@ -1,4 +1,4 @@
-# Satellite Insight: Group [N] project, SKEMA Lille
+# Satellite Insight: Group 7 project, SKEMA Lille
 
 ## What this project is
 A student project for the course *AI for Business & Society* (SKEMA Business School, Lille).
