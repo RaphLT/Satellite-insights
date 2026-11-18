@@ -6,7 +6,7 @@
 </head><body>
 <header class="site"><div class="in">
   <a class="brand" href="index.html">Satellite Insight</a>
-  <nav><a class="on" href="index.html">Home</a><a href="signal-decay.html">1. Signal decay</a><a href="car-counter.html">2. Ready-made counter</a><a href="own-model.html">3. Our own model</a><a href="englos.html">4. Englos over time</a><a href="conclusion.html">Conclusion</a><a href="appendix.html">Appendix</a></nav>
+  <nav><a class="on" href="index.html">Home</a><a href="tool/index.html">The tool</a><a href="signal-decay.html">1. Signal decay</a><a href="car-counter.html">2. Ready-made counter</a><a href="own-model.html">3. Our own model</a><a href="englos.html">4. Englos over time</a><a href="conclusion.html">Conclusion</a><a href="appendix.html">Appendix</a></nav>
 </div></header>
 <main>
 <p class="kicker">Group 7 · AI for Business &amp; Society · SKEMA Business School, Lille</p>
@@ -16,19 +16,25 @@
 
 <div class="verdict"><b>Our answer in two sentences.</b> The car-count signal was worth most while few funds had it, and it lost value as it spread, so a business built on selling exclusive data could not carry the ~$130M of venture capital Orbital Insight raised (its expected 2023 revenue was ~$9.5M). A new entrant needs customers who do not need exclusivity, because the AI itself is now close to free.</div>
 
-<h2>Four prototypes, one story</h2>
-<p>Each prototype tests one step of the argument with real data from our case. They were built by "vibe-coding": an AI assistant wrote the code, we directed it and checked the results. Every prompt is in the <a href="appendix.html">appendix</a>.</p>
+<h2>Our prototype: Car Counter from Above</h2>
+<a class="card feature" href="tool/index.html"><div class="num">Main prototype · the professor's question A</div><h3>Count the cars in a car park, in your browser →</h3>
+  <p>Load a free IGN aerial photo of the Auchan Englos retail park near Lille (2018, 2021 or 2025), or your own photo. The AI counts the cars inside your browser, nothing is uploaded, and it compares two photos as a percentage change: the kind of number Orbital Insight sold to hedge funds.</p>
+  <div class="res">Our own model, trained on 515 hand-marked cars, got <b>108 of 113</b> cars right on a test photo it had never seen (16 false alarms). Comparing 2021 and 2025 in Auchan's car parks gives <b>+427%</b>, most likely because of the day each photo was taken rather than Auchan's business. That gap is our argument in one number.</div></a>
+<p class="note">The tool needs a recent browser and downloads about 22 MB of AI model the first time you count. Counting a whole photo takes from a few seconds to a few minutes, depending on your computer.</p>
+
+<h2>Supporting work: four steps of the argument</h2>
+<p>Each step tests one part of Orbital Insight's business with real data from our case. Everything was built by "vibe-coding": an AI assistant wrote the code, and we directed it and checked the results. Every prompt is in the <a href="appendix.html">appendix</a>.</p>
 
 <div class="cards">
   <a class="card" href="signal-decay.html"><div class="num">1 · The business</div><h3>How a data signal loses value</h3>
     <p>An interactive toy market: one vendor sells the same signal to more and more funds. How many clients, at what price?</p>
     <div class="res">At a price in the range the article reports, three of four curves imply <b>7–13 clients</b> and <b>$2–6M</b> of yearly revenue, far below what $130M of funding needs.</div></a>
   <a class="card" href="car-counter.html"><div class="num">2 · The technology</div><h3>Can a student rebuild the car counter?</h3>
-    <p>A free, ready-made detector, tested on cars marked by hand and on a free photo of the Auchan Englos retail park near Lille.</p>
-    <div class="res">It found <b>81%</b> of hand-marked cars, and <b>94%</b> of what it counted were real cars. <b>2,217</b> cars counted at Englos.</div></a>
+    <p>A free, ready-made detector, tested on cars marked by hand and on a free photo of Auchan Englos.</p>
+    <div class="res">It found <b>94%</b> of hand-marked cars, and <b>91%</b> of what it counted were real cars. <b>2,335</b> cars counted at Englos.</div></a>
   <a class="card" href="own-model.html"><div class="num">3 · The data behind the AI</div><h3>Training our own model</h3>
     <p>We trained a small detector ourselves on 515 hand-marked cars, in about an hour on a laptop processor.</p>
-    <div class="res">It found <b>65%</b> of cars (ready-made: 81%). The algorithm is free; the labelled examples make the difference.</div></a>
+    <div class="res">It found <b>90%</b> of cars with <b>96%</b> right, matching the ready-made model on similar photos. But it had to be re-tuned for French photos.</div></a>
   <a class="card" href="englos.html"><div class="num">4 · The images</div><h3>Englos over time <span class="tag todo">UNFINISHED</span></h3>
     <p>Free French aerial photos of the same car park from 2004 to 2025: what could an investor learn from them?</p>
     <div class="res">One photo every ~3 years, on days nobody publishes, cannot tell an investor how Auchan's quarter went.</div></a>
@@ -39,9 +45,10 @@
 <h2>How to read this site</h2>
 <ul>
   <li>Inputs are tagged <span class="tag real">REAL</span> (from the article, a public source or our own test runs) or <span class="tag assum">ASSUMPTION</span> (our choice, which you can question).</li>
-  <li>Prototype 1 is a toy model, not a forecast. Prototypes 2 and 3 were tested on one hand-labelled tile and one area checked by eye. Each page ends with its limits.</li>
-  <li>Who did what in the team, the full prompt log and all sources are in the <a href="appendix.html">appendix</a>.</li>
+  <li>Prototype 1 is a toy model, not a forecast. The car counters were tested on one hand-labelled photo (113 cars) and one area checked by eye (~100 cars). Each page ends with its limits.</li>
+  <li><b>Correction (18 Nov):</b> earlier versions of pages 2 and 3 reported lower scores because of a bug in our test code (image colours passed in the wrong order). All numbers on this site have been re-run with the bug fixed.</li>
+  <li>The full prompt log, the team and all sources are in the <a href="appendix.html">appendix</a>.</li>
 </ul>
 
-<div class="pager"><span></span><a href="signal-decay.html">Start: 1. How a data signal loses value →</a></div>
+<div class="pager"><span></span><a href="tool/index.html">Start: try the car counter →</a></div>
 </main></body></html>

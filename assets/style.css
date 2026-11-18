@@ -102,3 +102,5 @@ button.reset{font:inherit;font-size:13px;border:1px solid var(--line);background
 .log td:nth-child(1){white-space:nowrap}
 .log td:nth-child(2){white-space:nowrap;font-size:13px}
 .log td{font-size:13.5px}
+.card.feature{border:2px solid var(--accent);padding:22px}
+.card.feature h3{font-size:20px}
