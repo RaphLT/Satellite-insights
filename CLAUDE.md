@@ -16,8 +16,8 @@ It must meet the professor's vibe-coding rules:
 1. **It runs**: a public link that opens in a browser without a login. GitHub Pages, Netlify or Vercel are fine; a static site is enough.
 2. **It uses our case**: Orbital Insight, the article, Auchan Englos. No demo data.
 3. **Prompt log in an appendix**: every prompt, in order, with tool and date. See `docs/APPENDIX_prompt_log_and_limits.md`. **Keep adding prompts from Claude Code to that log.**
-4. **Honest about limits**: say what works, what doesn't, what data each part was tested on, and who in the team did what (names still `[Name 1..4]`).
-5. It appears in the three-page note and on slide 9. The details of that rule were never shared; ask the user.
+4. **Honest about limits**: say what works, what doesn't, what data each part was tested on, and who in the team did what (team: Raphael Le Theo, Dinis Ramalhao, Dorian Barrier and Gabin Routier; who did what still to fill in).
+5. It appears in the three-page note and on slide 9. The user handles this rule themselves.
 
 Suggested site structure (confirm with the user):
 - Home: the question, the thesis in two sentences, and a four-card path through the prototypes.
