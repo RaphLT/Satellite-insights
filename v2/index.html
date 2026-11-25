@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wazemmes Parking from Above</title>
+<script src="ort.wasm.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: a city transport authority's survey report — the finding first, plain numbers, honest caveats.
+   IDEA: a parking survey map of one Lille district, re-surveyed on three dates.
+   PICTURE: the aerial photo with every street painted by how full it is; switch the date, the paint changes.
+   COLOUR and TYPE: deep green authority ground, lime-white, coral for full; Inter Tight + Inter.
+   LAYOUT: finding and key figures across the top, map wide, evidence tables, then the business case. */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#0f1513);--ink:light-dark(#10201c,#e9f1ec);--ink2:light-dark(#4b5a55,#a9b8b1);--line:light-dark(#dfe5e2,#2a3632);--card:light-dark(#f5f8f6,#16201d);--green:#00463c;--lime:#e6f5c8;--coral:#ff6f59;--deep:#b8321f}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:"Inter Tight",Inter,sans-serif;line-height:1.08;text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,4.4vw,50px)}h2{font-size:clamp(24px,3vw,34px);margin-bottom:10px}h3{font-size:19px;margin-bottom:6px}
+.band{padding:clamp(28px,4vw,60px) max(5vw,16px)}.wrap{max-width:1240px;margin:0 auto}
+.top{background:var(--green);color:#fff}.top p{color:var(--lime);max-width:760px;margin:12px 0 0;font-size:17px}
+.kicker{font-size:14px;color:var(--lime);opacity:.85;margin-bottom:10px}
+.figs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:26px;border-top:1px solid #ffffff40}
+.figs div{padding:14px 16px 0 0}.figs b{display:block;font:700 clamp(28px,3.6vw,42px)/1 "Inter Tight",sans-serif;color:#fff;font-variant-numeric:tabular-nums}.figs span{font-size:14px;color:var(--lime)}
+@media(max-width:700px){.figs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.mapband{background:var(--green);padding-top:0}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.tabs button{font:600 15px Inter,sans-serif;min-height:44px;padding:0 16px;border-radius:22px;border:1px solid #ffffff55;background:transparent;color:#fff;cursor:pointer}
+.tabs button[aria-pressed=true]{background:var(--lime);color:var(--green);border-color:var(--lime)}
+.tabs button:focus-visible,button:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.mapgrid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:22px;align-items:start}
+@media(max-width:900px){.mapgrid{grid-template-columns:1fr}}
+.map{position:relative;aspect-ratio:1/1;border-radius:10px;overflow:hidden;background:#000}
+.map img,.map svg{position:absolute;inset:0;width:100%;height:100%}
+.map img{filter:saturate(.55) brightness(.8)}
+.map polyline,.map polygon{cursor:pointer}
+.tip{position:absolute;pointer-events:none;background:#0b1512ee;color:#fff;font-size:14px;padding:8px 10px;border-radius:6px;max-width:240px;display:none;z-index:2}
+.side{background:#ffffff10;border:1px solid #ffffff30;border-radius:10px;padding:18px;color:#fff}
+.side .big{font:700 clamp(40px,6vw,64px)/1 "Inter Tight",sans-serif}
+.side p{color:var(--lime);margin:8px 0;font-size:15px}
+.ramp{height:12px;border-radius:6px;background:linear-gradient(90deg,#fff3c4,#ffb35c,#ff6f59,#b8321f);margin:6px 0 2px}
+.rampl{display:flex;justify-content:space-between;font-size:13px;color:var(--lime)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#6fd3ff;vertical-align:0}
+.src{font-size:13px;color:var(--ink2);margin-top:10px}.top .src,.mapband .src{color:#cfe3d9}
+table{border-collapse:collapse;width:100%;font-size:15px;margin-top:10px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:13.5px;color:var(--ink2);font-weight:600}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.win td{background:light-dark(#e6f5c8,#1d3a2b);font-weight:600}
+.scroll{overflow-x:auto}
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:18px}
+@media(max-width:900px){.cols{grid-template-columns:1fr}}
+.cols>div{border-top:3px solid var(--green);padding-top:12px}
+:root[data-theme=dark] .cols>div{border-top-color:var(--lime)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .cols>div{border-top-color:var(--lime)}}
+.cols p{margin:6px 0;color:var(--ink2)}
+.bars .r{display:grid;grid-template-columns:9em minmax(0,1fr) 4.5em;gap:10px;align-items:center;margin:8px 0;font-size:15px}
+.bars .t{height:16px;background:var(--card);border-radius:4px;overflow:hidden}.bars .t i{display:block;height:100%;background:var(--coral)}
+.bars .r span:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:16px 0}
+@media(max-width:600px){.pair{grid-template-columns:1fr}}
+.pair figure{margin:0}.pair img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:8px;display:block}
+.pair figcaption{font-size:14px;color:var(--ink2);margin-top:6px}
+.tool{background:var(--card);border-radius:12px;padding:16px;margin-top:14px}
+.tbar{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-bottom:10px;font-size:15px}
+.tbar label{display:flex;gap:8px;align-items:center;color:var(--ink2)}.tbar .lbl{color:var(--ink2)}
+.tbar input[type=number]{width:84px}.tbar input,.tbar select{font:inherit;font-size:16px;min-height:44px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.tbar input[type=file]{min-height:auto;padding:8px;max-width:230px}
+.tool button{font:600 15px Inter,sans-serif;min-height:44px;padding:0 14px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.tool button[aria-pressed=true]{background:var(--green);color:#fff;border-color:var(--green)}
+.tool button.go{background:var(--coral);border-color:var(--coral);color:#1b0b07}
+.tool button:disabled{opacity:.5;cursor:default}
+.tmsg{font-size:14.5px;color:var(--ink2);min-height:1.4em}.tmsg.warn{color:var(--deep)}
+.prog{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin:6px 0;display:none}.prog div{height:100%;width:0;background:var(--coral)}
+.tgrid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:18px;align-items:start}
+@media(max-width:900px){.tgrid{grid-template-columns:1fr}}
+.tview{border-radius:8px;overflow:hidden;background:#0003;border:2px dashed transparent}.tview.over{border-color:var(--coral)}
+.tview canvas{display:block;width:100%;height:auto;cursor:crosshair;touch-action:none}
+.tout .big{font:700 clamp(38px,5vw,56px)/1 "Inter Tight",sans-serif}
+.tout table{font-size:14px}
+.how li{max-width:820px}
+.steps{counter-reset:s;list-style:none;padding:0;margin:14px 0 0}
+.steps li{position:relative;padding:0 0 14px 44px}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;font:700 15px/30px "Inter Tight";text-align:center}
+.cost{background:var(--card);border-radius:10px;padding:18px;margin-top:16px}
+.cost b.k{font:700 32px/1 "Inter Tight",sans-serif;display:block}
+footer{border-top:1px solid var(--line);font-size:13.5px;color:var(--ink2)}
+footer li{margin:4px 0}
+a{color:inherit}
+@media(max-width:600px){table{font-size:13.5px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:8em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:7.5em;margin-inline-start:-8em;white-space:normal;color:var(--ink2)}.stack td:empty{display:none}}
+</style>
+<script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
+</head>
+<body>
+<section class="band top"><div class="wrap">
+  <div class="kicker">Group 8 · AI for Business &amp; Society · SKEMA Business School, Lille · Prototype v2</div>
+  <h1>Free aerial photos and an open AI model can measure how full a Lille district's public parking is, and the answer changes a lot from one date to the next</h1>
+  <p>We counted the cars parked on the streets and public car parks of Wazemmes (about 1 km²) on three IGN photos, turned the count into an occupancy rate using the parking spaces mapped in OpenStreetMap, and corrected it for the model's measured errors and for cars hidden under trees.</p>
+  <div class="figs">
+    <div><b>33%</b><span>street parking full, latest photo</span></div>
+    <div><b>16%</b><span>same streets, 2018 photo</span></div>
+    <div><b>90%</b><span>of the model's marks are real cars</span></div>
+    <div><b>82%</b><span>of parked cars found by the model</span></div>
+  </div>
+  <div class="src">Accuracy: 432 hand-labelled cars in 6 Wazemmes squares, each scored by a model that never saw it (3-fold cross-validation, seed 0). Spaces: OpenStreetMap parking tags. Photos: IGN Géoplateforme.</div>
+</div></section>
+
+<section class="band mapband"><div class="wrap">
+  <div class="tabs" role="group" aria-label="Photo date" id="tabs"></div>
+  <div class="mapgrid">
+    <div class="map" id="map"><img id="photo" alt="IGN aerial photo of Wazemmes, Lille"><svg id="ov" viewBox="0 0 1600 1600" preserveAspectRatio="none"></svg><div class="tip" id="tip"></div></div>
+    <div class="side" id="side"></div>
+  </div>
+  <div class="src">Tap or hover a street or car park for its numbers. Streets are coloured by estimated occupancy; blue dots are the cars the model found on streets and car parks. Capacity counts every tagged kerb, driveways included, so occupancy is a lower bound.</div>
+</div></section>
+
+<section class="band" id="try"><div class="wrap">
+  <h2>Count the free spaces on your own photo</h2>
+  <p style="max-width:800px;color:var(--ink2)">Load an aerial photo, mark where people may park, and the AI counts the cars <b>in your browser</b> (nothing is uploaded anywhere). It then corrects the count for the errors we measured and tells you how many spaces are free. The Wazemmes samples come with their OpenStreetMap parking already drawn.</p>
+  <div class="tool">
+    <div class="tbar">
+      <label>Sample <select id="tSample"><option value="">Choose…</option></select></label>
+      <label class="file">or your photo <input type="file" id="tFile" accept="image/*"></label>
+      <label>Metres per pixel <input type="number" id="tGsd" step="0.01" min="0.05" max="1" value="0.20"></label>
+      <label>Trees over the parking <input type="number" id="tTree" min="0" max="80" step="5" value="0"> %</label>
+    </div>
+    <div class="tbar">
+      <span class="lbl">Mark parking:</span>
+      <button id="bRow">Row of parked cars</button>
+      <select id="tRowType" aria-label="Kind of row"><option value="5.5">parallel (5.5 m a car)</option><option value="3.0">angled (3.0 m)</option><option value="2.5">side by side (2.5 m)</option></select>
+      <button id="bArea">Car park outline</button>
+      <button id="bDone">Finish shape</button><button id="bUndo">Undo</button><button id="bClear">Clear marks</button>
+      <button class="go" id="bCount">Count free spaces</button>
+    </div>
+    <div class="tmsg" id="tMsg">Choose a sample or load a photo.</div>
+    <div class="prog" id="tProg"><div></div></div>
+    <div class="tgrid">
+      <div class="tview" id="tDrop"><canvas id="tCv" width="800" height="500"></canvas></div>
+      <div class="tout" id="tOut"><p class="src">Results appear here.</p></div>
+    </div>
+    <p class="src">Drawing: pick a tool, click along the parked cars (or around the car park), then press Finish or double-click. A row counts cars within 3 m of your line; Wazemmes street lines are centre lines and count 7 m each side. Metres per pixel: on geoportail.gouv.fr, measure a known distance with the ruler and divide by its length in pixels; the page warns you if the car sizes do not fit.</p>
+  </div>
+</div></section>
+
+<section class="band" style="background:var(--card)"><div class="wrap">
+  <h2>How it works, step by step</h2>
+  <ol class="steps how">
+    <li><b>Enlarge and cut the photo.</b> The photo is resized to 10 cm per pixel, the scale the model learned on, and cut into 64 m squares that overlap so no car is cut in half.</li>
+    <li><b>Find the cars.</b> An object-detection model (YOLO11n, trained by us on over 32,000 cars in the COWC aerial photo collection) gives every car-like shape a confidence score. We keep marks scoring 0.10 or more: that cut-off found the most cars for the fewest false marks when tested on squares the model had not seen. Two marks closer than 1.5 m become one.</li>
+    <li><b>Keep only cars where parking is allowed.</b> Marks outside the streets and car parks are thrown away. That removes most false marks, which sit on roofs.</li>
+    <li><b>Count the spaces.</b> Along a kerb: its length divided by 5.5 m for cars parked in a line, 3.0 m when angled, 2.5 m when side by side, minus room for crossings. A car park: its stated capacity, or one space per 25 m² including aisles. On Wazemmes these lines and outlines come from OpenStreetMap.</li>
+    <li><b>Correct the count.</b> The model misses more cars than it invents, so the count is multiplied by precision ÷ recall (0.895 ÷ 0.819 on the Wazemmes streets). Cars under trees cannot be seen, so the count is divided by the share of parking that is not under trees (from the infrared photo on Wazemmes, your estimate on your photo).</li>
+    <li><b>Free spaces = spaces − corrected cars</b>, with a range from the best and worst error rates we measured on three dates (correction factor from 1.06 to 1.22).</li>
+  </ol>
+  <p class="src">What it cannot do: tell a parked car from one waiting at a light, see cars in underground or multi-storey car parks, or know which spaces are reserved (deliveries, disabled drivers, residents). It counts what one photo shows at one moment.</p>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <h2>City streets are much harder than the retail car parks of our first prototype</h2>
+  <p style="max-width:780px;color:var(--ink2)">Our first prototype counted cars in the Auchan Englos car parks. The same model, with the same cut-off (0.25) and the same scoring rule, finds 91% of the cars there but only 64% on the Wazemmes streets. The two squares below show why: blue rings are cars found, red rings cars missed, orange rings false marks.</p>
+  <div class="pair">
+    <figure><img src="img/englos_ex.jpg" alt="Auchan Englos car park with the model's marks" loading="lazy"><figcaption><b>Retail car park, Englos 2025</b> (174 m square): 388 cars, 363 found (94%), 25 missed, 41 false marks.</figcaption></figure>
+    <figure><img src="img/waz_ex.jpg" alt="Wazemmes street square with the model's marks" loading="lazy"><figcaption><b>City streets, Wazemmes</b> (128 m square): 67 cars, 49 found (73%), 18 missed, 14 false marks.</figcaption></figure>
+  </div>
+  <div class="scroll"><table class="stack">
+    <thead><tr><th>Same model, cut-off 0.25, whole picture</th><th class="n">Cars hand-labelled</th><th class="n">Real-car share of marks</th><th class="n">Cars found</th></tr></thead>
+    <tbody><tr><td>Englos retail car parks (4 squares, 2018 and 2025)</td><td class="n">1,181</td><td class="n">81%</td><td class="n">91%</td></tr>
+    <tr><td>Wazemmes city streets (6 squares)</td><td class="n">432</td><td class="n">77%</td><td class="n">64%</td></tr></tbody></table></div>
+  <div class="cols">
+    <div><h3>Shadows and leaning buildings</h3><p>Four- and five-storey buildings throw their shadow across one side of the street, and in an aerial photo they lean over the kerb. Cars in that strip are dark on dark, or partly hidden: many of the red rings sit there.</p></div>
+    <div><h3>Cars nose to tail, under trees</h3><p>On a street, cars are parked bumper to bumper along the kerb with no painted bays between them, so neighbours merge. Street trees cover 11% of the district and up to 44% of some streets.</p></div>
+    <div><h3>Roofs full of car-sized things</h3><p>Skylights, chimneys, vents and small sheds are the size of a car from 20 cm per pixel. A car park is open asphalt; a city block is roofs, so false marks pile up there. Keeping only marks on mapped streets and car parks lifts the real-car share from 65% to 90% at the 0.10 cut-off we use.</p></div>
+  </div>
+  <p class="src">Why this matters: a count from a retail car park would overstate how well the method works in a city. That is why we measured the errors on the streets themselves and correct every estimate for them.</p>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <h2>We tried to make the model better by retraining it. The original model still wins</h2>
+  <p style="max-width:760px;color:var(--ink2)">The professor asked us to label the IGN photos and retrain. We did, four ways. Each Wazemmes square was scored by a version that had not seen it, and the confidence cut-off was chosen on the other squares only. The original model, trained on over 32,000 cars in the public COWC aerial dataset, beats every retrained version: about 300 local cars teach it less than they make it forget. What did help was choosing its cut-off properly (0.10 instead of 0.25): cars found rose from 64% to 82%.</p>
+  <div class="scroll"><table class="stack">
+    <thead><tr><th>Model (street and car-park cars, 6 squares)</th><th class="n">Found</th><th class="n">False marks</th><th class="n">Missed</th><th class="n">Real-car share</th><th class="n">Cars found</th></tr></thead>
+    <tbody id="cv"></tbody></table></div>
+  <div class="src">Confusion matrix per run: Found = true positives, False marks = false positives, Missed = false negatives (no true negatives exist when counting objects). Seed 0 for every run; folds {1,2}, {3,4}, {5,6}; a mark counts as right within 1.5 m of a labelled car.</div>
+</div></section>
+
+<section class="band" style="background:var(--card)"><div class="wrap">
+  <h2>Is it reliable enough to sell? Three tests it had never seen</h2>
+  <div class="cols">
+    <div><h3>Other dates, same streets</h3><p>We hand-corrected the same squares on the 2018 and 2021 photos. On a normal day it stays as accurate as on the photo we tuned it on.</p>
+      <div class="bars" id="dates"></div>
+      <p style="font-size:13.5px">2021 was a market day: 30 of its marks on the market square were stalls, not cars. Labels for these years started from the model's own marks, so "found" may be slightly flattering.</p></div>
+    <div><h3>Paid-satellite sharpness</h3><p>Paid satellites shoot at 30 cm per pixel, IGN at 20 cm. We blurred our labelled squares to 30 cm and 50 cm and counted again.</p>
+      <div class="bars" id="res"></div>
+      <p style="font-size:13.5px">At 30 cm it still finds 77% of cars with 90% of marks real: 30 cm satellites are viable, 50 cm ones are not.</p></div>
+    <div><h3>It follows real change</h3><p>On the street squares hand-counted on both photos, there were 76 cars in 2018 against 143 on the latest photo. The model's district total fell by about the same half (666 against 1,381 estimated cars).</p>
+      <p>And Place de la Nouvelle Aventure went from full of cars, to an empty square after a market (2018), to covered by market stalls (2021): a single photo tells you little; repeated photos tell you the pattern.</p></div>
+  </div>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <h2>From one free photo every few years to a weekly service for many towns</h2>
+  <p style="max-width:780px;color:var(--ink2)">IGN flies over Lille only every few years, so the free photos prove the method but cannot run a service. Paid 30 cm satellites can photograph the same streets every week. What a weekly service would take:</p>
+  <div class="mapgrid" style="grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)">
+    <ol class="steps">
+      <li><b>Buy a weekly 30 cm photo of each town.</b> Pléiades Neo and WorldView-3 sell new 30 cm images, with a minimum order of about 100 km² per area for new shots. Clouds over Lille will spoil some weeks; the service reports the latest clear week.</li>
+      <li><b>Map the spaces once per town.</b> OpenStreetMap already tags kerb parking in Wazemmes; where it doesn't, a city's own parking plan fills the gap. This is a one-off cost per town.</li>
+      <li><b>Train on many towns and dates, not one.</b> Our test shows 300 local cars are not enough. With the model pre-marking cars and a person only correcting, one of us checked about 250 cars in some 15 minutes, so a few thousand cars per town is a few hours of work, and each weekly photo adds new light, seasons and markets.</li>
+      <li><b>Score every week against a small hand-checked sample.</b> Each run states its precision, recall and seed, as we did here, so a city sees the error bar, not just a number.</li>
+      <li><b>Sell the pattern, not a live map.</b> Cities (the mayor sets parking rules) and parking-data firms buy weekly occupancy by street and its trend; drivers get it through them. A live "free space now" app would need cameras or sensors, not satellites.</li>
+    </ol>
+    <div>
+      <div class="cost"><span class="src" style="margin:0">Imagery cost of a weekly 100 km² town (new 30 cm Pléiades Neo shot at $42.50 per km²)</span><b class="k">≈ $4,250 / week</b><span>≈ $221,000 a year, before staff and computing</span></div>
+      <div class="cost"><span class="src" style="margin:0">Cheaper if archive photos are enough (30 cm Pléiades Neo archive at $22.50 per km², 25 km² minimum)</span><b class="k">≈ $2,250 / 100 km²</b><span>but no control over the date</span></div>
+      <div class="cost"><span class="src" style="margin:0">Computing: our model counted Wazemmes (1 km²) in 56 seconds on two ordinary processor cores</span><b class="k">≈ 100 km² in under 2 hours</b><span>per weekly photo, no graphics card needed</span></div>
+      <p class="src">Prices: Land Info satellite imagery price list (USD per km², 2026); UP42 Pléiades Neo page (minimum charge per 100 km²). Our own arithmetic for the totals.</p>
+    </div>
+  </div>
+  <p style="max-width:780px"><b>Why a newcomer could win:</b> sensor and app players such as Parkopedia know car parks with gates and sensors; nobody measures ordinary kerb parking across whole districts, where most spaces are. Satellite counting covers every street at once, with no hardware in the street. <b>What would stop it:</b> the cost of weekly imagery compared with what cities will pay, and clouds.</p>
+</div></section>
+
+<footer class="band"><div class="wrap">
+  <h3>Method, limits and sources</h3>
+  <ul>
+    <li>Model: YOLO11n (Ultralytics) trained by us on COWC aerial car images; photos resampled to 10 cm per pixel, cut-off 0.10, duplicates within 1.5 m merged.</li>
+    <li>Occupancy = cars on a street (within 7 m of its centre line) or inside a public car park, × precision ÷ recall (0.895 ÷ 0.819), ÷ (1 − share of the parking area under trees in that date's infrared photo). Spaces: 5.5 m per parallel space, 3.0 m diagonal, 2.5 m perpendicular, minus 10 m per street for crossings; car parks use their capacity tag or 25 m² per space.</li>
+    <li>Limits: the photos' exact days and hours are not published; capacity ignores driveways and loading bays; test labels were checked by one person; the 30 cm test blurs aerial photos, which only approximates a real satellite image.</li>
+    <li>Photos: IGN Géoplateforme WMS (ORTHOIMAGERY.ORTHOPHOTOS, ORTHOPHOTOS2018, ORTHOPHOTOS2021 and their infrared versions). Spaces: © OpenStreetMap contributors (ODbL).</li>
+    <li>Imagery prices: <a href="https://landinfo.com/satellite-imagery-pricing/">landinfo.com/satellite-imagery-pricing</a>; <a href="https://docs.up42.com/data/pleiades-neo">docs.up42.com/data/pleiades-neo</a>.</li>
+    <li>First prototype (car counter for retail car parks): <a href="https://claude.ai/artifact/SjKwRXc2egcFFpiD5uovLb">claude.ai/artifact/SjKwRXc2egcFFpiD5uovLb</a>.</li>
+  </ul>
+</div></footer>
+
+<script>
+{
+const DATES={current:{label:'Latest IGN photo',note:'Normal day. Place de la Nouvelle Aventure car park is full of cars.'},
+ '2021':{label:'2021 · market day',note:'Market stalls cover Place de la Nouvelle Aventure, so that car park is closed; its count is mostly stalls.'},
+ '2018':{label:'2018 · after a market',note:'The market square is empty and littered: the photo was taken just after a market.'}};
+const SUM={current:{s:[4154,1381,.332],c:.475},'2021':{s:[4154,1477,.355],c:null},'2018':{s:[4154,666,.16],c:.074}};
+const CV=[['Original model, cut-off chosen properly (0.10)',331,39,73,.895,.819,1],['Retrained: Englos + Wazemmes (Wazemmes ×3)',289,40,115,.878,.715],['Gentle retraining: Wazemmes ×3, 10 layers frozen',313,85,91,.786,.775],['Retrained: Wazemmes only',279,63,125,.816,.691],['Retrained: Englos only (our first try)',292,121,112,.707,.723],['Original model, old cut-off (0.25)',258,16,146,.942,.639]];
+const DT=[['Latest photo',.895,.819],['2018',.966,.792],['2021 market',.768,.725]];
+const RS=[['20 cm (IGN)',.895,.819],['30 cm',.896,.767],['50 cm',.798,.626]];
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pct=x=>Math.round(x*100)+'%';
+document.getElementById('cv').innerHTML=CV.map(r=>`<tr${r[6]?' class="win"':''}><td>${r[0]}</td><td class="n">${r[1]}</td><td class="n">${r[2]}</td><td class="n">${r[3]}</td><td class="n">${pct(r[4])}</td><td class="n">${pct(r[5])}</td></tr>`).join('');
+const bars=(rows)=>'<div class="r" style="font-size:13.5px;color:var(--ink2)"><span></span><span>bar: share of cars found</span><span></span></div>'+rows.map(r=>`<div class="r"><span>${r[0]}</span><div class="t" title="cars found"><i style="width:${r[2]*100}%"></i></div><span>${pct(r[2])}</span></div><div class="r" style="margin-top:-4px;font-size:13.5px;color:var(--ink2)"><span></span><span>real-car share of marks</span><span>${pct(r[1])}</span></div>`).join('');
+document.getElementById('dates').innerHTML=bars(DT);document.getElementById('res').innerHTML=bars(RS);
+const col=o=>{const s=[[0,'#fff3c4'],[.35,'#ffb35c'],[.7,'#ff6f59'],[1,'#b8321f']];o=Math.max(0,Math.min(1,o));for(let i=1;i<s.length;i++)if(o<=s[i][0]){const a=s[i-1],b=s[i],t=(o-a[0])/(b[0]-a[0]),h=x=>parseInt(x,16),c=k=>Math.round(h(a[1].substr(k,2))*(1-t)+h(b[1].substr(k,2))*t);return `rgb(${c(1)},${c(3)},${c(5)})`}return s[3][1]};
+let DATA=null,cur='current';
+const tabs=document.getElementById('tabs'),ov=document.getElementById('ov'),tip=document.getElementById('tip'),map=document.getElementById('map');
+tabs.innerHTML=['current','2021','2018'].map(k=>[k,DATES[k]]).map(([k,v])=>`<button data-k="${k}" aria-pressed="${k===cur}">${v.label}</button>`).join('');
+function side(k){const s=SUM[k];document.getElementById('side').innerHTML=`<div style="font-size:14px;color:var(--lime)">${esc(DATES[k].label)} · street parking</div><div class="big">${pct(s.s[2])}</div><p>about ${s.s[1].toLocaleString('en')} cars estimated on ${s.s[0].toLocaleString('en')} street spaces, so roughly ${(s.s[0]-s.s[1]).toLocaleString('en')} free</p><p>Public open-air car parks: ${s.c==null?'not counted (market)':pct(s.c)+' full'}</p><p>${esc(DATES[k].note)}</p><div class="ramp"></div><div class="rampl"><span>empty</span><span>half</span><span>full</span></div><p style="font-size:13.5px"><span class="dot"></span> car found by the model</p>`}
+function draw(k){
+  cur=k;document.getElementById('photo').src=`img/waz_${k}.jpg`;
+  for(const b of tabs.children)b.setAttribute('aria-pressed',b.dataset.k===k);
+  side(k);if(!DATA)return;const d=DATA[k];
+  const u=d.units.map((x,i)=>{const o=x.e/x.c,p=x.p.map(q=>q.join(',')).join(' ');return x.k==='street'?`<polyline data-i="${i}" points="${p}" fill="none" stroke="${col(o)}" stroke-width="9" stroke-linecap="round" opacity=".9"/>`:`<polygon data-i="${i}" points="${p}" fill="${col(o)}" fill-opacity=".45" stroke="${col(o)}" stroke-width="4"/>`}).join('');
+  const dots=d.dots.map(q=>`<circle cx="${q[0]}" cy="${q[1]}" r="3.2"/>`).join('');
+  ov.innerHTML=u+`<g fill="#6fd3ff" stroke="#0b1512" stroke-width="1" pointer-events="none">${dots}</g>`;
+}
+tabs.addEventListener('click',e=>{const b=e.target.closest('button');if(b)draw(b.dataset.k)});
+function show(e){const el=e.target.closest('[data-i]');if(!el||!DATA){tip.style.display='none';return}
+  const x=DATA[cur].units[+el.dataset.i],r=map.getBoundingClientRect(),pt=e.touches?e.touches[0]:e;
+  tip.innerHTML=`<b>${esc(x.n)}</b><br>${x.c} spaces · ${x.v} cars seen<br>≈${Math.round(x.e)} with corrections · <b>${pct(Math.min(x.e/x.c,1))}</b> full<br>${x.h>0.05?pct(x.h)+' under trees':'little tree cover'}`;
+  tip.style.display='block';let L=pt.clientX-r.left+12,T=pt.clientY-r.top+12;if(L>r.width-250)L=Math.max(4,L-264);if(T>r.height-110)T-=120;tip.style.left=L+'px';tip.style.top=T+'px'}
+ov.addEventListener('pointermove',show);ov.addEventListener('click',show);map.addEventListener('pointerleave',()=>tip.style.display='none');
+draw('current');
+fetch('data.json').then(r=>r.json()).then(j=>{DATA=j;draw(cur)}).catch(()=>{document.getElementById('side').insertAdjacentHTML('beforeend','<p>Street data could not load.</p>')});
+}
+</script>
+<script>
+{
+// ---------- settings measured in our tests (see the tables on this page) ----------
+const MODEL={file:'models/own-model.wasm',size:640,target:0.10,conf:0.10,box:[3.8,7.0,5.2]};
+const P0=0.895,R0=0.819,FLO=0.768/0.725,FHI=0.966/0.792,FMID=P0/R0;   // correction factors: low, central, high
+const OVERLAP=96;
+const $=s=>document.getElementById(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let sess=null;
+function getSess(){ if(!sess){ ort.env.wasm.wasmPaths=new URL('./',location.href).href; ort.env.wasm.numThreads=1;
+  sess=fetch(MODEL.file).then(r=>{if(!r.ok)throw new Error('model download failed ('+r.status+')');return r.arrayBuffer()}).then(b=>ort.InferenceSession.create(new Uint8Array(b),{executionProviders:['wasm']})).catch(e=>{sess=null;throw e}); } return sess; }
+async function detect(bmp,gsd,onp){
+  const S=MODEL.size,session=await getSess(),sc=gsd/MODEL.target,tile=S/sc,step=(S-OVERLAP)/sc;
+  const cv=new OffscreenCanvas(S,S),ctx=cv.getContext('2d',{willReadFrequently:true});ctx.imageSmoothingQuality='high';
+  const xs=[],ys=[];for(let x=0;x<Math.max(bmp.width-OVERLAP/sc,1);x+=step)xs.push(x);for(let y=0;y<Math.max(bmp.height-OVERLAP/sc,1);y+=step)ys.push(y);
+  const inp=new Float32Array(3*S*S),dets=[];let done=0;
+  for(const y of ys)for(const x of xs){
+    const sw=Math.min(tile,bmp.width-x),sh=Math.min(tile,bmp.height-y),dw=Math.round(sw*sc),dh=Math.round(sh*sc);
+    ctx.fillStyle='rgb(114,114,114)';ctx.fillRect(0,0,S,S);ctx.drawImage(bmp,x,y,sw,sh,0,0,dw,dh);
+    const d=ctx.getImageData(0,0,S,S).data,n=S*S;for(let i=0;i<n;i++){inp[i]=d[4*i]/255;inp[n+i]=d[4*i+1]/255;inp[2*n+i]=d[4*i+2]/255}
+    const out=(await session.run({images:new ort.Tensor('float32',inp,[1,3,S,S])})).output0,N=out.dims[2],o=out.data;
+    for(let i=0;i<N;i++){const s=o[4*N+i];if(s<=MODEL.conf)continue;const cx=o[i],cy=o[N+i];if(cx>=dw||cy>=dh)continue;dets.push([x+cx/sc,y+cy/sc,s,Math.max(o[2*N+i],o[3*N+i])/sc])}
+    onp(++done/(xs.length*ys.length));await new Promise(r=>setTimeout(r,0));
+  }
+  const R=1.5/gsd,keep=[];dets.sort((a,b)=>b[2]-a[2]);
+  for(const p of dets)if(!keep.some(q=>Math.hypot(p[0]-q[0],p[1]-q[1])<=R))keep.push(p);
+  return keep;
+}
+// ---------- geometry ----------
+const segDist=(p,a,b)=>{const dx=b[0]-a[0],dy=b[1]-a[1],L=dx*dx+dy*dy||1e-9,t=Math.max(0,Math.min(1,((p[0]-a[0])*dx+(p[1]-a[1])*dy)/L));return Math.hypot(p[0]-a[0]-t*dx,p[1]-a[1]-t*dy)};
+const lineDist=(p,P)=>{let m=1e9;for(let i=1;i<P.length;i++)m=Math.min(m,segDist(p,P[i-1],P[i]));return m};
+const lineLen=P=>{let s=0;for(let i=1;i<P.length;i++)s+=Math.hypot(P[i][0]-P[i-1][0],P[i][1]-P[i-1][1]);return s};
+const inPoly=(p,P)=>{let c=false;for(let i=0,j=P.length-1;i<P.length;j=i++){const a=P[i],b=P[j];if((a[1]>p[1])!==(b[1]>p[1])&&p[0]<(b[0]-a[0])*(p[1]-a[1])/(b[1]-a[1])+a[0])c=!c}return c};
+const polyArea=P=>{let s=0;for(let i=0,j=P.length-1;i<P.length;j=i++)s+=(P[j][0]+P[i][0])*(P[j][1]-P[i][1]);return Math.abs(s/2)};
+// ---------- state ----------
+let SQ=[],bmp=null,units=[],dets=null,mode=null,draft=[],f=1,truthN=null,nRow=0,nArea=0,res=null;
+const cv=$('tCv'),cx=cv.getContext('2d');
+const gsd=()=>+$('tGsd').value;
+function capOf(u){const g=gsd();if(u.t==='line'){const c=lineLen(u.p)*g*u.spm;return u.band===3?Math.floor(c):c}return u.cap!=null?u.cap:Math.max(1,Math.floor(polyArea(u.p)*g*g/25))}
+function msg(t,w){$('tMsg').textContent=t;$('tMsg').classList.toggle('warn',!!w)}
+function setMode(m){mode=m;draft=[];$('bRow').setAttribute('aria-pressed',m==='row');$('bArea').setAttribute('aria-pressed',m==='area');draw();
+  if(m)msg(m==='row'?'Click along a row of parked cars, then Finish (or double-click).':'Click around the car park, then Finish (or double-click).')}
+function occCol(o){return o<.5?'#ffd166':o<.85?'#ff6f59':'#b8321f'}
+function draw(){
+  if(!bmp){cv.width=800;cv.height=450;cx.fillStyle='#8883';cx.fillRect(0,0,800,450);cx.fillStyle='#888';cx.font='18px Inter,sans-serif';cx.fillText('Drop an aerial photo here',290,230);return}
+  cx.drawImage(bmp,0,0,cv.width,cv.height);const g=gsd(),lw=Math.max(2,3*f);
+  units.forEach((u,i)=>{const r=res&&res.units[i],c=r?occCol(r.occ):'#e6f5c8';cx.strokeStyle=c;cx.fillStyle=c+'55';cx.lineWidth=u.t==='line'?Math.max(lw,(u.band*2/g)*f*.45):lw;cx.lineCap='round';cx.globalAlpha=u.t==='line'?.55:1;
+    cx.beginPath();u.p.forEach((q,k)=>k?cx.lineTo(q[0]*f,q[1]*f):cx.moveTo(q[0]*f,q[1]*f));if(u.t==='area'){cx.closePath();cx.fill()}cx.stroke();cx.globalAlpha=1});
+  if(draft.length){cx.strokeStyle='#ff6f59';cx.setLineDash([8,6]);cx.lineWidth=lw;cx.beginPath();draft.forEach((q,k)=>k?cx.lineTo(q[0]*f,q[1]*f):cx.moveTo(q[0]*f,q[1]*f));cx.stroke();cx.setLineDash([]);
+    cx.fillStyle='#ff6f59';draft.forEach(q=>{cx.beginPath();cx.arc(q[0]*f,q[1]*f,4,0,7);cx.fill()})}
+  if(dets){const r=Math.max(4,1.6/g*f);cx.lineWidth=Math.max(1.5,r/4);for(const d of dets){cx.strokeStyle=d[4]>=0?'#6fd3ff':'#ffffff66';cx.beginPath();cx.arc(d[0]*f,d[1]*f,r,0,7);cx.stroke()}}
+}
+async function setBitmap(b,label){bmp=b;f=Math.min(1,1600/Math.max(b.width,b.height));cv.width=Math.round(b.width*f);cv.height=Math.round(b.height*f);dets=null;res=null;draft=[];$('tOut').innerHTML='<p class="src">Mark the parking (or use the drawn lines), then press Count free spaces.</p>';draw();msg(label)}
+async function loadSample(id){const s=SQ.find(x=>x.id===id);if(!s)return;msg('Loading sample…');
+  const b=await createImageBitmap(await (await fetch('sq/'+s.id+'.jpg')).blob());$('tGsd').value='0.20';
+  units=s.park.map(u=>({...u,p:u.p.map(q=>[...q])}));nRow=nArea=0;truthN=s.truth.length;
+  await setBitmap(b,s.label+': OpenStreetMap parking is drawn. OpenStreetMap misses some kerbs: add a row wherever you see parked cars outside the coloured bands, then Count.')}
+$('tSample').addEventListener('change',e=>e.target.value&&loadSample(e.target.value));
+async function loadFile(file){$('tSample').value='';units=[];truthN=null;nRow=nArea=0;await setBitmap(await createImageBitmap(file),'Loaded '+file.name+'. Set metres per pixel, mark the parking, then Count.')}
+$('tFile').addEventListener('change',e=>e.target.files[0]&&loadFile(e.target.files[0]));
+const drop=$('tDrop');drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over')});drop.addEventListener('dragleave',()=>drop.classList.remove('over'));
+drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('over');e.dataTransfer.files[0]&&loadFile(e.dataTransfer.files[0])});
+$('bRow').onclick=()=>setMode(mode==='row'?null:'row');$('bArea').onclick=()=>setMode(mode==='area'?null:'area');
+function finish(){if(mode==='row'&&draft.length>=2){units.push({t:'line',n:'Row '+(++nRow),p:draft,spm:1/+$('tRowType').value,band:3})}
+  else if(mode==='area'&&draft.length>=3){units.push({t:'area',n:'Car park '+(++nArea),p:draft,cap:null})}
+  else if(draft.length){msg('Add more points before finishing.',true);return}
+  draft=[];res=null;draw();if(dets)score()}
+$('bDone').onclick=finish;
+$('bUndo').onclick=()=>{if(draft.length)draft.pop();else units.pop();res=null;draw();if(dets)score()};
+$('bClear').onclick=()=>{units=[];draft=[];res=null;draw();if(dets)score()};
+const toImg=e=>{const r=cv.getBoundingClientRect();return[(e.clientX-r.left)/r.width*cv.width/f,(e.clientY-r.top)/r.height*cv.height/f]};
+cv.addEventListener('click',e=>{if(!bmp||!mode)return;draft.push(toImg(e));draw()});
+cv.addEventListener('dblclick',e=>{if(mode){e.preventDefault();if(draft.length>1)draft.pop();finish()}});
+$('tGsd').addEventListener('change',()=>{dets=null;res=null;draw();$('tOut').innerHTML='<p class="src">Metres per pixel changed: count again.</p>'});
+$('tTree').addEventListener('change',()=>{if(dets)score()});
+function score(){
+  const g=gsd(),tree=Math.min(.8,Math.max(0,(+$('tTree').value||0)/100)),U=units.map(u=>({n:u.n,cap:capOf(u),seen:0}));
+  for(const d of dets){d[4]=-1;for(let i=0;i<units.length;i++){const u=units[i];if(u.t==='area'?inPoly(d,u.p):lineDist(d,u.p)*g<=u.band){d[4]=i;U[i].seen++;break}}}
+  let cap=0,seen=0;for(const u of U){u.est=u.seen*FMID/(1-tree);u.occ=u.cap?Math.min(1,u.est/u.cap):0;cap+=u.cap;seen+=u.seen}
+  cap=Math.round(cap);const est=seen*FMID/(1-tree),lo=seen*FLO/(1-tree),hi=seen*FHI/(1-tree),free=Math.max(0,Math.round(cap-est));
+  res={units:U};draw();
+  const lens=dets.map(d=>d[3]*g).sort((a,b)=>a-b),med=lens.length?lens[lens.length>>1]:0,ok=!lens.length||(med>=MODEL.box[0]&&med<=MODEL.box[1]);
+  const fixed=med?(g*MODEL.box[2]/med):0;
+  $('tOut').innerHTML=!units.length?`<p><b>${dets.length}</b> cars found in the whole photo. Mark the parking to get free spaces: the photo alone does not say where parking is allowed.</p>`:
+   `<div style="color:var(--ink2);font-size:14px">Free spaces, estimated</div><div class="big">≈ ${free.toLocaleString('en')}</div>
+    <p>between ${Math.max(0,Math.round(cap-hi)).toLocaleString('en')} and ${Math.max(0,Math.round(cap-lo)).toLocaleString('en')} · ${cap.toLocaleString('en')} spaces · ${cap?Math.round(Math.min(1,est/cap)*100):0}% full</p>
+    <p class="src" style="margin:0 0 8px">${seen} cars seen in the parking, ≈${Math.round(est)} after correcting for missed cars${tree?` and ${Math.round(tree*100)}% tree cover`:''}. ${dets.length-seen} marks outside the parking ignored (mostly roofs).${truthN!=null?` We hand-labelled ${truthN} cars in this whole square.`:''}</p>
+    <div class="scroll"><table><thead><tr><th>Parking</th><th class="n">Spaces</th><th class="n">Cars seen</th><th class="n">Free ≈</th></tr></thead><tbody>${(()=>{const G=new Map();for(const u of U){const g=G.get(u.n)||{n:u.n,cap:0,seen:0,est:0};g.cap+=u.cap;g.seen+=u.seen;g.est+=u.est;G.set(u.n,g)}return [...G.values()].filter(g=>Math.round(g.cap)||g.seen).sort((a,b)=>b.cap-a.cap).map(g=>`<tr><td>${esc(g.n)}</td><td class="n">${Math.round(g.cap)}</td><td class="n">${g.seen}</td><td class="n">${Math.max(0,Math.round(g.cap-g.est))}</td></tr>`).join('')})()}</tbody></table></div>`;
+  if(!ok)msg(`Cars come out ${med.toFixed(1)} m long instead of about ${MODEL.box[2]} m: metres per pixel is probably wrong. Try ${fixed.toFixed(2)}.`,true);
+}
+$('bCount').onclick=async()=>{if(!bmp){msg('Choose a sample or load a photo first.',true);return}
+  const g=gsd();if(!(g>=0.05&&g<=1)){msg('Set metres per pixel first (0.20 for the samples).',true);return}
+  if(draft.length)finish();setMode(null);const b=$('bCount');b.disabled=true;const pr=$('tProg'),bar=pr.firstElementChild;pr.style.display='block';const t0=performance.now();
+  try{msg('Loading the AI model (about 10 MB, first time only)…');await getSess();msg('Looking for cars…');
+    dets=await detect(bmp,g,p=>bar.style.width=(p*100).toFixed(1)+'%');score();
+    if(!$('tMsg').classList.contains('warn'))msg(`Done in ${((performance.now()-t0)/1000).toFixed(0)} s. Blue rings: cars in the marked parking; white: ignored.`)}
+  catch(e){console.error(e);msg('Something went wrong: '+e.message,true)}
+  b.disabled=false;pr.style.display='none';bar.style.width='0'};
+draw();
+fetch('sq/squares.json').then(r=>r.json()).then(j=>{SQ=j;$('tSample').insertAdjacentHTML('beforeend',SQ.map(s=>`<option value="${esc(s.id)}">${esc(s.label)}</option>`).join(''))}).catch(()=>msg('Samples could not load; you can still load your own photo.',true));
+}
+</script>
+</body>
+</html>
