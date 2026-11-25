@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wazemmes Parking from Above</title>
+<script src="ort.wasm.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: a city transport authority's survey report — the finding first, plain numbers, honest caveats.
+   IDEA: a parking survey map of one Lille district, re-surveyed on three dates.
+   PICTURE: the aerial photo with every street painted by how full it is; switch the date, the paint changes.
+   COLOUR and TYPE: deep green authority ground, lime-white, coral for full; Inter Tight + Inter.
+   LAYOUT: finding and key figures across the top, map wide, evidence tables, then the business case. */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#0f1513);--ink:light-dark(#10201c,#e9f1ec);--ink2:light-dark(#4b5a55,#a9b8b1);--line:light-dark(#dfe5e2,#2a3632);--card:light-dark(#f5f8f6,#16201d);--green:#00463c;--lime:#e6f5c8;--coral:#ff6f59;--deep:#b8321f}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:"Inter Tight",Inter,sans-serif;line-height:1.08;text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,4.4vw,50px)}h2{font-size:clamp(24px,3vw,34px);margin-bottom:10px}h3{font-size:19px;margin-bottom:6px}
+.band{padding:clamp(28px,4vw,60px) max(5vw,16px)}.wrap{max-width:1240px;margin:0 auto}
+.top{background:var(--green);color:#fff}.top p{color:var(--lime);max-width:760px;margin:12px 0 0;font-size:17px}
+.kicker{font-size:14px;color:var(--lime);opacity:.85;margin-bottom:10px}
+.figs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:26px;border-top:1px solid #ffffff40}
+.figs div{padding:14px 16px 0 0}.figs b{display:block;font:700 clamp(28px,3.6vw,42px)/1 "Inter Tight",sans-serif;color:#fff;font-variant-numeric:tabular-nums}.figs span{font-size:14px;color:var(--lime)}
+@media(max-width:700px){.figs{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.mapband{background:var(--green);padding-top:0}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.tabs button{font:600 15px Inter,sans-serif;min-height:44px;padding:0 16px;border-radius:22px;border:1px solid #ffffff55;background:transparent;color:#fff;cursor:pointer}
+.tabs button[aria-pressed=true]{background:var(--lime);color:var(--green);border-color:var(--lime)}
+.tabs button:focus-visible,button:focus-visible{outline:3px solid var(--coral);outline-offset:2px}
+.mapgrid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:22px;align-items:start}
+@media(max-width:900px){.mapgrid{grid-template-columns:1fr}}
+.map{position:relative;aspect-ratio:1/1;border-radius:10px;overflow:hidden;background:#000}
+.map img,.map svg{position:absolute;inset:0;width:100%;height:100%}
+.map img{filter:saturate(.55) brightness(.8)}
+.map polyline,.map polygon{cursor:pointer}
+.tip{position:absolute;pointer-events:none;background:#0b1512ee;color:#fff;font-size:14px;padding:8px 10px;border-radius:6px;max-width:240px;display:none;z-index:2}
+.side{background:#ffffff10;border:1px solid #ffffff30;border-radius:10px;padding:18px;color:#fff}
+.side .big{font:700 clamp(40px,6vw,64px)/1 "Inter Tight",sans-serif}
+.side p{color:var(--lime);margin:8px 0;font-size:15px}
+.ramp{height:12px;border-radius:6px;background:linear-gradient(90deg,#fff3c4,#ffb35c,#ff6f59,#b8321f);margin:6px 0 2px}
+.rampl{display:flex;justify-content:space-between;font-size:13px;color:var(--lime)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#6fd3ff;vertical-align:0}
+.src{font-size:13px;color:var(--ink2);margin-top:10px}.top .src,.mapband .src{color:#cfe3d9}
+table{border-collapse:collapse;width:100%;font-size:15px;margin-top:10px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}th{font-size:13.5px;color:var(--ink2);font-weight:600}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.win td{background:light-dark(#e6f5c8,#1d3a2b);font-weight:600}
+.scroll{overflow-x:auto}
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:18px}
+@media(max-width:900px){.cols{grid-template-columns:1fr}}
+.cols>div{border-top:3px solid var(--green);padding-top:12px}
+:root[data-theme=dark] .cols>div{border-top-color:var(--lime)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]) .cols>div{border-top-color:var(--lime)}}
+.cols p{margin:6px 0;color:var(--ink2)}
+.bars .r{display:grid;grid-template-columns:9em minmax(0,1fr) 4.5em;gap:10px;align-items:center;margin:8px 0;font-size:15px}
+.bars .t{height:16px;background:var(--card);border-radius:4px;overflow:hidden}.bars .t i{display:block;height:100%;background:var(--coral)}
+.bars .r span:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin:16px 0}
+@media(max-width:600px){.pair{grid-template-columns:1fr}}
+.pair figure{margin:0}.pair img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:8px;display:block}
+.pair figcaption{font-size:14px;color:var(--ink2);margin-top:6px}
+.tool{background:var(--card);border-radius:12px;padding:16px;margin-top:14px}
+.tbar{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin-bottom:10px;font-size:15px}
+.tbar label{display:flex;gap:8px;align-items:center;color:var(--ink2)}.tbar .lbl{color:var(--ink2)}
+.tbar input[type=number]{width:84px}.tbar input,.tbar select{font:inherit;font-size:16px;min-height:44px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.tbar input[type=file]{min-height:auto;padding:8px;max-width:230px}
+.tool button{font:600 15px Inter,sans-serif;min-height:44px;padding:0 14px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.tool button[aria-pressed=true]{background:var(--green);color:#fff;border-color:var(--green)}
+.tool button.go{background:var(--coral);border-color:var(--coral);color:#1b0b07}
+.tool button:disabled{opacity:.5;cursor:default}
+.tmsg{font-size:14.5px;color:var(--ink2);min-height:1.4em}.tmsg.warn{color:var(--deep)}
+.prog{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin:6px 0;display:none}.prog div{height:100%;width:0;background:var(--coral)}
+.tgrid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:18px;align-items:start}
+@media(max-width:900px){.tgrid{grid-template-columns:1fr}}
+.tview{border-radius:8px;overflow:hidden;background:#0003;border:2px dashed transparent}.tview.over{border-color:var(--coral)}
+.tview canvas{display:block;width:100%;height:auto;cursor:crosshair;touch-action:none}
+.tout .big{font:700 clamp(38px,5vw,56px)/1 "Inter Tight",sans-serif}
+.tout table{font-size:14px}
+.how li{max-width:820px}
+.steps{counter-reset:s;list-style:none;padding:0;margin:14px 0 0}
+.steps li{position:relative;padding:0 0 14px 44px}
+.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:0;width:30px;height:30px;border-radius:50%;background:var(--green);color:#fff;font:700 15px/30px "Inter Tight";text-align:center}
+.cost{background:var(--card);border-radius:10px;padding:18px;margin-top:16px}
+.cost b.k{font:700 32px/1 "Inter Tight",sans-serif;display:block}
+footer{border-top:1px solid var(--line);font-size:13.5px;color:var(--ink2)}
+footer li{margin:4px 0}
+a{color:inherit}
+@media(max-width:600px){table{font-size:13.5px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:8em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:7.5em;margin-inline-start:-8em;white-space:normal;color:var(--ink2)}.stack td:empty{display:none}}
+</style>
+<script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
+</head>
+<body>
+<section class="band top"><div class="wrap">
+  <div class="kicker">Group 8 · AI for Business &amp; Society · SKEMA Business School, Lille · Prototype v2</div>
+  <h1>Free aerial photos and an open AI model can measure how full a Lille district's public parking is, and the answer changes a lot from one date to the next</h1>
+  <p>We counted the cars parked on the streets and public car parks of Wazemmes (about 1 km²) on three IGN photos, turned the count into an occupancy rate using the parking spaces mapped in OpenStreetMap, and corrected it for the model's measured errors and for cars hidden under trees.</p>
+  <div class="figs">
+    <div><b>33%</b><span>street parking full, latest photo</span></div>
+    <div><b>16%</b><span>same streets, 2018 photo</span></div>
+    <div><b>90%</b><span>of the model's marks are real cars</span></div>
+    <div><b>82%</b><span>of parked cars found by the model</span></div>
+  </div>
+  <div class="src">Accuracy: 432 hand-labelled cars in 6 Wazemmes squares, each scored by a model that never saw it (3-fold cross-validation, seed 0). Spaces: OpenStreetMap parking tags. Photos: IGN Géoplateforme.</div>
+</div></section>
+
+<section class="band mapband"><div class="wrap">
+  <div class="tabs" role="group" aria-label="Photo date" id="tabs"></div>
+  <div class="mapgrid">
+    <div class="map" id="map"><img id="photo" alt="IGN aerial photo of Wazemmes, Lille"><svg id="ov" viewBox="0 0 1600 1600" preserveAspectRatio="none"></svg><div class="tip" id="tip"></div></div>
+    <div class="side" id="side"></div>
+  </div>
+  <div class="src">Tap or hover a street or car park for its numbers. Streets are coloured by estimated occupancy; blue dots are the cars the model found on streets and car parks. Capacity counts every tagged kerb, driveways included, so occupancy is a lower bound.</div>
+</div></section>
+
+<section class="band" id="try"><div class="wrap">
+  <h2>Count the free spaces on your own photo</h2>
+  <p style="max-width:800px;color:var(--ink2)">Load an aerial photo and press Count. The AI finds the cars <b>in your browser</b> (nothing is uploaded anywhere), spots the rows of parked cars by itself, and counts the car-sized gaps in those rows as free spaces, corrected for the cars it misses. To include a kerb or car park with no car on it at all, mark it yourself first. The Wazemmes samples come with their OpenStreetMap parking already drawn.</p>
+  <div class="tool" id="mapTool" style="margin-bottom:16px">
+    <div class="tbar"><b style="font-size:17px">Or pick any area in France on the map</b>
+      <label>Photo <select id="mYear"><option value="ORTHOIMAGERY.ORTHOPHOTOS">latest IGN photo (2025 around Lille)</option><option value="ORTHOIMAGERY.ORTHOPHOTOS2021">2021</option><option value="ORTHOIMAGERY.ORTHOPHOTOS2018">2018</option></select></label>
+      <button id="mDraw">Draw an area</button><button class="go" id="mGo" disabled>Get photo, parking and free spaces</button></div>
+    <div class="tmsg" id="mMsg">Zoom in on a street, press Draw an area, then click two opposite corners (up to 500 m across).</div>
+    <div id="lmap" style="height:420px;border-radius:8px;overflow:hidden;background:#0002"></div>
+    <p class="src">The page downloads the IGN aerial photo of your area (Géoplateforme, free) and the parking mapped in OpenStreetMap (Overpass API), then counts below. This needs the page to be opened from our GitHub site: claude.ai pages may not download from other websites.</p>
+  </div>
+  <div class="tool">
+    <div class="tbar">
+      <label>Sample <select id="tSample"><option value="">Choose…</option></select></label>
+      <label class="file">or your photo <input type="file" id="tFile" accept="image/*"></label>
+      <label>Metres per pixel <input type="number" id="tGsd" step="0.01" min="0.05" max="1" value="0.20"></label>
+      <label>Trees over the parking <input type="number" id="tTree" min="0" max="80" step="5" value="0"> %</label>
+    </div>
+    <div class="tbar">
+      <span class="lbl">Mark parking:</span>
+      <button id="bRow">Row of parked cars</button>
+      <select id="tRowType" aria-label="Kind of row"><option value="5.5">parallel (5.5 m a car)</option><option value="3.0">angled (3.0 m)</option><option value="2.5">side by side (2.5 m)</option></select>
+      <button id="bArea">Car park outline</button>
+      <button id="bDone">Finish shape</button><button id="bUndo">Undo</button><button id="bClear">Clear marks</button>
+      <button class="go" id="bCount">Count free spaces</button>
+    </div>
+    <div class="tmsg" id="tMsg">Choose a sample or load a photo.</div>
+    <div class="prog" id="tProg"><div></div></div>
+    <div class="tgrid">
+      <div class="tview" id="tDrop"><canvas id="tCv" width="800" height="500"></canvas></div>
+      <div class="tout" id="tOut"><p class="src">Results appear here.</p></div>
+    </div>
+    <p class="src">Drawing: pick a tool, click along the parked cars (or around the car park), then press Finish or double-click. A row counts cars within 3 m of your line; Wazemmes street lines are centre lines and count 7 m each side. Metres per pixel: on geoportail.gouv.fr, measure a known distance with the ruler and divide by its length in pixels; the page warns you if the car sizes do not fit.</p>
+  </div>
+</div></section>
+
+<section class="band" style="background:var(--card)"><div class="wrap">
+  <h2>How it works, step by step</h2>
+  <ol class="steps how">
+    <li><b>Enlarge and cut the photo.</b> The photo is resized to 10 cm per pixel, the scale the model learned on, and cut into 64 m squares that overlap so no car is cut in half.</li>
+    <li><b>Find the cars.</b> An object-detection model (YOLO11n, trained by us on over 32,000 cars in the COWC aerial photo collection) gives every car-like shape a confidence score. We keep marks scoring 0.10 or more: that cut-off found the most cars for the fewest false marks when tested on squares the model had not seen. Two marks closer than 1.5 m become one.</li>
+    <li><b>Keep only cars where parking is allowed.</b> Marks outside the streets and car parks are thrown away. That removes most false marks, which sit on roofs.</li>
+    <li><b>Count the spaces.</b> Along a kerb: its length divided by 5.5 m for cars parked in a line, 3.0 m when angled, 2.5 m when side by side, minus room for crossings. A car park: its stated capacity, or one space per 25 m² including aisles. On Wazemmes these lines and outlines come from OpenStreetMap.</li>
+    <li><b>Correct the count.</b> The model misses more cars than it invents, so the count is multiplied by precision ÷ recall (0.895 ÷ 0.819 on the Wazemmes streets). Cars under trees cannot be seen, so the count is divided by the share of parking that is not under trees (from the infrared photo on Wazemmes, your estimate on your photo).</li>
+    <li><b>Free spaces = spaces − corrected cars</b>, with a range from the best and worst error rates we measured on three dates (correction factor from 1.06 to 1.22).</li>
+  </ol>
+  <p class="src">What it cannot do: tell a parked car from one waiting at a light, see cars in underground or multi-storey car parks, or know which spaces are reserved (deliveries, disabled drivers, residents). It counts what one photo shows at one moment.</p>
+</div></section>
+
+<section class="band"><div class="wrap">
+  <h2>City streets are much harder than the retail car parks of our first prototype</h2>
+  <p style="max-width:780px;color:var(--ink2)">Our first prototype counted cars in the Auchan Englos car parks. The same model, with the same cut-off (0.25) and the same scoring rule, finds 91% of the cars there but only 64% on the Wazemmes streets. The two squares below show why: blue rings are cars found, red rings cars missed, orange rings false marks.</p>
+  <div class="pair">
+    <figure><img src="img/englos_ex.jpg" alt="Auchan Englos car park with the model's marks" loading="lazy"><figcaption><b>Retail car park, Englos 2025</b> (174 m square): 388 cars, 363 found (94%), 25 missed, 41 false marks.</figcaption></figure>
+    <figure><img src="img/waz_ex.jpg" alt="Wazemmes street square with the model's marks" loading="lazy"><figcaption><b>City streets, Wazemmes</b> (128 m square): 67 cars, 49 found (73%), 18 missed, 14 false marks.</figcaption></figure>
+  </div>
+  <div class="scroll"><table class="stack">
+    <thead><tr><th>Same model, cut-off 0.25, whole picture</th><th class="n">Cars hand-labelled</th><th class="n">Real-car share of marks</th><th class="n">Cars found</th></tr></thead>
+    <tbody><tr><td>Englos retail car parks (4 squares, 2018 and 2025)</td><td class="n">1,181</td><td class="n">81%</td><td class="n">91%</td></tr>
+    <tr><td>Wazemmes city streets (6 squares)</td><td class="n">432</td><td class="n">77%</td><td class="n">64%</td></tr></tbody></table></div>
+  <div class="cols">
+    <div><h3>Shadows and leaning buildings</h3><p>Four- and five-storey buildings throw their shadow across one side of the street, and in an aerial photo they lean over the kerb. Cars in that strip are dark on dark, or partly hidden: many of the red rings sit there.</p></div>
+    <div><h3>Cars nose to tail, under trees</h3><p>On a street, cars are parked bumper to bumper along the kerb with no painted bays between them, so neighbours merge. Street trees cover 11% of the district and up to 44% of some streets.</p></div>
+    <div><h3>Roofs full of car-sized things</h3><p>Skylights, chimneys, vents and small sheds are the size of a car from 20 cm per pixel. A car park is open asphalt; a city block is roofs, so false marks pile up there. Keeping only marks on mapped streets and car parks lifts the real-car share from 65% to 90% at the 0.10 cut-off we use.</p></div>
+  </div>
+  <p class="src">Why this matters: a count from a retail car park would overstate how well the method works in a city. That is why we measured the errors on the streets themselves and correct every estimate for them.</p>
+</div></section>
+
+
+<footer class="band" style="padding-top:18px;padding-bottom:28px"><div class="wrap"><p class="src" style="margin:0">Photos: IGN Géoplateforme (Licence Ouverte 2.0). Parking spaces: © OpenStreetMap contributors (ODbL).</p></div></footer>
+<script>
+{
+const DATES={current:{label:'Latest IGN photo',note:'Normal day. Place de la Nouvelle Aventure car park is full of cars.'},
+ '2021':{label:'2021 · market day',note:'Market stalls cover Place de la Nouvelle Aventure, so that car park is closed; its count is mostly stalls.'},
+ '2018':{label:'2018 · after a market',note:'The market square is empty and littered: the photo was taken just after a market.'}};
+const SUM={current:{s:[4154,1381,.332],c:.475},'2021':{s:[4154,1477,.355],c:null},'2018':{s:[4154,666,.16],c:.074}};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pct=x=>Math.round(x*100)+'%';
+const col=o=>{const s=[[0,'#fff3c4'],[.35,'#ffb35c'],[.7,'#ff6f59'],[1,'#b8321f']];o=Math.max(0,Math.min(1,o));for(let i=1;i<s.length;i++)if(o<=s[i][0]){const a=s[i-1],b=s[i],t=(o-a[0])/(b[0]-a[0]),h=x=>parseInt(x,16),c=k=>Math.round(h(a[1].substr(k,2))*(1-t)+h(b[1].substr(k,2))*t);return `rgb(${c(1)},${c(3)},${c(5)})`}return s[3][1]};
+let DATA=null,cur='current';
+const tabs=document.getElementById('tabs'),ov=document.getElementById('ov'),tip=document.getElementById('tip'),map=document.getElementById('map');
+tabs.innerHTML=['current','2021','2018'].map(k=>[k,DATES[k]]).map(([k,v])=>`<button data-k="${k}" aria-pressed="${k===cur}">${v.label}</button>`).join('');
+function side(k){const s=SUM[k];document.getElementById('side').innerHTML=`<div style="font-size:14px;color:var(--lime)">${esc(DATES[k].label)} · street parking</div><div class="big">${pct(s.s[2])}</div><p>about ${s.s[1].toLocaleString('en')} cars estimated on ${s.s[0].toLocaleString('en')} street spaces, so roughly ${(s.s[0]-s.s[1]).toLocaleString('en')} free</p><p>Public open-air car parks: ${s.c==null?'not counted (market)':pct(s.c)+' full'}</p><p>${esc(DATES[k].note)}</p><div class="ramp"></div><div class="rampl"><span>empty</span><span>half</span><span>full</span></div><p style="font-size:13.5px"><span class="dot"></span> car found by the model</p>`}
+function draw(k){
+  cur=k;document.getElementById('photo').src=`img/waz_${k}.jpg`;
+  for(const b of tabs.children)b.setAttribute('aria-pressed',b.dataset.k===k);
+  side(k);if(!DATA)return;const d=DATA[k];
+  const u=d.units.map((x,i)=>{const o=x.e/x.c,p=x.p.map(q=>q.join(',')).join(' ');return x.k==='street'?`<polyline data-i="${i}" points="${p}" fill="none" stroke="${col(o)}" stroke-width="9" stroke-linecap="round" opacity=".9"/>`:`<polygon data-i="${i}" points="${p}" fill="${col(o)}" fill-opacity=".45" stroke="${col(o)}" stroke-width="4"/>`}).join('');
+  const dots=d.dots.map(q=>`<circle cx="${q[0]}" cy="${q[1]}" r="3.2"/>`).join('');
+  ov.innerHTML=u+`<g fill="#6fd3ff" stroke="#0b1512" stroke-width="1" pointer-events="none">${dots}</g>`;
+}
+tabs.addEventListener('click',e=>{const b=e.target.closest('button');if(b)draw(b.dataset.k)});
+function show(e){const el=e.target.closest('[data-i]');if(!el||!DATA){tip.style.display='none';return}
+  const x=DATA[cur].units[+el.dataset.i],r=map.getBoundingClientRect(),pt=e.touches?e.touches[0]:e;
+  tip.innerHTML=`<b>${esc(x.n)}</b><br>${x.c} spaces · ${x.v} cars seen<br>≈${Math.round(x.e)} with corrections · <b>${pct(Math.min(x.e/x.c,1))}</b> full<br>${x.h>0.05?pct(x.h)+' under trees':'little tree cover'}`;
+  tip.style.display='block';let L=pt.clientX-r.left+12,T=pt.clientY-r.top+12;if(L>r.width-250)L=Math.max(4,L-264);if(T>r.height-110)T-=120;tip.style.left=L+'px';tip.style.top=T+'px'}
+ov.addEventListener('pointermove',show);ov.addEventListener('click',show);map.addEventListener('pointerleave',()=>tip.style.display='none');
+draw('current');
+fetch('data.json').then(r=>r.json()).then(j=>{DATA=j;draw(cur)}).catch(()=>{document.getElementById('side').insertAdjacentHTML('beforeend','<p>Street data could not load.</p>')});
+}
+</script>
+<script>
+{
+// ---------- settings measured in our tests (see the tables on this page) ----------
+const MODEL={file:'models/own-model.wasm',size:640,target:0.10,conf:0.10,box:[3.8,7.0,5.2]};
+const P0=0.895,R0=0.819,FLO=0.768/0.725,FHI=0.966/0.792,FMID=P0/R0;   // correction factors: low, central, high
+const OVERLAP=96;
+const $=s=>document.getElementById(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let sess=null;
+function getSess(){ if(!sess){ ort.env.wasm.wasmPaths=new URL('./',location.href).href; ort.env.wasm.numThreads=1;
+  sess=fetch(MODEL.file).then(r=>{if(!r.ok)throw new Error('model download failed ('+r.status+')');return r.arrayBuffer()}).then(b=>ort.InferenceSession.create(new Uint8Array(b),{executionProviders:['wasm']})).catch(e=>{sess=null;throw e}); } return sess; }
+async function detect(bmp,gsd,onp){
+  const S=MODEL.size,session=await getSess(),sc=gsd/MODEL.target,tile=S/sc,step=(S-OVERLAP)/sc;
+  const cv=new OffscreenCanvas(S,S),ctx=cv.getContext('2d',{willReadFrequently:true});ctx.imageSmoothingQuality='high';
+  const xs=[],ys=[];for(let x=0;x<Math.max(bmp.width-OVERLAP/sc,1);x+=step)xs.push(x);for(let y=0;y<Math.max(bmp.height-OVERLAP/sc,1);y+=step)ys.push(y);
+  const inp=new Float32Array(3*S*S),dets=[];let done=0;
+  for(const y of ys)for(const x of xs){
+    const sw=Math.min(tile,bmp.width-x),sh=Math.min(tile,bmp.height-y),dw=Math.round(sw*sc),dh=Math.round(sh*sc);
+    ctx.fillStyle='rgb(114,114,114)';ctx.fillRect(0,0,S,S);ctx.drawImage(bmp,x,y,sw,sh,0,0,dw,dh);
+    const d=ctx.getImageData(0,0,S,S).data,n=S*S;for(let i=0;i<n;i++){inp[i]=d[4*i]/255;inp[n+i]=d[4*i+1]/255;inp[2*n+i]=d[4*i+2]/255}
+    const out=(await session.run({images:new ort.Tensor('float32',inp,[1,3,S,S])})).output0,N=out.dims[2],o=out.data;
+    for(let i=0;i<N;i++){const s=o[4*N+i];if(s<=MODEL.conf)continue;const cx=o[i],cy=o[N+i];if(cx>=dw||cy>=dh)continue;dets.push([x+cx/sc,y+cy/sc,s,Math.max(o[2*N+i],o[3*N+i])/sc])}
+    onp(++done/(xs.length*ys.length));await new Promise(r=>setTimeout(r,0));
+  }
+  const R=1.5/gsd,keep=[];dets.sort((a,b)=>b[2]-a[2]);
+  for(const p of dets)if(!keep.some(q=>Math.hypot(p[0]-q[0],p[1]-q[1])<=R))keep.push(p);
+  return keep;
+}
+// ---------- geometry ----------
+const segDist=(p,a,b)=>{const dx=b[0]-a[0],dy=b[1]-a[1],L=dx*dx+dy*dy||1e-9,t=Math.max(0,Math.min(1,((p[0]-a[0])*dx+(p[1]-a[1])*dy)/L));return Math.hypot(p[0]-a[0]-t*dx,p[1]-a[1]-t*dy)};
+const lineDist=(p,P)=>{let m=1e9;for(let i=1;i<P.length;i++)m=Math.min(m,segDist(p,P[i-1],P[i]));return m};
+const lineLen=P=>{let s=0;for(let i=1;i<P.length;i++)s+=Math.hypot(P[i][0]-P[i-1][0],P[i][1]-P[i-1][1]);return s};
+const inPoly=(p,P)=>{let c=false;for(let i=0,j=P.length-1;i<P.length;j=i++){const a=P[i],b=P[j];if((a[1]>p[1])!==(b[1]>p[1])&&p[0]<(b[0]-a[0])*(p[1]-a[1])/(b[1]-a[1])+a[0])c=!c}return c};
+const polyArea=P=>{let s=0;for(let i=0,j=P.length-1;i<P.length;j=i++)s+=(P[j][0]+P[i][0])*(P[j][1]-P[i][1]);return Math.abs(s/2)};
+// ---------- automatic parking: rows of parked cars and the gaps between them ----------
+function autoRows(D,g){
+  const P=D.map(d=>[d[0]*g,d[1]*g]),n=P.length,LINK=14,NB=16;
+  // grid for neighbour search
+  const cell=new Map(),key=(x,y)=>Math.floor(x/NB)+','+Math.floor(y/NB);
+  P.forEach((p,i)=>{const k=key(p[0],p[1]);if(!cell.has(k))cell.set(k,[]);cell.get(k).push(i)});
+  const near=(i,r)=>{const [x,y]=P[i],gx=Math.floor(x/NB),gy=Math.floor(y/NB),o=[];for(let a=-1;a<=1;a++)for(let b=-1;b<=1;b++)for(const j of cell.get((gx+a)+','+(gy+b))||[])if(j!==i&&Math.hypot(P[j][0]-x,P[j][1]-y)<=r)o.push(j);return o};
+  // local direction of each car's row: main axis of its neighbours (needs 2 or more)
+  const dir=P.map((p,i)=>{const N=near(i,NB);if(N.length<2)return null;let sx=0,sy=0;const Q=[i,...N];for(const j of Q){sx+=P[j][0];sy+=P[j][1]}sx/=Q.length;sy/=Q.length;
+    let a=0,b=0,c=0;for(const j of Q){const dx=P[j][0]-sx,dy=P[j][1]-sy;a+=dx*dx;b+=dx*dy;c+=dy*dy}const t=0.5*Math.atan2(2*b,a-c);return[Math.cos(t),Math.sin(t)]});
+  // link neighbours that lie along both cars' row direction
+  const par=[...Array(n).keys()],find=i=>par[i]===i?i:(par[i]=find(par[i]));
+  for(let i=0;i<n;i++){if(!dir[i])continue;for(const j of near(i,LINK)){if(j<i||!dir[j])continue;const vx=P[j][0]-P[i][0],vy=P[j][1]-P[i][1],L=Math.hypot(vx,vy)||1;
+    if(Math.abs((vx*dir[i][0]+vy*dir[i][1])/L)>0.85&&Math.abs((vx*dir[j][0]+vy*dir[j][1])/L)>0.85)par[find(i)]=find(j)}}
+  const groups=new Map();for(let i=0;i<n;i++){const r=find(i);if(!groups.has(r))groups.set(r,[]);groups.get(r).push(i)}
+  let rows=[];
+  for(const G of groups.values()){if(G.length<3)continue;rows.push(fitRow(G,P))}
+  // extend each row along its own line: take cars up to 25 m beyond either end that sit within 2 m of the line
+  const taken=new Set(rows.flatMap(R=>R.idx));
+  for(let k=0;k<rows.length;k++){let grew=true;while(grew){grew=false;const R=rows[k];
+    for(let i=0;i<n;i++){if(taken.has(i))continue;const dx=P[i][0]-R.c[0],dy=P[i][1]-R.c[1],t=dx*R.u[0]+dy*R.u[1],o=Math.abs(-dx*R.u[1]+dy*R.u[0]);
+      if(o<=2&&((t>R.t1&&t-R.t1<=25)||(t<R.t0&&R.t0-t<=25))){R.idx.push(i);taken.add(i);rows[k]=fitRow(R.idx,P);grew=true;break}}}}
+  // join rows that continue each other across a gap (same line, ends within 30 m)
+  let merged=true;while(merged){merged=false;
+    outer:for(let a=0;a<rows.length;a++)for(let b=a+1;b<rows.length;b++){const A=rows[a],B=rows[b];
+      if(Math.abs(A.u[0]*B.u[0]+A.u[1]*B.u[1])<0.95)continue;
+      const proj=p=>[(p[0]-A.c[0])*A.u[0]+(p[1]-A.c[1])*A.u[1],-(p[0]-A.c[0])*A.u[1]+(p[1]-A.c[1])*A.u[0]];
+      const bs=B.idx.map(i=>proj(P[i]));if(bs.some(q=>Math.abs(q[1])>2.5))continue;
+      const bmin=Math.min(...bs.map(q=>q[0])),bmax=Math.max(...bs.map(q=>q[0]));
+      const gap=Math.max(bmin-A.t1,A.t0-bmax);if(gap<0||gap>30)continue;
+      rows[a]=fitRow([...A.idx,...B.idx],P);rows.splice(b,1);merged=true;break outer}}
+  // gaps -> free spaces, using the row's own spacing
+  for(const R of rows){const t=R.idx.map(i=>(P[i][0]-R.c[0])*R.u[0]+(P[i][1]-R.c[1])*R.u[1]).sort((a,b)=>a-b);
+    const d=[];for(let k=1;k<t.length;k++)d.push(t[k]-t[k-1]);const s=Math.min(7.5,Math.max(2.3,[...d].sort((a,b)=>a-b)[d.length>>1]));
+    R.space=s;R.free=0;R.gaps=[];for(let k=0;k<d.length;k++){const f=Math.max(0,Math.round(d[k]/s)-1);if(f){R.free+=f;R.gaps.push([t[k],t[k+1],f])}}
+    R.cars=R.idx.length;R.cap=R.cars+R.free;R.kind=s<3.6?'side by side':'in a line'}
+  return rows;
+}
+function fitRow(idx,P){let sx=0,sy=0;for(const i of idx){sx+=P[i][0];sy+=P[i][1]}sx/=idx.length;sy/=idx.length;let a=0,b=0,c=0;
+  for(const i of idx){const dx=P[i][0]-sx,dy=P[i][1]-sy;a+=dx*dx;b+=dx*dy;c+=dy*dy}const th=0.5*Math.atan2(2*b,a-c),u=[Math.cos(th),Math.sin(th)];
+  const t=idx.map(i=>(P[i][0]-sx)*u[0]+(P[i][1]-sy)*u[1]);return{idx,c:[sx,sy],u,t0:Math.min(...t),t1:Math.max(...t)}}
+// ---------- state ----------
+let SQ=[],bmp=null,units=[],dets=null,mode=null,draft=[],f=1,truthN=null,nRow=0,nArea=0,res=null;
+const cv=$('tCv'),cx=cv.getContext('2d');
+const gsd=()=>+$('tGsd').value;
+function capOf(u){const g=gsd();if(u.t==='line'){const c=lineLen(u.p)*g*u.spm;return u.band===3?Math.floor(c):c}return u.cap!=null?u.cap:Math.max(1,Math.floor(polyArea(u.p)*g*g/25))}
+function msg(t,w){$('tMsg').textContent=t;$('tMsg').classList.toggle('warn',!!w)}
+function setMode(m){mode=m;draft=[];$('bRow').setAttribute('aria-pressed',m==='row');$('bArea').setAttribute('aria-pressed',m==='area');draw();
+  if(m)msg(m==='row'?'Click along a row of parked cars, then Finish (or double-click).':'Click around the car park, then Finish (or double-click).')}
+function occCol(o){return o<.5?'#ffd166':o<.85?'#ff6f59':'#b8321f'}
+function draw(){
+  if(!bmp){cv.width=800;cv.height=450;cx.fillStyle='#8883';cx.fillRect(0,0,800,450);cx.fillStyle='#888';cx.font='18px Inter,sans-serif';cx.fillText('Drop an aerial photo here',290,230);return}
+  cx.drawImage(bmp,0,0,cv.width,cv.height);const g=gsd(),lw=Math.max(2,3*f);
+  units.forEach((u,i)=>{const r=res&&res.units[i],c=r?occCol(r.occ):'#e6f5c8';cx.strokeStyle=c;cx.fillStyle=c+'55';cx.lineWidth=u.t==='line'?Math.max(lw,(u.band*2/g)*f*.45):lw;cx.lineCap='round';cx.globalAlpha=u.t==='line'?.55:1;
+    cx.beginPath();u.p.forEach((q,k)=>k?cx.lineTo(q[0]*f,q[1]*f):cx.moveTo(q[0]*f,q[1]*f));if(u.t==='area'){cx.closePath();cx.fill()}cx.stroke();cx.globalAlpha=1});
+  if(res&&res.rows){const g=gsd();cx.lineCap='round';for(const R of res.rows){const pt=t=>[(R.c[0]+t*R.u[0])/g*f,(R.c[1]+t*R.u[1])/g*f];
+      cx.strokeStyle='#e6f5c8';cx.globalAlpha=.55;cx.lineWidth=Math.max(6,2.2/g*f);let a=pt(R.t0-1.5),b=pt(R.t1+1.5);cx.beginPath();cx.moveTo(...a);cx.lineTo(...b);cx.stroke();
+      cx.globalAlpha=.95;cx.strokeStyle='#22c55e';for(const [t0,t1] of R.gaps){a=pt(t0+1.8);b=pt(t1-1.8);cx.beginPath();cx.moveTo(...a);cx.lineTo(...b);cx.stroke()}cx.globalAlpha=1}}
+  if(draft.length){cx.strokeStyle='#ff6f59';cx.setLineDash([8,6]);cx.lineWidth=lw;cx.beginPath();draft.forEach((q,k)=>k?cx.lineTo(q[0]*f,q[1]*f):cx.moveTo(q[0]*f,q[1]*f));cx.stroke();cx.setLineDash([]);
+    cx.fillStyle='#ff6f59';draft.forEach(q=>{cx.beginPath();cx.arc(q[0]*f,q[1]*f,4,0,7);cx.fill()})}
+  if(dets){const r=Math.max(4,1.6/g*f);cx.lineWidth=Math.max(1.5,r/4);for(const d of dets){cx.strokeStyle=d[4]>=0?'#6fd3ff':'#ffffff66';cx.beginPath();cx.arc(d[0]*f,d[1]*f,r,0,7);cx.stroke()}}
+}
+async function setBitmap(b,label){bmp=b;f=Math.min(1,1600/Math.max(b.width,b.height));cv.width=Math.round(b.width*f);cv.height=Math.round(b.height*f);dets=null;res=null;draft=[];$('tOut').innerHTML='<p class="src">Mark the parking (or use the drawn lines), then press Count free spaces.</p>';draw();msg(label)}
+async function loadSample(id){const s=SQ.find(x=>x.id===id);if(!s)return;msg('Loading sample…');
+  const b=await createImageBitmap(await (await fetch('sq/'+s.id+'.jpg')).blob());$('tGsd').value='0.20';
+  units=s.park.map(u=>({...u,p:u.p.map(q=>[...q])}));nRow=nArea=0;truthN=s.truth.length;
+  await setBitmap(b,s.label+': OpenStreetMap parking is drawn. Press Count, or press Clear marks first to let the tool find the parking by itself.')}
+$('tSample').addEventListener('change',e=>e.target.value&&loadSample(e.target.value));
+async function loadFile(file){$('tSample').value='';units=[];truthN=null;nRow=nArea=0;await setBitmap(await createImageBitmap(file),'Loaded '+file.name+'. Set metres per pixel and press Count: the parking is found automatically (or mark it yourself first).')}
+$('tFile').addEventListener('change',e=>e.target.files[0]&&loadFile(e.target.files[0]));
+const drop=$('tDrop');drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over')});drop.addEventListener('dragleave',()=>drop.classList.remove('over'));
+drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('over');e.dataTransfer.files[0]&&loadFile(e.dataTransfer.files[0])});
+$('bRow').onclick=()=>setMode(mode==='row'?null:'row');$('bArea').onclick=()=>setMode(mode==='area'?null:'area');
+function finish(){if(mode==='row'&&draft.length>=2){units.push({t:'line',n:'Row '+(++nRow),p:draft,spm:1/+$('tRowType').value,band:3})}
+  else if(mode==='area'&&draft.length>=3){units.push({t:'area',n:'Car park '+(++nArea),p:draft,cap:null})}
+  else if(draft.length){msg('Add more points before finishing.',true);return}
+  draft=[];res=null;draw();if(dets)score()}
+$('bDone').onclick=finish;
+$('bUndo').onclick=()=>{if(draft.length)draft.pop();else units.pop();res=null;draw();if(dets)score()};
+$('bClear').onclick=()=>{units=[];draft=[];res=null;draw();if(dets)score()};
+const toImg=e=>{const r=cv.getBoundingClientRect();return[(e.clientX-r.left)/r.width*cv.width/f,(e.clientY-r.top)/r.height*cv.height/f]};
+cv.addEventListener('click',e=>{if(!bmp||!mode)return;draft.push(toImg(e));draw()});
+cv.addEventListener('dblclick',e=>{if(mode){e.preventDefault();if(draft.length>1)draft.pop();finish()}});
+$('tGsd').addEventListener('change',()=>{dets=null;res=null;draw();$('tOut').innerHTML='<p class="src">Metres per pixel changed: count again.</p>'});
+$('tTree').addEventListener('change',()=>{if(dets)score()});
+function autoScore(g,tree){
+  const rows=autoRows(dets,g);for(const d of dets)d[4]=-1;rows.forEach((R,k)=>R.idx.forEach(i=>dets[i][4]=k));
+  let N=0,F=0;for(const R of rows){N+=R.cars;F+=R.free}const cap=N+F;
+  const est=N*FMID/(1-tree),lo=N*FLO/(1-tree),hi=N*FHI/(1-tree),free=Math.max(0,Math.round(cap-est));
+  res={rows,units:[]};draw();
+  const lens=dets.map(d=>d[3]*g).sort((a,b)=>a-b),med=lens.length?lens[lens.length>>1]:0,ok=!lens.length||(med>=MODEL.box[0]&&med<=MODEL.box[1]);
+  $('tOut').innerHTML=!rows.length?`<p><b>${dets.length}</b> cars found, but no rows of parked cars. Check metres per pixel, or mark the parking by hand.</p>`:
+   `<div style="color:var(--ink2);font-size:14px">Free spaces between parked cars, found automatically</div><div class="big">≈ ${free.toLocaleString('en')}</div>
+    <p>between ${Math.max(0,Math.round(cap-hi)).toLocaleString('en')} and ${Math.max(0,Math.round(cap-lo)).toLocaleString('en')} · ${rows.length} rows of parked cars · ≈${cap.toLocaleString('en')} spaces in them · ${cap?Math.round(Math.min(1,est/cap)*100):0}% full</p>
+    <p class="src" style="margin:0 0 8px">${N} parked cars found in rows; ${F} car-sized gaps between them, minus about ${Math.round(est-N)} gaps that are really cars the model missed${tree?' or that trees hide':''}. ${dets.length-N} cars ignored (alone, so probably moving or not in a parking row). A kerb or car park with no car on it at all is not found: mark it by hand to include it.${truthN!=null?` We hand-labelled ${truthN} cars in this whole square.`:''}</p>
+    <div class="scroll"><table><thead><tr><th>Row</th><th class="n">Cars</th><th class="n">Gaps</th><th class="n">Length</th></tr></thead><tbody>${rows.map((R,k)=>({k,R})).sort((a,b)=>b.R.cap-a.R.cap).slice(0,12).map(({k,R})=>`<tr><td>Row ${k+1} · ${R.kind}</td><td class="n">${R.cars}</td><td class="n">${R.free}</td><td class="n">${Math.round(R.t1-R.t0+R.space)} m</td></tr>`).join('')}</tbody></table></div>
+    ${rows.length>12?`<p class="src">Showing the 12 largest of ${rows.length} rows.</p>`:''}`;
+  if(!ok)msg(`Cars come out ${med.toFixed(1)} m long instead of about ${MODEL.box[2]} m: metres per pixel is probably wrong. Try ${(g*MODEL.box[2]/med).toFixed(2)}.`,true);
+}
+function score(){
+  const g=gsd(),tree=Math.min(.8,Math.max(0,(+$('tTree').value||0)/100));
+  if(!units.length){autoScore(g,tree);return}
+  const U=units.map(u=>({n:u.n,cap:capOf(u),seen:0}));
+  for(const d of dets){d[4]=-1;for(let i=0;i<units.length;i++){const u=units[i];if(u.t==='area'?inPoly(d,u.p):lineDist(d,u.p)*g<=u.band){d[4]=i;U[i].seen++;break}}}
+  let cap=0,seen=0;for(const u of U){u.est=u.seen*FMID/(1-tree);u.occ=u.cap?Math.min(1,u.est/u.cap):0;cap+=u.cap;seen+=u.seen}
+  cap=Math.round(cap);const est=seen*FMID/(1-tree),lo=seen*FLO/(1-tree),hi=seen*FHI/(1-tree),free=Math.max(0,Math.round(cap-est));
+  res={units:U};draw();
+  const lens=dets.map(d=>d[3]*g).sort((a,b)=>a-b),med=lens.length?lens[lens.length>>1]:0,ok=!lens.length||(med>=MODEL.box[0]&&med<=MODEL.box[1]);
+  const fixed=med?(g*MODEL.box[2]/med):0;
+  $('tOut').innerHTML=!units.length?`<p><b>${dets.length}</b> cars found in the whole photo. Mark the parking to get free spaces: the photo alone does not say where parking is allowed.</p>`:
+   `<div style="color:var(--ink2);font-size:14px">Free spaces, estimated</div><div class="big">≈ ${free.toLocaleString('en')}</div>
+    <p>between ${Math.max(0,Math.round(cap-hi)).toLocaleString('en')} and ${Math.max(0,Math.round(cap-lo)).toLocaleString('en')} · ${cap.toLocaleString('en')} spaces · ${cap?Math.round(Math.min(1,est/cap)*100):0}% full</p>
+    <p class="src" style="margin:0 0 8px">${seen} cars seen in the parking, ≈${Math.round(est)} after correcting for missed cars${tree?` and ${Math.round(tree*100)}% tree cover`:''}. ${dets.length-seen} marks outside the parking ignored (mostly roofs).${truthN!=null?` We hand-labelled ${truthN} cars in this whole square.`:''}</p>
+    <div class="scroll"><table><thead><tr><th>Parking</th><th class="n">Spaces</th><th class="n">Cars seen</th><th class="n">Free ≈</th></tr></thead><tbody>${(()=>{const G=new Map();for(const u of U){const g=G.get(u.n)||{n:u.n,cap:0,seen:0,est:0};g.cap+=u.cap;g.seen+=u.seen;g.est+=u.est;G.set(u.n,g)}return [...G.values()].filter(g=>Math.round(g.cap)||g.seen).sort((a,b)=>b.cap-a.cap).map(g=>`<tr><td>${esc(g.n)}</td><td class="n">${Math.round(g.cap)}</td><td class="n">${g.seen}</td><td class="n">${Math.max(0,Math.round(g.cap-g.est))}</td></tr>`).join('')})()}</tbody></table></div>`;
+  if(!ok)msg(`Cars come out ${med.toFixed(1)} m long instead of about ${MODEL.box[2]} m: metres per pixel is probably wrong. Try ${fixed.toFixed(2)}.`,true);
+}
+$('bCount').onclick=async()=>{if(!bmp){msg('Choose a sample or load a photo first.',true);return}
+  const g=gsd();if(!(g>=0.05&&g<=1)){msg('Set metres per pixel first (0.20 for the samples).',true);return}
+  if(draft.length)finish();setMode(null);const b=$('bCount');b.disabled=true;const pr=$('tProg'),bar=pr.firstElementChild;pr.style.display='block';const t0=performance.now();
+  try{msg('Loading the AI model (about 10 MB, first time only)…');await getSess();msg('Looking for cars…');
+    dets=await detect(bmp,g,p=>bar.style.width=(p*100).toFixed(1)+'%');score();
+    if(!$('tMsg').classList.contains('warn'))msg(`Done in ${((performance.now()-t0)/1000).toFixed(0)} s. Blue rings: parked cars counted; white: ignored; green: free gaps.`)}
+  catch(e){console.error(e);msg('Something went wrong: '+e.message,true)}
+  b.disabled=false;pr.style.display='none';bar.style.width='0'};
+window.__loadArea=async(b,U,label)=>{units=U;nRow=nArea=0;truthN=null;await setBitmap(b,label);$('bCount').click()};
+draw();
+fetch('sq/squares.json').then(r=>r.json()).then(j=>{SQ=j;$('tSample').insertAdjacentHTML('beforeend',SQ.map(s=>`<option value="${esc(s.id)}">${esc(s.label)}</option>`).join(''))}).catch(()=>msg('Samples could not load; you can still load your own photo.',true));
+}
+</script>
+<script>
+// ---------- pick an area on a map: IGN photo + OpenStreetMap parking, downloaded live ----------
+{
+  const el=document.getElementById('lmap'),mm=t=>{const m=document.getElementById('mMsg');m.textContent=t;m.classList.toggle('warn',/could not|blocked|too/i.test(t))};
+  let map=null,box=null,corner=null,drawing=false;
+  function initMap(){
+    if(typeof L==='undefined'){mm('The map library could not load here. Open this page from our GitHub site to use the map.');return}
+    map=L.map(el,{zoomControl:true}).setView([50.6265,3.0495],16);
+    L.tileLayer('https://data.geopf.fr/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=ORTHOIMAGERY.ORTHOPHOTOS&STYLE=normal&TILEMATRIXSET=PM&FORMAT=image/jpeg&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}',{maxZoom:20,maxNativeZoom:19,attribution:'Photos © IGN'}).addTo(map);
+    map.on('click',e=>{if(!drawing)return;if(!corner){corner=e.latlng;mm('Now click the opposite corner.');return}
+      let a=corner,b=e.latlng;const dy=(b.lat-a.lat)*111320,dx=(b.lng-a.lng)*111320*Math.cos(a.lat*Math.PI/180);
+      const cl=v=>Math.sign(v)*Math.min(Math.abs(v),500);const ndy=cl(dy),ndx=cl(dx);
+      b=L.latLng(a.lat+ndy/111320,a.lng+ndx/(111320*Math.cos(a.lat*Math.PI/180)));
+      if(box)box.remove();box=L.rectangle(L.latLngBounds(a,b),{color:'#ff6f59',weight:3,fillOpacity:.08}).addTo(map);
+      drawing=false;corner=null;document.getElementById('mDraw').setAttribute('aria-pressed','false');document.getElementById('mGo').disabled=false;
+      mm(`Area ${Math.round(Math.abs(ndx))} m × ${Math.round(Math.abs(ndy))} m${(Math.abs(dx)>500||Math.abs(dy)>500)?' (limited to 500 m)':''}. Press Get photo.`)});
+  }
+  document.getElementById('mDraw').onclick=()=>{if(!map)return;drawing=true;corner=null;document.getElementById('mDraw').setAttribute('aria-pressed','true');mm('Click the first corner of your area.')};
+  // OpenStreetMap parking tags -> spaces per metre of street (same rules as our Wazemmes counts)
+  const OKV=new Set(['lane','street_side','half_on_kerb','on_kerb','parallel','diagonal','perpendicular','marked']),SP={parallel:5.5,diagonal:3.0,perpendicular:2.5};
+  function sideSpaces(t,side,L){
+    let v=t['parking:'+side]??t['parking:both'],o=t['parking:'+side+':orientation']??t['parking:both:orientation'];
+    if(v==null){v=t['parking:lane:'+side]??t['parking:lane:both'];if(v!=null&&SP[v])o=v}
+    if(v==null||!OKV.has(v))return 0;return Math.max(0,Math.floor((L-10)/(SP[o]||5.5)))}
+  document.getElementById('mGo').onclick=async()=>{
+    if(!box)return;const go=document.getElementById('mGo');go.disabled=true;
+    try{
+      const bb=box.getBounds(),S=bb.getSouth(),N=bb.getNorth(),W=bb.getWest(),E=bb.getEast(),lat0=(S+N)/2;
+      const hm=(N-S)*111320,wm=(E-W)*111320*Math.cos(lat0*Math.PI/180),g=0.20,Wp=Math.round(wm/g),Hp=Math.round(hm/g);
+      mm('Downloading the IGN photo…');
+      const url=`https://data.geopf.fr/wms-r?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=${document.getElementById('mYear').value}&STYLES=&CRS=EPSG:4326&BBOX=${S},${W},${N},${E}&WIDTH=${Wp}&HEIGHT=${Hp}&FORMAT=image/jpeg`;
+      let b;try{const r=await fetch(url);if(!r.ok)throw new Error(r.status);b=await createImageBitmap(await r.blob())}
+      catch(e){mm('The IGN photo could not be downloaded here (blocked or offline). Open this page from our GitHub site, or download it with the link in the console and load it as your photo.');console.log('IGN photo link:',url);throw e}
+      mm('Downloading OpenStreetMap parking…');
+      const q=`[out:json][timeout:25];(way["highway"]["parking:left"](${S},${W},${N},${E});way["highway"]["parking:right"](${S},${W},${N},${E});way["highway"]["parking:both"](${S},${W},${N},${E});way["highway"]["parking:lane:left"](${S},${W},${N},${E});way["highway"]["parking:lane:right"](${S},${W},${N},${E});way["highway"]["parking:lane:both"](${S},${W},${N},${E});way["amenity"="parking"](${S},${W},${N},${E}););out geom;`;
+      let osm={elements:[]};try{const r=await fetch('https://overpass-api.de/api/interpreter',{method:'POST',body:'data='+encodeURIComponent(q),headers:{'Content-Type':'application/x-www-form-urlencoded'}});if(!r.ok)throw new Error(r.status);osm=await r.json()}
+      catch(e){mm('OpenStreetMap could not be reached; the parking will be found automatically from the cars.')}
+      const px=(lon,lat)=>[(lon-W)/(E-W)*Wp,(N-lat)/(N-S)*Hp],U=[];
+      // keep only what lies inside the square: cut street segments and car-park outlines at its edge
+      const clipSeg=(a,b)=>{let t0=0,t1=1;const dx=b[0]-a[0],dy=b[1]-a[1];for(const [p,q] of [[-dx,a[0]],[dx,Wp-a[0]],[-dy,a[1]],[dy,Hp-a[1]]]){if(p===0){if(q<0)return null}else{const r=q/p;if(p<0)t0=Math.max(t0,r);else t1=Math.min(t1,r)}}return t0<t1?[[a[0]+t0*dx,a[1]+t0*dy],[a[0]+t1*dx,a[1]+t1*dy]]:null};
+      const clipPoly=P=>{for(const [ax,v,ge] of [[0,0,1],[0,Wp,0],[1,0,1],[1,Hp,0]]){const o=[],ins=q=>ge?q[ax]>=v:q[ax]<=v,X=(p,c)=>{const t=(v-p[ax])/(c[ax]-p[ax]);return[p[0]+t*(c[0]-p[0]),p[1]+t*(c[1]-p[1])]};
+        for(let i=0;i<P.length;i++){const c=P[i],p=P[(i+P.length-1)%P.length];if(ins(c)){if(!ins(p))o.push(X(p,c));o.push(c)}else if(ins(p))o.push(X(p,c))}P=o;if(!P.length)break}return P};
+      const area=P=>{let a=0;for(let i=0,j=P.length-1;i<P.length;j=i++)a+=(P[j][0]+P[i][0])*(P[j][1]-P[i][1]);return Math.abs(a/2)};
+      for(const w of osm.elements||[]){if(!w.geometry||w.geometry.length<2)continue;const t=w.tags||{},p=w.geometry.map(q=>px(q.lon,q.lat));
+        if(t.amenity==='parking'){if(['private','customers','no'].includes(t.access)||['multi-storey','underground','rooftop'].includes(t.parking))continue;
+          const C=clipPoly(p);if(C.length<3)continue;const full=area(p),part=area(C);if(part*g*g<50)continue;
+          const cap=/^\d+$/.test(t.capacity||'')?Math.max(1,Math.round(+t.capacity*part/full)):null;U.push({t:'area',n:t.name||'public car park',p:C,cap})}
+        else{let Lm=0;for(let i=1;i<p.length;i++)Lm+=Math.hypot(p[i][0]-p[i-1][0],p[i][1]-p[i-1][1])*g;const cap=sideSpaces(t,'left',Lm)+sideSpaces(t,'right',Lm);
+          if(cap>0)for(let i=1;i<p.length;i++){const sgm=clipSeg(p[i-1],p[i]);if(sgm&&Math.hypot(sgm[1][0]-sgm[0][0],sgm[1][1]-sgm[0][1])*g>1)U.push({t:'line',n:t.name||'unnamed street',p:sgm,spm:cap/Lm,band:7})}}}
+      document.getElementById('tSample').value='';document.getElementById('tGsd').value='0.20';
+      window.__loadArea(b,U,`IGN photo of your area (${Math.round(wm)} m × ${Math.round(hm)} m): ${U.length?'OpenStreetMap parking drawn ('+new Set(U.map(u=>u.n)).size+' streets and car parks)':'no parking mapped in OpenStreetMap here, so it will be found automatically'}.`);
+      mm('Done: the count is below.');document.getElementById('tDrop').scrollIntoView({behavior:'smooth',block:'center'});
+    }catch(e){console.error(e)}
+    go.disabled=false};
+  if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>{if(es.some(x=>x.isIntersecting)){io.disconnect();initMap()}});io.observe(el)}else initMap();
+}
+</script>
+</body>
+</html>
