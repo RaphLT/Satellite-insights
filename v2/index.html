@@ -12,7 +12,7 @@
    IDEA: a parking survey map of one Lille district, re-surveyed on three dates.
    PICTURE: the aerial photo with every street painted by how full it is; switch the date, the paint changes.
    COLOUR and TYPE: deep green authority ground, lime-white, coral for full; Inter Tight + Inter.
-   LAYOUT: finding and key figures across the top, map wide, evidence tables, then the business case. */
+   LAYOUT: finding and key figures across the top, map wide and the upload tool. */
 :root{color-scheme:light dark;--bg:light-dark(#ffffff,#0f1513);--ink:light-dark(#10201c,#e9f1ec);--ink2:light-dark(#4b5a55,#a9b8b1);--line:light-dark(#dfe5e2,#2a3632);--card:light-dark(#f5f8f6,#16201d);--green:#00463c;--lime:#e6f5c8;--coral:#ff6f59;--deep:#b8321f}
 :root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
 *{box-sizing:border-box;min-width:0}
@@ -175,59 +175,11 @@ a{color:inherit}
   <p class="src">Why this matters: a count from a retail car park would overstate how well the method works in a city. That is why we measured the errors on the streets themselves and correct every estimate for them.</p>
 </div></section>
 
-<section class="band"><div class="wrap">
-  <h2>We tried to make the model better by retraining it. The original model still wins</h2>
-  <p style="max-width:760px;color:var(--ink2)">The professor asked us to label the IGN photos and retrain. We did, four ways. Each Wazemmes square was scored by a version that had not seen it, and the confidence cut-off was chosen on the other squares only. The original model, trained on over 32,000 cars in the public COWC aerial dataset, beats every retrained version: about 300 local cars teach it less than they make it forget. What did help was choosing its cut-off properly (0.10 instead of 0.25): cars found rose from 64% to 82%.</p>
-  <div class="scroll"><table class="stack">
-    <thead><tr><th>Model (street and car-park cars, 6 squares)</th><th class="n">Found</th><th class="n">False marks</th><th class="n">Missed</th><th class="n">Real-car share</th><th class="n">Cars found</th></tr></thead>
-    <tbody id="cv"></tbody></table></div>
-  <div class="src">Confusion matrix per run: Found = true positives, False marks = false positives, Missed = false negatives (no true negatives exist when counting objects). Seed 0 for every run; folds {1,2}, {3,4}, {5,6}; a mark counts as right within 1.5 m of a labelled car.</div>
-</div></section>
-
-<section class="band" style="background:var(--card)"><div class="wrap">
-  <h2>Is it reliable enough to sell? Three tests it had never seen</h2>
-  <div class="cols">
-    <div><h3>Other dates, same streets</h3><p>We hand-corrected the same squares on the 2018 and 2021 photos. On a normal day it stays as accurate as on the photo we tuned it on.</p>
-      <div class="bars" id="dates"></div>
-      <p style="font-size:13.5px">2021 was a market day: 30 of its marks on the market square were stalls, not cars. Labels for these years started from the model's own marks, so "found" may be slightly flattering.</p></div>
-    <div><h3>Paid-satellite sharpness</h3><p>Paid satellites shoot at 30 cm per pixel, IGN at 20 cm. We blurred our labelled squares to 30 cm and 50 cm and counted again.</p>
-      <div class="bars" id="res"></div>
-      <p style="font-size:13.5px">At 30 cm it still finds 77% of cars with 90% of marks real: 30 cm satellites are viable, 50 cm ones are not.</p></div>
-    <div><h3>It follows real change</h3><p>On the street squares hand-counted on both photos, there were 76 cars in 2018 against 143 on the latest photo. The model's district total fell by about the same half (666 against 1,381 estimated cars).</p>
-      <p>And Place de la Nouvelle Aventure went from full of cars, to an empty square after a market (2018), to covered by market stalls (2021): a single photo tells you little; repeated photos tell you the pattern.</p></div>
-  </div>
-</div></section>
-
-<section class="band"><div class="wrap">
-  <h2>From one free photo every few years to a weekly service for many towns</h2>
-  <p style="max-width:780px;color:var(--ink2)">IGN flies over Lille only every few years, so the free photos prove the method but cannot run a service. Paid 30 cm satellites can photograph the same streets every week. What a weekly service would take:</p>
-  <div class="mapgrid" style="grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)">
-    <ol class="steps">
-      <li><b>Buy a weekly 30 cm photo of each town.</b> Pléiades Neo and WorldView-3 sell new 30 cm images, with a minimum order of about 100 km² per area for new shots. Clouds over Lille will spoil some weeks; the service reports the latest clear week.</li>
-      <li><b>Map the spaces once per town.</b> OpenStreetMap already tags kerb parking in Wazemmes; where it doesn't, a city's own parking plan fills the gap. This is a one-off cost per town.</li>
-      <li><b>Train on many towns and dates, not one.</b> Our test shows 300 local cars are not enough. With the model pre-marking cars and a person only correcting, one of us checked about 250 cars in some 15 minutes, so a few thousand cars per town is a few hours of work, and each weekly photo adds new light, seasons and markets.</li>
-      <li><b>Score every week against a small hand-checked sample.</b> Each run states its precision, recall and seed, as we did here, so a city sees the error bar, not just a number.</li>
-      <li><b>Sell the pattern, not a live map.</b> Cities (the mayor sets parking rules) and parking-data firms buy weekly occupancy by street and its trend; drivers get it through them. A live "free space now" app would need cameras or sensors, not satellites.</li>
-    </ol>
-    <div>
-      <div class="cost"><span class="src" style="margin:0">Imagery cost of a weekly 100 km² town (new 30 cm Pléiades Neo shot at $42.50 per km²)</span><b class="k">≈ $4,250 / week</b><span>≈ $221,000 a year, before staff and computing</span></div>
-      <div class="cost"><span class="src" style="margin:0">Cheaper if archive photos are enough (30 cm Pléiades Neo archive at $22.50 per km², 25 km² minimum)</span><b class="k">≈ $2,250 / 100 km²</b><span>but no control over the date</span></div>
-      <div class="cost"><span class="src" style="margin:0">Computing: our model counted Wazemmes (1 km²) in 56 seconds on two ordinary processor cores</span><b class="k">≈ 100 km² in under 2 hours</b><span>per weekly photo, no graphics card needed</span></div>
-      <p class="src">Prices: Land Info satellite imagery price list (USD per km², 2026); UP42 Pléiades Neo page (minimum charge per 100 km²). Our own arithmetic for the totals.</p>
-    </div>
-  </div>
-  <p style="max-width:780px"><b>Why a newcomer could win:</b> sensor and app players such as Parkopedia know car parks with gates and sensors; nobody measures ordinary kerb parking across whole districts, where most spaces are. Satellite counting covers every street at once, with no hardware in the street. <b>What would stop it:</b> the cost of weekly imagery compared with what cities will pay, and clouds.</p>
-</div></section>
-
 <footer class="band"><div class="wrap">
-  <h3>Method, limits and sources</h3>
+  <h3>Sources</h3>
   <ul>
-    <li>Model: YOLO11n (Ultralytics) trained by us on COWC aerial car images; photos resampled to 10 cm per pixel, cut-off 0.10, duplicates within 1.5 m merged.</li>
-    <li>Occupancy = cars on a street (within 7 m of its centre line) or inside a public car park, × precision ÷ recall (0.895 ÷ 0.819), ÷ (1 − share of the parking area under trees in that date's infrared photo). Spaces: 5.5 m per parallel space, 3.0 m diagonal, 2.5 m perpendicular, minus 10 m per street for crossings; car parks use their capacity tag or 25 m² per space.</li>
-    <li>Limits: the photos' exact days and hours are not published; capacity ignores driveways and loading bays; test labels were checked by one person; the 30 cm test blurs aerial photos, which only approximates a real satellite image.</li>
     <li>Photos: IGN Géoplateforme WMS (ORTHOIMAGERY.ORTHOPHOTOS, ORTHOPHOTOS2018, ORTHOPHOTOS2021 and their infrared versions). Spaces: © OpenStreetMap contributors (ODbL).</li>
-    <li>Imagery prices: <a href="https://landinfo.com/satellite-imagery-pricing/">landinfo.com/satellite-imagery-pricing</a>; <a href="https://docs.up42.com/data/pleiades-neo">docs.up42.com/data/pleiades-neo</a>.</li>
-    <li>First prototype (car counter for retail car parks): <a href="https://claude.ai/artifact/SjKwRXc2egcFFpiD5uovLb">claude.ai/artifact/SjKwRXc2egcFFpiD5uovLb</a>.</li>
+    <li>First prototype (car counter for retail car parks): <a href="../">raphlt.github.io/Satellite-insights</a>.</li>
   </ul>
 </div></footer>
 
@@ -237,14 +189,8 @@ const DATES={current:{label:'Latest IGN photo',note:'Normal day. Place de la Nou
  '2021':{label:'2021 · market day',note:'Market stalls cover Place de la Nouvelle Aventure, so that car park is closed; its count is mostly stalls.'},
  '2018':{label:'2018 · after a market',note:'The market square is empty and littered: the photo was taken just after a market.'}};
 const SUM={current:{s:[4154,1381,.332],c:.475},'2021':{s:[4154,1477,.355],c:null},'2018':{s:[4154,666,.16],c:.074}};
-const CV=[['Original model, cut-off chosen properly (0.10)',331,39,73,.895,.819,1],['Retrained: Englos + Wazemmes (Wazemmes ×3)',289,40,115,.878,.715],['Gentle retraining: Wazemmes ×3, 10 layers frozen',313,85,91,.786,.775],['Retrained: Wazemmes only',279,63,125,.816,.691],['Retrained: Englos only (our first try)',292,121,112,.707,.723],['Original model, old cut-off (0.25)',258,16,146,.942,.639]];
-const DT=[['Latest photo',.895,.819],['2018',.966,.792],['2021 market',.768,.725]];
-const RS=[['20 cm (IGN)',.895,.819],['30 cm',.896,.767],['50 cm',.798,.626]];
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const pct=x=>Math.round(x*100)+'%';
-document.getElementById('cv').innerHTML=CV.map(r=>`<tr${r[6]?' class="win"':''}><td>${r[0]}</td><td class="n">${r[1]}</td><td class="n">${r[2]}</td><td class="n">${r[3]}</td><td class="n">${pct(r[4])}</td><td class="n">${pct(r[5])}</td></tr>`).join('');
-const bars=(rows)=>'<div class="r" style="font-size:13.5px;color:var(--ink2)"><span></span><span>bar: share of cars found</span><span></span></div>'+rows.map(r=>`<div class="r"><span>${r[0]}</span><div class="t" title="cars found"><i style="width:${r[2]*100}%"></i></div><span>${pct(r[2])}</span></div><div class="r" style="margin-top:-4px;font-size:13.5px;color:var(--ink2)"><span></span><span>real-car share of marks</span><span>${pct(r[1])}</span></div>`).join('');
-document.getElementById('dates').innerHTML=bars(DT);document.getElementById('res').innerHTML=bars(RS);
 const col=o=>{const s=[[0,'#fff3c4'],[.35,'#ffb35c'],[.7,'#ff6f59'],[1,'#b8321f']];o=Math.max(0,Math.min(1,o));for(let i=1;i<s.length;i++)if(o<=s[i][0]){const a=s[i-1],b=s[i],t=(o-a[0])/(b[0]-a[0]),h=x=>parseInt(x,16),c=k=>Math.round(h(a[1].substr(k,2))*(1-t)+h(b[1].substr(k,2))*t);return `rgb(${c(1)},${c(3)},${c(5)})`}return s[3][1]};
 let DATA=null,cur='current';
 const tabs=document.getElementById('tabs'),ov=document.getElementById('ov'),tip=document.getElementById('tip'),map=document.getElementById('map');
