@@ -46,7 +46,8 @@ Every prompt we sent, in order. Prompts are copied verbatim, including typos.
 | 29 | 25 Nov 2026 | Claude Code (Opus 5.5) | "Yes, add it" (to adding a v2 limits paragraph to this appendix) | Added a paragraph on Prototype v2 to section B: what it does, how it was tested, its accuracy, and its limits. |
 | 30 | 25 Nov 2026 | Claude Code (Opus 5.5) | "@/Users/raph/Downloads/satellite-insight 4/ we need to do this one get a new link please" | Found a newer v2 page in that folder: a live map where you draw a square anywhere in France and the page downloads the IGN photo and OpenStreetMap parking and counts free spaces, plus automatic finding of rows of parked cars. Published it at a new address, https://raphlt.github.io/Satellite-insights/v3/, kept the earlier page at /v2/, pointed the car counter's "New" link to v3, and updated `CLAUDE.md`. |
 | 31 | 25 Nov 2026 | Claude Code (Opus 5.5) | "ça compte a des endroits mais il semble que ça ne marque pas les rues" | Found two causes. The OpenStreetMap server (Overpass) often refuses or times out; the page then fell back to finding rows from the cars and hid the warning behind "Done". Also, only streets with parking mapped in OpenStreetMap are marked. Made the v3 page try OpenStreetMap three times and say clearly when the streets are missing and why. |
-| 32 | [date] | [tool] | [add every further prompt here, verbatim] | |
+| 32 | 25 Nov 2026 | Claude Code (Opus 5.5) | "Ajouter un 2e serveur" | Tested public Overpass servers: none answered. The main OpenStreetMap server did, so the v3 page now asks it when Overpass is busy, keeping the same streets and car parks. |
+| 33 | [date] | [tool] | [add every further prompt here, verbatim] | |
 
 ## B. What works, what does not, what it was tested on, who did what
 
