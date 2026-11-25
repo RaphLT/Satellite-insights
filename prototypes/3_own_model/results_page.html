@@ -14,7 +14,7 @@ figcaption{font-size:13px;color:var(--ink2);margin-top:8px} .two{display:grid;gr
 .note{font-size:13.5px;color:var(--ink2)} a{color:var(--blue)} footer{margin-top:40px;font-size:12.5px;color:var(--muted)}
 </style></head><body><main>
 <h1>Can we train our own car counter from scratch?</h1>
-<p class="sub">Group 7 · AI for Business &amp; Society, SKEMA Lille · Prototype 3. Case: Orbital Insight. In Prototype 2 we reused a ready-made model; here we train one ourselves.</p>
+<p class="sub">Group 8 · AI for Business &amp; Society, SKEMA Lille · Prototype 3. Case: Orbital Insight. In Prototype 2 we reused a ready-made model; here we train one ourselves.</p>
 <div class="verdict"><b>Yes, and on the images it was trained for, it is as good as the ready-made model.</b> We trained a small model on <b>515 cars</b> marked by hand in four COWC tiles, in about an hour on a laptop-class CPU. On a tile it never saw, it found <b>90%</b> of the cars, and <b>96%</b> of its detections were real cars. The ready-made model, trained on the DOTA dataset of <b>188,282</b> labelled objects, scored <b>94%</b> and <b>91%</b>. But ours is a specialist: on the softer French IGN photos, the settings chosen on Potsdam miss about a third of the cars until we loosen them.</div>
 <p class="note"><b>Correction (18 Nov):</b> an earlier version of this page said our model was clearly worse (65% found). That came from a bug in our test code, which passed image colours in the wrong order. Training was not affected; every test below has been re-run with the bug fixed.</p>
 

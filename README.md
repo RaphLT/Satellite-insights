@@ -1,9 +1,11 @@
-# Satellite Insight: Group 7
+# Satellite Insight: Group 8
 
 Was selling AI-processed satellite data to investors a viable business for a startup like Orbital Insight?
-Group 7 (AI for Business & Society, SKEMA Lille): Raphael Le Theo, Dinis Ramalhao, Dorian Barrier, Gabin Routier.
+Group 8 (AI for Business & Society, SKEMA Lille): Raphael Le Theo, Dinis Ramalhao, Dorian Barrier, Gabin Routier.
 
-The official prototype is **Car Counter from Above** (`site/`, live at https://raphlt.github.io/Satellite-insights/), an in-browser car counter. Supporting work:
+The official prototype is **Car Counter from Above** (`site/`, live at https://raphlt.github.io/Satellite-insights/), an in-browser car counter. Prototype v2, **Wazemmes Parking from Above** (free parking spaces from aerial photos), is at https://raphlt.github.io/Satellite-insights/v2/ (`site/v2/`; code and results in `prototypes/5_parking_v2/`).
+
+Supporting work:
 
 1. How a data signal loses value as more funds buy it: `prototypes/1_signal_decay/`
 2. Can a student rebuild Orbital Insight's car counter? `prototypes/2_car_counter/`

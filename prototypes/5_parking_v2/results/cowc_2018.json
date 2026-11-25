@@ -1,0 +1,38 @@
+{
+ "2018": {
+  "all": {
+   "TP": 61,
+   "FP": 9,
+   "FN": 15,
+   "precision": 0.871,
+   "recall": 0.803
+  },
+  "streets": {
+   "TP": 57,
+   "FP": 2,
+   "FN": 15,
+   "precision": 0.966,
+   "recall": 0.792
+  },
+  "per_square": {
+   "1": {
+    "cars": 0,
+    "found": 0,
+    "false": 2,
+    "missed": 0
+   },
+   "2": {
+    "cars": 42,
+    "found": 35,
+    "false": 6,
+    "missed": 7
+   },
+   "3": {
+    "cars": 34,
+    "found": 26,
+    "false": 1,
+    "missed": 8
+   }
+  }
+ }
+}

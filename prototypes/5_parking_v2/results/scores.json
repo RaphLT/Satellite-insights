@@ -1,0 +1,117 @@
+{
+ "cowc_only": {
+  "thresholds": [
+   0.1,
+   0.1,
+   0.1
+  ],
+  "all": {
+   "TP": 357,
+   "FP": 190,
+   "FN": 75,
+   "precision": 0.653,
+   "recall": 0.826,
+   "F1": 0.729
+  },
+  "streets": {
+   "TP": 331,
+   "FP": 39,
+   "FN": 73,
+   "precision": 0.895,
+   "recall": 0.819,
+   "F1": 0.855
+  }
+ },
+ "englos+waz3": {
+  "thresholds": [
+   0.25,
+   0.25,
+   0.2
+  ],
+  "all": {
+   "TP": 315,
+   "FP": 82,
+   "FN": 117,
+   "precision": 0.793,
+   "recall": 0.729,
+   "F1": 0.76
+  },
+  "streets": {
+   "TP": 289,
+   "FP": 40,
+   "FN": 115,
+   "precision": 0.878,
+   "recall": 0.715,
+   "F1": 0.789
+  }
+ },
+ "englos_only": {
+  "thresholds": [
+   0.3,
+   0.3,
+   0.3
+  ],
+  "all": {
+   "TP": 306,
+   "FP": 430,
+   "FN": 126,
+   "precision": 0.416,
+   "recall": 0.708,
+   "F1": 0.524
+  },
+  "streets": {
+   "TP": 292,
+   "FP": 121,
+   "FN": 112,
+   "precision": 0.707,
+   "recall": 0.723,
+   "F1": 0.715
+  }
+ },
+ "waz": {
+  "thresholds": [
+   0.4,
+   0.4,
+   0.35
+  ],
+  "all": {
+   "TP": 297,
+   "FP": 148,
+   "FN": 135,
+   "precision": 0.667,
+   "recall": 0.688,
+   "F1": 0.677
+  },
+  "streets": {
+   "TP": 279,
+   "FP": 63,
+   "FN": 125,
+   "precision": 0.816,
+   "recall": 0.691,
+   "F1": 0.748
+  }
+ },
+ "waz3gentle": {
+  "thresholds": [
+   0.15,
+   0.15,
+   0.15
+  ],
+  "all": {
+   "TP": 336,
+   "FP": 169,
+   "FN": 96,
+   "precision": 0.665,
+   "recall": 0.778,
+   "F1": 0.717
+  },
+  "streets": {
+   "TP": 313,
+   "FP": 85,
+   "FN": 91,
+   "precision": 0.786,
+   "recall": 0.775,
+   "F1": 0.781
+  }
+ }
+}

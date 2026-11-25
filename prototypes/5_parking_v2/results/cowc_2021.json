@@ -1,0 +1,38 @@
+{
+ "2021": {
+  "all": {
+   "TP": 121,
+   "FP": 82,
+   "FN": 56,
+   "precision": 0.596,
+   "recall": 0.684
+  },
+  "streets": {
+   "TP": 116,
+   "FP": 35,
+   "FN": 44,
+   "precision": 0.768,
+   "recall": 0.725
+  },
+  "per_square": {
+   "1": {
+    "cars": 6,
+    "found": 5,
+    "false": 30,
+    "missed": 1
+   },
+   "2": {
+    "cars": 91,
+    "found": 66,
+    "false": 21,
+    "missed": 25
+   },
+   "3": {
+    "cars": 80,
+    "found": 50,
+    "false": 31,
+    "missed": 30
+   }
+  }
+ }
+}

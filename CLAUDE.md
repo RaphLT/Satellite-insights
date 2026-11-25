@@ -1,4 +1,4 @@
-# Satellite Insight: Group 7 project, SKEMA Lille
+# Satellite Insight: Group 8 project, SKEMA Lille
 
 ## What this project is
 A student project for the course *AI for Business & Society* (SKEMA Business School, Lille).
@@ -21,6 +21,76 @@ Our thesis: the signal was worth most while few funds had it. It lost value as i
 The professor's rules (all must hold): 1) public link, no login; 2) uses our case data; 3) prompt log appendix with every prompt, tool and date (`docs/APPENDIX_prompt_log_and_limits.md`; **keep adding prompts**); 4) one honest limits paragraph including who did what (team: Raphael Le Theo, Dinis Ramalhao, Dorian Barrier, Gabin Routier; who did what still to fill in); 5) the prototype appears in the three-page note and on slide 9. The user handles rule 5 themselves.
 Only ONE prototype counts. Question A is on the professor's list. Prototypes 1–3 are supporting work; the time series (4) is NOT on the list and needs his written yes.
 
+## Prototype v2: "Wazemmes Parking from Above" (Session 9)
+**Question it answers:** can free aerial photos plus an open AI model measure how full a city district's public parking is, and could paid weekly satellite photos turn that into a service for many towns?
+Also published as a claude.ai artifact: https://claude.ai/artifact/9CRQXJrTDybZfxNWyUNBRP (private until the user shares it).
+
+What the page does (all in the browser, nothing uploaded):
+- Map of Wazemmes (Lille, about 1 km²) on 3 IGN photo dates (latest, 2021 market day, 2018), every street coloured by estimated occupancy.
+- **Upload tool:** load any aerial photo (or one of 12 hand-checked Wazemmes squares with OpenStreetMap parking pre-drawn), set metres per pixel, draw rows of parked cars or car-park outlines, and press "Count free spaces". Output: free spaces with a range, and a table per street.
+- Sections: how it works step by step; why city streets are harder than retail car parks; retraining results (confusion matrices); tests on other dates and at satellite sharpness; the business case for weekly paid photos.
+
+Method (same model as v1, `own-model.wasm` = YOLO11n trained on COWC; the "new" part is the method):
+1. Resize the photo to 0.10 m/px and cut it into 640 px tiles with a 96 px overlap.
+2. Keep detections with confidence ≥ **0.10** (chosen by 3-fold cross-validation, seed 0; v1 used 0.25). Merge marks within 1.5 m.
+3. Keep only cars inside parking: within 7 m of an OpenStreetMap street centre line tagged `parking:*`, inside a public `amenity=parking` polygon, or within 3 m of a row the user draws.
+4. Spaces: kerb length ÷ 5.5 m (parallel), 3.0 m (angled), 2.5 m (perpendicular), minus 10 m per street; car parks use `capacity` or area ÷ 25 m².
+5. Corrected cars = seen × precision ÷ recall (0.895 ÷ 0.819) ÷ (1 − tree share; tree share from the IGN infrared photo, NDVI > 0.25).
+6. Free = spaces − corrected cars. Range from the 3 photo dates: correction factor 1.06 (2021) to 1.22 (2018).
+
+Key results (do not change without re-running; full tables in `prototypes/5_parking_v2/results/results_retrain_dates.md`):
+- **Cross-validation:** street and car-park cars on the latest photo, 6 hand-labelled squares, 432 cars:
+
+  | Run | Found | False | Missed | Precision | Recall |
+  |---|---|---|---|---|---|
+  | Original model, cut-off 0.10 (**winner**) | 331 | 39 | 73 | 89.5% | 81.9% |
+  | Retrained: Englos + Wazemmes ×3 | 289 | 40 | 115 | 87.8% | 71.5% |
+  | Gentle retraining: frozen, lr 0.002 | 313 | 85 | 91 | 78.6% | 77.5% |
+  | Retrained: Englos only | 292 | 121 | 112 | 70.7% | 72.3% |
+  | Retrained: Wazemmes only | 279 | 63 | 125 | 81.6% | 69.1% |
+  | Old cut-off 0.25 | 258 | 16 | 146 | 94.2% | 63.9% |
+
+  Lesson: about 300 local cars are not enough to retrain on; a properly chosen cut-off helped more.
+- **Other dates**, street and car-park cars, labels corrected from model pre-marks, so recall may be flattering:
+  - 2018: precision 96.6%, recall 79.2%.
+  - 2021 market day: precision 76.8%, recall 72.5%; 30 false marks were market stalls.
+- **Satellite sharpness test** (photos blurred to that resolution): 30 cm gives precision 89.6%, recall 76.7%; 50 cm gives 79.8% and 62.6%. So 30 cm satellites are viable and 50 cm ones are not.
+- **Retail car parks vs city streets**, same model, cut-off 0.25, whole picture:
+  - Englos: precision 80.6%, recall 90.9% (1,181 cars).
+  - Wazemmes: precision 77.1%, recall 63.9% (432 cars).
+- **Street occupancy** (4,154 street spaces from OpenStreetMap):
+  - latest photo: 33% (≈1,381 cars);
+  - 2021: 36%;
+  - 2018: 16%. The hand labels confirm about half as many cars in 2018.
+- **Business inputs** (Land Info price list, 2026; UP42):
+  - New 30 cm Pléiades Neo shots cost $42.50/km², with a 100 km² minimum, so ≈ $4,250 per weekly town (our arithmetic). Archive photos cost $22.50/km².
+  - The model counts 1 km² in 56 s on 2 CPU cores.
+
+Where it lives in this repository:
+- `site/v2/`: the site (copied from `prototypes/5_parking_v2/web/`), live at https://raphlt.github.io/Satellite-insights/v2/. The old tool's page links to it ("New: count free parking spaces (v2)").
+
+Folder `prototypes/5_parking_v2/`:
+- `code/`: Python, in run order:
+  - `prep_ign.py` and `train_ign.py`: Englos fine-tune;
+  - `eval_waz.py`: test on Wazemmes;
+  - `cv.py` and `cv_score.py`: cross-validation recipes;
+  - `occupancy.py`: spaces and occupancy;
+  - `make_pack.py`: labelling packs for other dates;
+  - `eval_dates.py` and `occ_dates.py`: date tests and occupancy by date;
+  - `wazemmes_osm.geojson`: Overpass export.
+- `labels/`: YOLO-format hand labels; class 0 = car, class 1 = "maybe" that the user confirmed as a car.
+- `results/`: JSON outputs and the results table.
+
+The scripts still use workspace paths (`/home/claude/...`); adjust them before re-running. The IGN mosaics (5000×5000 px at 0.20 m/px, bbox 50.6220–50.6310 N, 3.0424–3.0566 E) are not included; links are in the results file.
+
+Limits to keep stating:
+- IGN flight days and hours are unknown.
+- Capacity ignores driveways and loading bays, so occupancy is a lower bound.
+- OpenStreetMap misses some kerbs.
+- Test labels were checked by one person.
+- The 30 cm test blurs aerial photos, which only approximates a real satellite image.
+- A live "free space now" app needs sensors or cameras, not satellites.
+
 ## Results (corrected 18 Nov after a colour-order bug; do not change numbers without re-running)
 **Bug note:** Ultralytics `predict()` treats numpy images as BGR. Our early code passed RGB, which degraded every Prototype 2/3 test. Fixed in `carcount.py` (`crop[..., ::-1]`). The ONNX/browser path feeds RGB directly and was never affected.
 
@@ -36,7 +106,8 @@ Only ONE prototype counts. Question A is on the professor's list. Prototypes 1�
 2012 image: `https://data.geopf.fr/wms-r/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&STYLES=&CRS=EPSG:4326&BBOX=50.62586,2.96105,50.63214,2.97095&WIDTH=2576&HEIGHT=2576&FORMAT=image/jpeg&LAYERS=ORTHOIMAGERY.ORTHOPHOTOS2012`
 
 ## Website (live)
-- https://raphlt.github.io/Satellite-insights/ is the car counter only (user's choice, 18 Nov). Repo: https://github.com/RaphLT/Satellite-insights
+- https://raphlt.github.io/Satellite-insights/ is the car counter only (user's choice, 18 Nov).
+- https://raphlt.github.io/Satellite-insights/v2/ is prototype v2, Wazemmes Parking from Above (added 25 Nov), served from `site/v2/`; the old page links to it. Repo: https://github.com/RaphLT/Satellite-insights
 - An earlier multi-page site (home, supporting pages, conclusion, appendix page) was removed from `site/`; it is in git history (commit "Merge updated project...") if ever needed.
 - The tool links to the prompt log on GitHub (`docs/APPENDIX_prompt_log_and_limits.md`).
 - Publish: commit, `git push`, then `git subtree push --prefix site origin gh-pages`. No GitHub Actions: the user's token cannot push workflow files.
@@ -44,6 +115,8 @@ Only ONE prototype counts. Question A is on the professor's list. Prototypes 1�
 ## Folder map
 - `prototypes/1_signal_decay/`: `index.html` (interactive, Chart.js), `signal_decay_simulation.ipynb`, `build.py` (generates the notebook), figures.
 - `site/`: the official prototype, Car Counter from Above (see above).
+- `site/v2/`: prototype v2, Wazemmes Parking from Above (see "Prototype v2").
+- `prototypes/5_parking_v2/`: v2 code, hand labels and results (`code/`, `labels/`, `results/`).
 - `prototypes/2_car_counter/`: `carcount.py` (**shared library, colour bug fixed**: tiling, detection, de-duplication, COWC label reading, matching), `run_eval.py`, Colab notebook, results page and images.
 - `prototypes/3_own_model/`: `train_prep.py` (COWC dots → YOLO dataset), `train.py`, `eval_own.py`, `train_own_model.ipynb`, trained weights `own_cowc_yolo11n.pt`, `results.csv`, results page.
 - `prototypes/4_englos_timeseries/`: `count_years.py`, partial results.

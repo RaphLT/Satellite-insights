@@ -1,0 +1,3245 @@
+{
+ "current": {
+  "detections": 3749,
+  "tree_share": 0.109,
+  "streets": {
+   "units": 96,
+   "spaces": 4154,
+   "visible": 1228,
+   "estimated": 1381,
+   "occupancy": 0.332
+  },
+  "car_parks": {
+   "units": 12,
+   "spaces": 570,
+   "visible": 213,
+   "estimated": 271,
+   "occupancy": 0.475
+  },
+  "nouvelle_aventure": [
+   {
+    "cap": 439,
+    "visible": 126,
+    "est": 158.7,
+    "hidden": 0.132
+   }
+  ],
+  "units": [
+   {
+    "kind": "car park",
+    "name": "Place de la Nouvelle Aventure",
+    "cap": 439,
+    "A": 10992.68,
+    "visible": 126,
+    "hidden_share": 0.132,
+    "est": 158.7
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 17,
+    "A": 443.92,
+    "visible": 1,
+    "hidden_share": 0.0,
+    "est": 1.1
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 26,
+    "A": 663.3200000000002,
+    "visible": 12,
+    "hidden_share": 0.328,
+    "est": 19.5
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 14,
+    "A": 363.6,
+    "visible": 12,
+    "hidden_share": 0.131,
+    "est": 15.1
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 19,
+    "A": 497.76000000000005,
+    "visible": 5,
+    "hidden_share": 0.009,
+    "est": 5.5
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 23,
+    "A": 583.6800000000001,
+    "visible": 18,
+    "hidden_share": 0.062,
+    "est": 21.0
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 7,
+    "A": 189.72000000000003,
+    "visible": 2,
+    "hidden_share": 0.77,
+    "est": 9.5
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 6,
+    "A": 160.76000000000002,
+    "visible": 10,
+    "hidden_share": 0.0,
+    "est": 10.9
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 5,
+    "A": 125.12,
+    "visible": 9,
+    "hidden_share": 0.0,
+    "est": 9.8
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 6,
+    "A": 171.08000000000004,
+    "visible": 6,
+    "hidden_share": 0.0,
+    "est": 6.6
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 2,
+    "A": 68.36,
+    "visible": 2,
+    "hidden_share": 0.0,
+    "est": 2.2
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 6,
+    "A": 167.60000000000002,
+    "visible": 10,
+    "hidden_share": 0.009,
+    "est": 11.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Bourignon",
+    "cap": 78,
+    "L": 225.44137299187875,
+    "visible": 19,
+    "hidden_share": 0.0,
+    "est": 20.8
+   },
+   {
+    "kind": "street",
+    "name": "Rue Saint-Eloi",
+    "cap": 21,
+    "L": 127.4021632573865,
+    "visible": 7,
+    "hidden_share": 0.003,
+    "est": 7.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue de Mourmant",
+    "cap": 28,
+    "L": 166.94408538716712,
+    "visible": 21,
+    "hidden_share": 0.0,
+    "est": 23.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Colbrant",
+    "cap": 34,
+    "L": 104.1535946202788,
+    "visible": 5,
+    "hidden_share": 0.0,
+    "est": 5.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue Durnerin",
+    "cap": 27,
+    "L": 161.25409835064772,
+    "visible": 20,
+    "hidden_share": 0.0,
+    "est": 21.9
+   },
+   {
+    "kind": "street",
+    "name": "Rue Littr\u00e9",
+    "cap": 79,
+    "L": 249.29487490241434,
+    "visible": 2,
+    "hidden_share": 0.011,
+    "est": 2.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue du Chaufour",
+    "cap": 28,
+    "L": 168.28606607086346,
+    "visible": 12,
+    "hidden_share": 0.0,
+    "est": 13.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue de la Paix d'Utrecht",
+    "cap": 26,
+    "L": 156.25635227424854,
+    "visible": 16,
+    "hidden_share": 0.0,
+    "est": 17.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue Alphonse Mercier",
+    "cap": 136,
+    "L": 386.6494320362043,
+    "visible": 40,
+    "hidden_share": 0.0,
+    "est": 43.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'Alger",
+    "cap": 34,
+    "L": 105.30901626467403,
+    "visible": 16,
+    "hidden_share": 0.028,
+    "est": 18.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Montgolfier",
+    "cap": 6,
+    "L": 45.18148705175321,
+    "visible": 4,
+    "hidden_share": 0.0,
+    "est": 4.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue Henri Kolb",
+    "cap": 114,
+    "L": 326.29287196030276,
+    "visible": 44,
+    "hidden_share": 0.0,
+    "est": 48.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue Louis Faure",
+    "cap": 7,
+    "L": 53.22128129560048,
+    "visible": 2,
+    "hidden_share": 0.077,
+    "est": 2.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue Meurein",
+    "cap": 78,
+    "L": 228.45308508285166,
+    "visible": 26,
+    "hidden_share": 0.026,
+    "est": 29.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'Anvers",
+    "cap": 25,
+    "L": 151.55333427176944,
+    "visible": 15,
+    "hidden_share": 0.0,
+    "est": 16.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue Ratisbonne",
+    "cap": 7,
+    "L": 53.90368814535057,
+    "visible": 2,
+    "hidden_share": 0.241,
+    "est": 2.9
+   },
+   {
+    "kind": "street",
+    "name": "Rue Charles Quint",
+    "cap": 0,
+    "L": 146.1581582401877,
+    "visible": 4,
+    "hidden_share": 0.001,
+    "est": 4.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue du Port",
+    "cap": 50,
+    "L": 152.46074507291593,
+    "visible": 18,
+    "hidden_share": 0.0,
+    "est": 19.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Fr\u00e8res Vaillant",
+    "cap": 52,
+    "L": 153.22004094511306,
+    "visible": 23,
+    "hidden_share": 0.012,
+    "est": 25.4
+   },
+   {
+    "kind": "street",
+    "name": "Place Philippe de Girard",
+    "cap": 0,
+    "L": 73.37720579746083,
+    "visible": 0,
+    "hidden_share": 0.387,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Lavoisier",
+    "cap": 9,
+    "L": 64.52287607749777,
+    "visible": 4,
+    "hidden_share": 0.004,
+    "est": 4.4
+   },
+   {
+    "kind": "street",
+    "name": "Place Philippe de Girard",
+    "cap": 24,
+    "L": 77.75617863761714,
+    "visible": 5,
+    "hidden_share": 0.411,
+    "est": 9.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue Catel Beghin",
+    "cap": 26,
+    "L": 156.35407828134245,
+    "visible": 17,
+    "hidden_share": 0.0,
+    "est": 18.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'Esquermes",
+    "cap": 1,
+    "L": 20.44947605107933,
+    "visible": 4,
+    "hidden_share": 0.0,
+    "est": 4.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue Davy",
+    "cap": 20,
+    "L": 123.60173998963405,
+    "visible": 9,
+    "hidden_share": 0.028,
+    "est": 10.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue de Brigode",
+    "cap": 37,
+    "L": 213.89026582121028,
+    "visible": 25,
+    "hidden_share": 0.007,
+    "est": 27.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'Antin",
+    "cap": 40,
+    "L": 232.97296623676198,
+    "visible": 27,
+    "hidden_share": 0.0,
+    "est": 29.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue de la Gendarmerie",
+    "cap": 9,
+    "L": 63.76948845436451,
+    "visible": 5,
+    "hidden_share": 0.0,
+    "est": 5.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue Manuel",
+    "cap": 62,
+    "L": 355.4605103255842,
+    "visible": 16,
+    "hidden_share": 0.019,
+    "est": 17.8
+   },
+   {
+    "kind": "street",
+    "name": "Rue Jules Lefebvre",
+    "cap": 64,
+    "L": 187.78275147820383,
+    "visible": 11,
+    "hidden_share": 0.004,
+    "est": 12.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue Corneille",
+    "cap": 49,
+    "L": 283.28670593699786,
+    "visible": 18,
+    "hidden_share": 0.273,
+    "est": 27.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue Chevreul",
+    "cap": 20,
+    "L": 123.23306696979137,
+    "visible": 10,
+    "hidden_share": 0.003,
+    "est": 11.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Hovelacque",
+    "cap": 14,
+    "L": 89.52536386128389,
+    "visible": 7,
+    "hidden_share": 0.019,
+    "est": 7.8
+   },
+   {
+    "kind": "street",
+    "name": "Rue Gustave Joncquet",
+    "cap": 50,
+    "L": 149.36161833155833,
+    "visible": 26,
+    "hidden_share": 0.0,
+    "est": 28.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue Sainte-Barbe",
+    "cap": 29,
+    "L": 170.95785586324078,
+    "visible": 3,
+    "hidden_share": 0.023,
+    "est": 3.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue Franklin",
+    "cap": 22,
+    "L": 131.68232142666193,
+    "visible": 10,
+    "hidden_share": 0.059,
+    "est": 11.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue de l'Amidonnerie",
+    "cap": 9,
+    "L": 62.83943747854516,
+    "visible": 2,
+    "hidden_share": 0.0,
+    "est": 2.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue Stappaert",
+    "cap": 26,
+    "L": 83.94651905070114,
+    "visible": 7,
+    "hidden_share": 0.0,
+    "est": 7.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'I\u00e9na",
+    "cap": 142,
+    "L": 405.70097391709027,
+    "visible": 51,
+    "hidden_share": 0.021,
+    "est": 56.9
+   },
+   {
+    "kind": "street",
+    "name": "Rue Saint-Pierre Saint-Paul",
+    "cap": 32,
+    "L": 98.1364126732444,
+    "visible": 17,
+    "hidden_share": 0.0,
+    "est": 18.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue Degland",
+    "cap": 22,
+    "L": 134.040273039097,
+    "visible": 11,
+    "hidden_share": 0.014,
+    "est": 12.2
+   },
+   {
+    "kind": "street",
+    "name": "Place de la Nouvelle Aventure",
+    "cap": 0,
+    "L": 81.59720591004942,
+    "visible": 0,
+    "hidden_share": 0.335,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Charles Quint",
+    "cap": 14,
+    "L": 91.71834140903819,
+    "visible": 13,
+    "hidden_share": 0.0,
+    "est": 14.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue du Soleil Levant",
+    "cap": 38,
+    "L": 118.42252060484603,
+    "visible": 8,
+    "hidden_share": 0.142,
+    "est": 10.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Meuniers",
+    "cap": 4,
+    "L": 34.6654337360744,
+    "visible": 1,
+    "hidden_share": 0.011,
+    "est": 1.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue Barth\u00e9l\u00e9my Delespaul",
+    "cap": 240,
+    "L": 674.7892062792375,
+    "visible": 15,
+    "hidden_share": 0.0,
+    "est": 16.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue du Faubourg Notre-Dame",
+    "cap": 10,
+    "L": 68.6082553408447,
+    "visible": 3,
+    "hidden_share": 0.011,
+    "est": 3.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue Mass\u00e9na",
+    "cap": 14,
+    "L": 52.42388433382497,
+    "visible": 10,
+    "hidden_share": 0.0,
+    "est": 10.9
+   },
+   {
+    "kind": "street",
+    "name": "Rue Louis Faure",
+    "cap": 78,
+    "L": 224.74619121070566,
+    "visible": 29,
+    "hidden_share": 0.0,
+    "est": 31.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue de l'Abb\u00e9 Aerts",
+    "cap": 14,
+    "L": 52.596726633342875,
+    "visible": 5,
+    "hidden_share": 0.005,
+    "est": 5.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue Volta",
+    "cap": 14,
+    "L": 92.20118843469425,
+    "visible": 16,
+    "hidden_share": 0.0,
+    "est": 17.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue Auber",
+    "cap": 106,
+    "L": 306.92507841625996,
+    "visible": 10,
+    "hidden_share": 0.023,
+    "est": 11.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Postes",
+    "cap": 110,
+    "L": 317.59682522166406,
+    "visible": 32,
+    "hidden_share": 0.0,
+    "est": 35.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue de Solf\u00e9rino",
+    "cap": 26,
+    "L": 83.6779549707273,
+    "visible": 4,
+    "hidden_share": 0.0,
+    "est": 4.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue de Solf\u00e9rino",
+    "cap": 0,
+    "L": 16.05613596813451,
+    "visible": 1,
+    "hidden_share": 0.025,
+    "est": 1.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue Chateaubriand",
+    "cap": 15,
+    "L": 92.83472739137416,
+    "visible": 8,
+    "hidden_share": 0.0,
+    "est": 8.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue \u00c9mile Desmet",
+    "cap": 21,
+    "L": 130.68684586576663,
+    "visible": 10,
+    "hidden_share": 0.003,
+    "est": 11.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'I\u00e9na",
+    "cap": 58,
+    "L": 170.98142311689242,
+    "visible": 20,
+    "hidden_share": 0.066,
+    "est": 23.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue Newton",
+    "cap": 22,
+    "L": 131.5513888816779,
+    "visible": 5,
+    "hidden_share": 0.004,
+    "est": 5.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue Duhem",
+    "cap": 19,
+    "L": 116.04290421706003,
+    "visible": 3,
+    "hidden_share": 0.064,
+    "est": 3.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Stations",
+    "cap": 138,
+    "L": 392.698664267065,
+    "visible": 26,
+    "hidden_share": 0.004,
+    "est": 28.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue Henri Loyer",
+    "cap": 44,
+    "L": 135.9870851159986,
+    "visible": 20,
+    "hidden_share": 0.013,
+    "est": 22.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue de la Justice",
+    "cap": 108,
+    "L": 308.552438832648,
+    "visible": 29,
+    "hidden_share": 0.057,
+    "est": 33.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue Ratisbonne",
+    "cap": 65,
+    "L": 372.57867122011555,
+    "visible": 14,
+    "hidden_share": 0.026,
+    "est": 15.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Postes",
+    "cap": 178,
+    "L": 501.18914287618185,
+    "visible": 19,
+    "hidden_share": 0.0,
+    "est": 20.8
+   },
+   {
+    "kind": "street",
+    "name": "Rue du March\u00e9",
+    "cap": 58,
+    "L": 334.41902043558906,
+    "visible": 39,
+    "hidden_share": 0.036,
+    "est": 44.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Postes",
+    "cap": 3,
+    "L": 29.933060239827054,
+    "visible": 1,
+    "hidden_share": 0.217,
+    "est": 1.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Postes",
+    "cap": 3,
+    "L": 29.564381937682953,
+    "visible": 3,
+    "hidden_share": 0.078,
+    "est": 3.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Postes",
+    "cap": 5,
+    "L": 38.848086966844676,
+    "visible": 3,
+    "hidden_share": 0.114,
+    "est": 3.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Postes",
+    "cap": 5,
+    "L": 38.47467427546944,
+    "visible": 1,
+    "hidden_share": 0.191,
+    "est": 1.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue Colbert",
+    "cap": 15,
+    "L": 97.80983753185272,
+    "visible": 10,
+    "hidden_share": 0.054,
+    "est": 11.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue de Flandre",
+    "cap": 0,
+    "L": 145.680960827889,
+    "visible": 3,
+    "hidden_share": 0.052,
+    "est": 3.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue Corbet",
+    "cap": 34,
+    "L": 76.70157270907923,
+    "visible": 3,
+    "hidden_share": 0.011,
+    "est": 3.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'Arcole",
+    "cap": 12,
+    "L": 77.65796831205353,
+    "visible": 3,
+    "hidden_share": 0.006,
+    "est": 3.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue Racine",
+    "cap": 52,
+    "L": 296.50108366187624,
+    "visible": 21,
+    "hidden_share": 0.173,
+    "est": 27.8
+   },
+   {
+    "kind": "street",
+    "name": "Rue Nationale",
+    "cap": 21,
+    "L": 126.41461695479369,
+    "visible": 12,
+    "hidden_share": 0.222,
+    "est": 16.9
+   },
+   {
+    "kind": "street",
+    "name": "Rue Nationale",
+    "cap": 12,
+    "L": 46.63301660524817,
+    "visible": 5,
+    "hidden_share": 0.027,
+    "est": 5.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue du Port",
+    "cap": 24,
+    "L": 78.52490886323505,
+    "visible": 3,
+    "hidden_share": 0.0,
+    "est": 3.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue Nationale",
+    "cap": 54,
+    "L": 162.07560824949314,
+    "visible": 6,
+    "hidden_share": 0.0,
+    "est": 6.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue Meurein",
+    "cap": 52,
+    "L": 155.73073493200013,
+    "visible": 15,
+    "hidden_share": 0.001,
+    "est": 16.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue Mass\u00e9na",
+    "cap": 40,
+    "L": 123.78821113332185,
+    "visible": 14,
+    "hidden_share": 0.0,
+    "est": 15.3
+   },
+   {
+    "kind": "street",
+    "name": "Place Philippe de Girard",
+    "cap": 24,
+    "L": 77.28967537467892,
+    "visible": 2,
+    "hidden_share": 0.443,
+    "est": 3.9
+   },
+   {
+    "kind": "street",
+    "name": "Rue Jean Sans Peur",
+    "cap": 44,
+    "L": 132.95059570278363,
+    "visible": 11,
+    "hidden_share": 0.0,
+    "est": 12.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Deschodt",
+    "cap": 31,
+    "L": 183.25139979921053,
+    "visible": 16,
+    "hidden_share": 0.009,
+    "est": 17.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Postes",
+    "cap": 94,
+    "L": 272.8760991730089,
+    "visible": 0,
+    "hidden_share": 0.14,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Franklin",
+    "cap": 0,
+    "L": 15.82441297205483,
+    "visible": 0,
+    "hidden_share": 0.0,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue L\u00e9on Gambetta",
+    "cap": 358,
+    "L": 995.066917315397,
+    "visible": 67,
+    "hidden_share": 0.01,
+    "est": 74.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Stations",
+    "cap": 152,
+    "L": 432.2508319169254,
+    "visible": 26,
+    "hidden_share": 0.0,
+    "est": 28.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Stations",
+    "cap": 22,
+    "L": 131.78729347530165,
+    "visible": 7,
+    "hidden_share": 0.0,
+    "est": 7.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'Antin",
+    "cap": 8,
+    "L": 57.47734118315529,
+    "visible": 9,
+    "hidden_share": 0.0,
+    "est": 9.8
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'I\u00e9na",
+    "cap": 0,
+    "L": 17.49677386012352,
+    "visible": 1,
+    "hidden_share": 0.081,
+    "est": 1.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'I\u00e9na",
+    "cap": 0,
+    "L": 22.64521233622844,
+    "visible": 0,
+    "hidden_share": 0.002,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Le Glay",
+    "cap": 7,
+    "L": 52.57821085326914,
+    "visible": 3,
+    "hidden_share": 0.0,
+    "est": 3.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue de Solf\u00e9rino",
+    "cap": 22,
+    "L": 71.97713509605578,
+    "visible": 11,
+    "hidden_share": 0.0,
+    "est": 12.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Ratisbonne",
+    "cap": 11,
+    "L": 71.04749566320027,
+    "visible": 6,
+    "hidden_share": 0.0,
+    "est": 6.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue Duhem",
+    "cap": 6,
+    "L": 43.165338571181216,
+    "visible": 0,
+    "hidden_share": 0.0,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Newton",
+    "cap": 6,
+    "L": 43.8441171838285,
+    "visible": 0,
+    "hidden_share": 0.0,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'Antin",
+    "cap": 7,
+    "L": 51.008976748182796,
+    "visible": 4,
+    "hidden_share": 0.0,
+    "est": 4.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Stations",
+    "cap": 26,
+    "L": 85.70547751151605,
+    "visible": 8,
+    "hidden_share": 0.002,
+    "est": 8.8
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Stations",
+    "cap": 8,
+    "L": 56.956317860130355,
+    "visible": 2,
+    "hidden_share": 0.044,
+    "est": 2.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Stations",
+    "cap": 0,
+    "L": 45.703919385320916,
+    "visible": 3,
+    "hidden_share": 0.0,
+    "est": 3.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue Masquelier",
+    "cap": 6,
+    "L": 26.761525701958927,
+    "visible": 5,
+    "hidden_share": 0.0,
+    "est": 5.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue Masquelier",
+    "cap": 7,
+    "L": 25.408382981238063,
+    "visible": 1,
+    "hidden_share": 0.0,
+    "est": 1.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue de l'Abb\u00e9 Aerts",
+    "cap": 14,
+    "L": 51.821356364273825,
+    "visible": 11,
+    "hidden_share": 0.0,
+    "est": 12.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue du March\u00e9",
+    "cap": 38,
+    "L": 221.07246166307132,
+    "visible": 23,
+    "hidden_share": 0.003,
+    "est": 25.2
+   }
+  ]
+ },
+ "2021": {
+  "detections": 3520,
+  "tree_share": 0.078,
+  "streets": {
+   "units": 96,
+   "spaces": 4154,
+   "visible": 1324,
+   "estimated": 1477,
+   "occupancy": 0.355
+  },
+  "car_parks": {
+   "units": 12,
+   "spaces": 570,
+   "visible": 95,
+   "estimated": 108,
+   "occupancy": 0.189
+  },
+  "nouvelle_aventure": [
+   {
+    "cap": 439,
+    "visible": 25,
+    "est": 27.6,
+    "hidden": 0.009
+   }
+  ],
+  "units": [
+   {
+    "kind": "car park",
+    "name": "Place de la Nouvelle Aventure",
+    "cap": 439,
+    "A": 10992.68,
+    "visible": 25,
+    "hidden_share": 0.009,
+    "est": 27.6
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 17,
+    "A": 443.92,
+    "visible": 3,
+    "hidden_share": 0.035,
+    "est": 3.4
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 26,
+    "A": 663.3200000000002,
+    "visible": 9,
+    "hidden_share": 0.202,
+    "est": 12.3
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 14,
+    "A": 363.6,
+    "visible": 4,
+    "hidden_share": 0.0,
+    "est": 4.4
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 19,
+    "A": 497.76000000000005,
+    "visible": 16,
+    "hidden_share": 0.002,
+    "est": 17.5
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 23,
+    "A": 583.6800000000001,
+    "visible": 10,
+    "hidden_share": 0.014,
+    "est": 11.1
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 7,
+    "A": 189.72000000000003,
+    "visible": 4,
+    "hidden_share": 0.016,
+    "est": 4.4
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 6,
+    "A": 160.76000000000002,
+    "visible": 2,
+    "hidden_share": 0.157,
+    "est": 2.6
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 5,
+    "A": 125.12,
+    "visible": 1,
+    "hidden_share": 0.0,
+    "est": 1.1
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 6,
+    "A": 171.08000000000004,
+    "visible": 0,
+    "hidden_share": 0.0,
+    "est": 0.0
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 2,
+    "A": 68.36,
+    "visible": 6,
+    "hidden_share": 0.0,
+    "est": 6.6
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 6,
+    "A": 167.60000000000002,
+    "visible": 15,
+    "hidden_share": 0.004,
+    "est": 16.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue Bourignon",
+    "cap": 78,
+    "L": 225.44137299187875,
+    "visible": 18,
+    "hidden_share": 0.0,
+    "est": 19.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue Saint-Eloi",
+    "cap": 21,
+    "L": 127.4021632573865,
+    "visible": 3,
+    "hidden_share": 0.0,
+    "est": 3.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue de Mourmant",
+    "cap": 28,
+    "L": 166.94408538716712,
+    "visible": 30,
+    "hidden_share": 0.0,
+    "est": 32.8
+   },
+   {
+    "kind": "street",
+    "name": "Rue Colbrant",
+    "cap": 34,
+    "L": 104.1535946202788,
+    "visible": 5,
+    "hidden_share": 0.0,
+    "est": 5.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue Durnerin",
+    "cap": 27,
+    "L": 161.25409835064772,
+    "visible": 14,
+    "hidden_share": 0.0,
+    "est": 15.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue Littr\u00e9",
+    "cap": 79,
+    "L": 249.29487490241434,
+    "visible": 18,
+    "hidden_share": 0.007,
+    "est": 19.8
+   },
+   {
+    "kind": "street",
+    "name": "Rue du Chaufour",
+    "cap": 28,
+    "L": 168.28606607086346,
+    "visible": 25,
+    "hidden_share": 0.0,
+    "est": 27.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue de la Paix d'Utrecht",
+    "cap": 26,
+    "L": 156.25635227424854,
+    "visible": 20,
+    "hidden_share": 0.0,
+    "est": 21.9
+   },
+   {
+    "kind": "street",
+    "name": "Rue Alphonse Mercier",
+    "cap": 136,
+    "L": 386.6494320362043,
+    "visible": 42,
+    "hidden_share": 0.0,
+    "est": 45.9
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'Alger",
+    "cap": 34,
+    "L": 105.30901626467403,
+    "visible": 25,
+    "hidden_share": 0.008,
+    "est": 27.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue Montgolfier",
+    "cap": 6,
+    "L": 45.18148705175321,
+    "visible": 5,
+    "hidden_share": 0.0,
+    "est": 5.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue Henri Kolb",
+    "cap": 114,
+    "L": 326.29287196030276,
+    "visible": 35,
+    "hidden_share": 0.0,
+    "est": 38.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue Louis Faure",
+    "cap": 7,
+    "L": 53.22128129560048,
+    "visible": 5,
+    "hidden_share": 0.128,
+    "est": 6.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue Meurein",
+    "cap": 78,
+    "L": 228.45308508285166,
+    "visible": 44,
+    "hidden_share": 0.04,
+    "est": 50.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'Anvers",
+    "cap": 25,
+    "L": 151.55333427176944,
+    "visible": 17,
+    "hidden_share": 0.0,
+    "est": 18.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue Ratisbonne",
+    "cap": 7,
+    "L": 53.90368814535057,
+    "visible": 4,
+    "hidden_share": 0.557,
+    "est": 9.9
+   },
+   {
+    "kind": "street",
+    "name": "Rue Charles Quint",
+    "cap": 0,
+    "L": 146.1581582401877,
+    "visible": 12,
+    "hidden_share": 0.0,
+    "est": 13.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue du Port",
+    "cap": 50,
+    "L": 152.46074507291593,
+    "visible": 24,
+    "hidden_share": 0.0,
+    "est": 26.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Fr\u00e8res Vaillant",
+    "cap": 52,
+    "L": 153.22004094511306,
+    "visible": 24,
+    "hidden_share": 0.047,
+    "est": 27.5
+   },
+   {
+    "kind": "street",
+    "name": "Place Philippe de Girard",
+    "cap": 0,
+    "L": 73.37720579746083,
+    "visible": 1,
+    "hidden_share": 0.386,
+    "est": 1.8
+   },
+   {
+    "kind": "street",
+    "name": "Rue Lavoisier",
+    "cap": 9,
+    "L": 64.52287607749777,
+    "visible": 3,
+    "hidden_share": 0.0,
+    "est": 3.3
+   },
+   {
+    "kind": "street",
+    "name": "Place Philippe de Girard",
+    "cap": 24,
+    "L": 77.75617863761714,
+    "visible": 2,
+    "hidden_share": 0.341,
+    "est": 3.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue Catel Beghin",
+    "cap": 26,
+    "L": 156.35407828134245,
+    "visible": 25,
+    "hidden_share": 0.0,
+    "est": 27.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'Esquermes",
+    "cap": 1,
+    "L": 20.44947605107933,
+    "visible": 4,
+    "hidden_share": 0.0,
+    "est": 4.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue Davy",
+    "cap": 20,
+    "L": 123.60173998963405,
+    "visible": 10,
+    "hidden_share": 0.001,
+    "est": 10.9
+   },
+   {
+    "kind": "street",
+    "name": "Rue de Brigode",
+    "cap": 37,
+    "L": 213.89026582121028,
+    "visible": 18,
+    "hidden_share": 0.004,
+    "est": 19.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'Antin",
+    "cap": 40,
+    "L": 232.97296623676198,
+    "visible": 24,
+    "hidden_share": 0.0,
+    "est": 26.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue de la Gendarmerie",
+    "cap": 9,
+    "L": 63.76948845436451,
+    "visible": 0,
+    "hidden_share": 0.0,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Manuel",
+    "cap": 62,
+    "L": 355.4605103255842,
+    "visible": 10,
+    "hidden_share": 0.017,
+    "est": 11.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue Jules Lefebvre",
+    "cap": 64,
+    "L": 187.78275147820383,
+    "visible": 18,
+    "hidden_share": 0.003,
+    "est": 19.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue Corneille",
+    "cap": 49,
+    "L": 283.28670593699786,
+    "visible": 6,
+    "hidden_share": 0.249,
+    "est": 8.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue Chevreul",
+    "cap": 20,
+    "L": 123.23306696979137,
+    "visible": 7,
+    "hidden_share": 0.0,
+    "est": 7.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue Hovelacque",
+    "cap": 14,
+    "L": 89.52536386128389,
+    "visible": 9,
+    "hidden_share": 0.001,
+    "est": 9.8
+   },
+   {
+    "kind": "street",
+    "name": "Rue Gustave Joncquet",
+    "cap": 50,
+    "L": 149.36161833155833,
+    "visible": 20,
+    "hidden_share": 0.0,
+    "est": 21.9
+   },
+   {
+    "kind": "street",
+    "name": "Rue Sainte-Barbe",
+    "cap": 29,
+    "L": 170.95785586324078,
+    "visible": 17,
+    "hidden_share": 0.021,
+    "est": 19.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Franklin",
+    "cap": 22,
+    "L": 131.68232142666193,
+    "visible": 16,
+    "hidden_share": 0.008,
+    "est": 17.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue de l'Amidonnerie",
+    "cap": 9,
+    "L": 62.83943747854516,
+    "visible": 2,
+    "hidden_share": 0.0,
+    "est": 2.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue Stappaert",
+    "cap": 26,
+    "L": 83.94651905070114,
+    "visible": 11,
+    "hidden_share": 0.0,
+    "est": 12.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'I\u00e9na",
+    "cap": 142,
+    "L": 405.70097391709027,
+    "visible": 86,
+    "hidden_share": 0.01,
+    "est": 94.9
+   },
+   {
+    "kind": "street",
+    "name": "Rue Saint-Pierre Saint-Paul",
+    "cap": 32,
+    "L": 98.1364126732444,
+    "visible": 7,
+    "hidden_share": 0.0,
+    "est": 7.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue Degland",
+    "cap": 22,
+    "L": 134.040273039097,
+    "visible": 8,
+    "hidden_share": 0.0,
+    "est": 8.7
+   },
+   {
+    "kind": "street",
+    "name": "Place de la Nouvelle Aventure",
+    "cap": 0,
+    "L": 81.59720591004942,
+    "visible": 1,
+    "hidden_share": 0.419,
+    "est": 1.9
+   },
+   {
+    "kind": "street",
+    "name": "Rue Charles Quint",
+    "cap": 14,
+    "L": 91.71834140903819,
+    "visible": 12,
+    "hidden_share": 0.0,
+    "est": 13.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue du Soleil Levant",
+    "cap": 38,
+    "L": 118.42252060484603,
+    "visible": 14,
+    "hidden_share": 0.149,
+    "est": 18.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Meuniers",
+    "cap": 4,
+    "L": 34.6654337360744,
+    "visible": 1,
+    "hidden_share": 0.02,
+    "est": 1.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue Barth\u00e9l\u00e9my Delespaul",
+    "cap": 240,
+    "L": 674.7892062792375,
+    "visible": 31,
+    "hidden_share": 0.0,
+    "est": 33.9
+   },
+   {
+    "kind": "street",
+    "name": "Rue du Faubourg Notre-Dame",
+    "cap": 10,
+    "L": 68.6082553408447,
+    "visible": 1,
+    "hidden_share": 0.005,
+    "est": 1.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue Mass\u00e9na",
+    "cap": 14,
+    "L": 52.42388433382497,
+    "visible": 5,
+    "hidden_share": 0.0,
+    "est": 5.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue Louis Faure",
+    "cap": 78,
+    "L": 224.74619121070566,
+    "visible": 29,
+    "hidden_share": 0.0,
+    "est": 31.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue de l'Abb\u00e9 Aerts",
+    "cap": 14,
+    "L": 52.596726633342875,
+    "visible": 8,
+    "hidden_share": 0.003,
+    "est": 8.8
+   },
+   {
+    "kind": "street",
+    "name": "Rue Volta",
+    "cap": 14,
+    "L": 92.20118843469425,
+    "visible": 6,
+    "hidden_share": 0.0,
+    "est": 6.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue Auber",
+    "cap": 106,
+    "L": 306.92507841625996,
+    "visible": 3,
+    "hidden_share": 0.095,
+    "est": 3.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Postes",
+    "cap": 110,
+    "L": 317.59682522166406,
+    "visible": 36,
+    "hidden_share": 0.0,
+    "est": 39.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue de Solf\u00e9rino",
+    "cap": 26,
+    "L": 83.6779549707273,
+    "visible": 6,
+    "hidden_share": 0.0,
+    "est": 6.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue de Solf\u00e9rino",
+    "cap": 0,
+    "L": 16.05613596813451,
+    "visible": 0,
+    "hidden_share": 0.076,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Chateaubriand",
+    "cap": 15,
+    "L": 92.83472739137416,
+    "visible": 0,
+    "hidden_share": 0.0,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue \u00c9mile Desmet",
+    "cap": 21,
+    "L": 130.68684586576663,
+    "visible": 21,
+    "hidden_share": 0.008,
+    "est": 23.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'I\u00e9na",
+    "cap": 58,
+    "L": 170.98142311689242,
+    "visible": 18,
+    "hidden_share": 0.049,
+    "est": 20.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue Newton",
+    "cap": 22,
+    "L": 131.5513888816779,
+    "visible": 10,
+    "hidden_share": 0.004,
+    "est": 11.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Duhem",
+    "cap": 19,
+    "L": 116.04290421706003,
+    "visible": 7,
+    "hidden_share": 0.0,
+    "est": 7.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Stations",
+    "cap": 138,
+    "L": 392.698664267065,
+    "visible": 32,
+    "hidden_share": 0.055,
+    "est": 37.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Henri Loyer",
+    "cap": 44,
+    "L": 135.9870851159986,
+    "visible": 16,
+    "hidden_share": 0.073,
+    "est": 18.9
+   },
+   {
+    "kind": "street",
+    "name": "Rue de la Justice",
+    "cap": 108,
+    "L": 308.552438832648,
+    "visible": 18,
+    "hidden_share": 0.044,
+    "est": 20.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue Ratisbonne",
+    "cap": 65,
+    "L": 372.57867122011555,
+    "visible": 11,
+    "hidden_share": 0.006,
+    "est": 12.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Postes",
+    "cap": 178,
+    "L": 501.18914287618185,
+    "visible": 19,
+    "hidden_share": 0.0,
+    "est": 20.8
+   },
+   {
+    "kind": "street",
+    "name": "Rue du March\u00e9",
+    "cap": 58,
+    "L": 334.41902043558906,
+    "visible": 57,
+    "hidden_share": 0.006,
+    "est": 62.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Postes",
+    "cap": 3,
+    "L": 29.933060239827054,
+    "visible": 5,
+    "hidden_share": 0.162,
+    "est": 6.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Postes",
+    "cap": 3,
+    "L": 29.564381937682953,
+    "visible": 1,
+    "hidden_share": 0.008,
+    "est": 1.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Postes",
+    "cap": 5,
+    "L": 38.848086966844676,
+    "visible": 2,
+    "hidden_share": 0.085,
+    "est": 2.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Postes",
+    "cap": 5,
+    "L": 38.47467427546944,
+    "visible": 0,
+    "hidden_share": 0.133,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Colbert",
+    "cap": 15,
+    "L": 97.80983753185272,
+    "visible": 4,
+    "hidden_share": 0.021,
+    "est": 4.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue de Flandre",
+    "cap": 0,
+    "L": 145.680960827889,
+    "visible": 15,
+    "hidden_share": 0.021,
+    "est": 16.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue Corbet",
+    "cap": 34,
+    "L": 76.70157270907923,
+    "visible": 2,
+    "hidden_share": 0.012,
+    "est": 2.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'Arcole",
+    "cap": 12,
+    "L": 77.65796831205353,
+    "visible": 7,
+    "hidden_share": 0.0,
+    "est": 7.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue Racine",
+    "cap": 52,
+    "L": 296.50108366187624,
+    "visible": 12,
+    "hidden_share": 0.13,
+    "est": 15.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue Nationale",
+    "cap": 21,
+    "L": 126.41461695479369,
+    "visible": 2,
+    "hidden_share": 0.067,
+    "est": 2.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue Nationale",
+    "cap": 12,
+    "L": 46.63301660524817,
+    "visible": 2,
+    "hidden_share": 0.012,
+    "est": 2.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue du Port",
+    "cap": 24,
+    "L": 78.52490886323505,
+    "visible": 2,
+    "hidden_share": 0.0,
+    "est": 2.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue Nationale",
+    "cap": 54,
+    "L": 162.07560824949314,
+    "visible": 1,
+    "hidden_share": 0.0,
+    "est": 1.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue Meurein",
+    "cap": 52,
+    "L": 155.73073493200013,
+    "visible": 21,
+    "hidden_share": 0.0,
+    "est": 22.9
+   },
+   {
+    "kind": "street",
+    "name": "Rue Mass\u00e9na",
+    "cap": 40,
+    "L": 123.78821113332185,
+    "visible": 16,
+    "hidden_share": 0.0,
+    "est": 17.5
+   },
+   {
+    "kind": "street",
+    "name": "Place Philippe de Girard",
+    "cap": 24,
+    "L": 77.28967537467892,
+    "visible": 0,
+    "hidden_share": 0.379,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Jean Sans Peur",
+    "cap": 44,
+    "L": 132.95059570278363,
+    "visible": 11,
+    "hidden_share": 0.0,
+    "est": 12.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Deschodt",
+    "cap": 31,
+    "L": 183.25139979921053,
+    "visible": 32,
+    "hidden_share": 0.038,
+    "est": 36.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Postes",
+    "cap": 94,
+    "L": 272.8760991730089,
+    "visible": 0,
+    "hidden_share": 0.138,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Franklin",
+    "cap": 0,
+    "L": 15.82441297205483,
+    "visible": 0,
+    "hidden_share": 0.0,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue L\u00e9on Gambetta",
+    "cap": 358,
+    "L": 995.066917315397,
+    "visible": 61,
+    "hidden_share": 0.009,
+    "est": 67.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Stations",
+    "cap": 152,
+    "L": 432.2508319169254,
+    "visible": 31,
+    "hidden_share": 0.001,
+    "est": 33.9
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Stations",
+    "cap": 22,
+    "L": 131.78729347530165,
+    "visible": 2,
+    "hidden_share": 0.0,
+    "est": 2.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'Antin",
+    "cap": 8,
+    "L": 57.47734118315529,
+    "visible": 12,
+    "hidden_share": 0.0,
+    "est": 13.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'I\u00e9na",
+    "cap": 0,
+    "L": 17.49677386012352,
+    "visible": 0,
+    "hidden_share": 0.116,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'I\u00e9na",
+    "cap": 0,
+    "L": 22.64521233622844,
+    "visible": 0,
+    "hidden_share": 0.0,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Le Glay",
+    "cap": 7,
+    "L": 52.57821085326914,
+    "visible": 5,
+    "hidden_share": 0.0,
+    "est": 5.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue de Solf\u00e9rino",
+    "cap": 22,
+    "L": 71.97713509605578,
+    "visible": 12,
+    "hidden_share": 0.006,
+    "est": 13.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue Ratisbonne",
+    "cap": 11,
+    "L": 71.04749566320027,
+    "visible": 7,
+    "hidden_share": 0.0,
+    "est": 7.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue Duhem",
+    "cap": 6,
+    "L": 43.165338571181216,
+    "visible": 0,
+    "hidden_share": 0.0,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Newton",
+    "cap": 6,
+    "L": 43.8441171838285,
+    "visible": 0,
+    "hidden_share": 0.0,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'Antin",
+    "cap": 7,
+    "L": 51.008976748182796,
+    "visible": 8,
+    "hidden_share": 0.0,
+    "est": 8.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Stations",
+    "cap": 26,
+    "L": 85.70547751151605,
+    "visible": 9,
+    "hidden_share": 0.0,
+    "est": 9.8
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Stations",
+    "cap": 8,
+    "L": 56.956317860130355,
+    "visible": 1,
+    "hidden_share": 0.0,
+    "est": 1.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Stations",
+    "cap": 0,
+    "L": 45.703919385320916,
+    "visible": 2,
+    "hidden_share": 0.0,
+    "est": 2.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue Masquelier",
+    "cap": 6,
+    "L": 26.761525701958927,
+    "visible": 5,
+    "hidden_share": 0.0,
+    "est": 5.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue Masquelier",
+    "cap": 7,
+    "L": 25.408382981238063,
+    "visible": 0,
+    "hidden_share": 0.0,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue de l'Abb\u00e9 Aerts",
+    "cap": 14,
+    "L": 51.821356364273825,
+    "visible": 12,
+    "hidden_share": 0.001,
+    "est": 13.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue du March\u00e9",
+    "cap": 38,
+    "L": 221.07246166307132,
+    "visible": 17,
+    "hidden_share": 0.003,
+    "est": 18.6
+   }
+  ]
+ },
+ "2018": {
+  "detections": 1106,
+  "tree_share": 0.047,
+  "streets": {
+   "units": 96,
+   "spaces": 4154,
+   "visible": 602,
+   "estimated": 666,
+   "occupancy": 0.16
+  },
+  "car_parks": {
+   "units": 12,
+   "spaces": 570,
+   "visible": 31,
+   "estimated": 42,
+   "occupancy": 0.074
+  },
+  "nouvelle_aventure": [
+   {
+    "cap": 439,
+    "visible": 0,
+    "est": 0.0,
+    "hidden": 0.003
+   }
+  ],
+  "units": [
+   {
+    "kind": "car park",
+    "name": "Place de la Nouvelle Aventure",
+    "cap": 439,
+    "A": 10992.68,
+    "visible": 0,
+    "hidden_share": 0.003,
+    "est": 0.0
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 17,
+    "A": 443.92,
+    "visible": 5,
+    "hidden_share": 0.007,
+    "est": 5.5
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 26,
+    "A": 663.3200000000002,
+    "visible": 5,
+    "hidden_share": 0.575,
+    "est": 12.9
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 14,
+    "A": 363.6,
+    "visible": 6,
+    "hidden_share": 0.0,
+    "est": 6.6
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 19,
+    "A": 497.76000000000005,
+    "visible": 5,
+    "hidden_share": 0.0,
+    "est": 5.5
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 23,
+    "A": 583.6800000000001,
+    "visible": 1,
+    "hidden_share": 0.088,
+    "est": 1.2
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 7,
+    "A": 189.72000000000003,
+    "visible": 3,
+    "hidden_share": 0.133,
+    "est": 3.8
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 6,
+    "A": 160.76000000000002,
+    "visible": 0,
+    "hidden_share": 0.0,
+    "est": 0.0
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 5,
+    "A": 125.12,
+    "visible": 4,
+    "hidden_share": 0.0,
+    "est": 4.4
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 6,
+    "A": 171.08000000000004,
+    "visible": 0,
+    "hidden_share": 0.0,
+    "est": 0.0
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 2,
+    "A": 68.36,
+    "visible": 0,
+    "hidden_share": 0.0,
+    "est": 0.0
+   },
+   {
+    "kind": "car park",
+    "name": "public car park",
+    "cap": 6,
+    "A": 167.60000000000002,
+    "visible": 2,
+    "hidden_share": 0.0,
+    "est": 2.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue Bourignon",
+    "cap": 78,
+    "L": 225.44137299187875,
+    "visible": 8,
+    "hidden_share": 0.0,
+    "est": 8.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue Saint-Eloi",
+    "cap": 21,
+    "L": 127.4021632573865,
+    "visible": 8,
+    "hidden_share": 0.008,
+    "est": 8.8
+   },
+   {
+    "kind": "street",
+    "name": "Rue de Mourmant",
+    "cap": 28,
+    "L": 166.94408538716712,
+    "visible": 6,
+    "hidden_share": 0.0,
+    "est": 6.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue Colbrant",
+    "cap": 34,
+    "L": 104.1535946202788,
+    "visible": 6,
+    "hidden_share": 0.0,
+    "est": 6.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue Durnerin",
+    "cap": 27,
+    "L": 161.25409835064772,
+    "visible": 2,
+    "hidden_share": 0.0,
+    "est": 2.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue Littr\u00e9",
+    "cap": 79,
+    "L": 249.29487490241434,
+    "visible": 4,
+    "hidden_share": 0.0,
+    "est": 4.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue du Chaufour",
+    "cap": 28,
+    "L": 168.28606607086346,
+    "visible": 1,
+    "hidden_share": 0.0,
+    "est": 1.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue de la Paix d'Utrecht",
+    "cap": 26,
+    "L": 156.25635227424854,
+    "visible": 4,
+    "hidden_share": 0.0,
+    "est": 4.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue Alphonse Mercier",
+    "cap": 136,
+    "L": 386.6494320362043,
+    "visible": 17,
+    "hidden_share": 0.0,
+    "est": 18.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'Alger",
+    "cap": 34,
+    "L": 105.30901626467403,
+    "visible": 9,
+    "hidden_share": 0.016,
+    "est": 10.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Montgolfier",
+    "cap": 6,
+    "L": 45.18148705175321,
+    "visible": 0,
+    "hidden_share": 0.0,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Henri Kolb",
+    "cap": 114,
+    "L": 326.29287196030276,
+    "visible": 12,
+    "hidden_share": 0.0,
+    "est": 13.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue Louis Faure",
+    "cap": 7,
+    "L": 53.22128129560048,
+    "visible": 0,
+    "hidden_share": 0.06,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Meurein",
+    "cap": 78,
+    "L": 228.45308508285166,
+    "visible": 12,
+    "hidden_share": 0.013,
+    "est": 13.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'Anvers",
+    "cap": 25,
+    "L": 151.55333427176944,
+    "visible": 5,
+    "hidden_share": 0.0,
+    "est": 5.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue Ratisbonne",
+    "cap": 7,
+    "L": 53.90368814535057,
+    "visible": 0,
+    "hidden_share": 0.016,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Charles Quint",
+    "cap": 0,
+    "L": 146.1581582401877,
+    "visible": 4,
+    "hidden_share": 0.0,
+    "est": 4.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue du Port",
+    "cap": 50,
+    "L": 152.46074507291593,
+    "visible": 10,
+    "hidden_share": 0.0,
+    "est": 10.9
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Fr\u00e8res Vaillant",
+    "cap": 52,
+    "L": 153.22004094511306,
+    "visible": 6,
+    "hidden_share": 0.001,
+    "est": 6.6
+   },
+   {
+    "kind": "street",
+    "name": "Place Philippe de Girard",
+    "cap": 0,
+    "L": 73.37720579746083,
+    "visible": 3,
+    "hidden_share": 0.023,
+    "est": 3.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue Lavoisier",
+    "cap": 9,
+    "L": 64.52287607749777,
+    "visible": 4,
+    "hidden_share": 0.006,
+    "est": 4.4
+   },
+   {
+    "kind": "street",
+    "name": "Place Philippe de Girard",
+    "cap": 24,
+    "L": 77.75617863761714,
+    "visible": 0,
+    "hidden_share": 0.041,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Catel Beghin",
+    "cap": 26,
+    "L": 156.35407828134245,
+    "visible": 3,
+    "hidden_share": 0.0,
+    "est": 3.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'Esquermes",
+    "cap": 1,
+    "L": 20.44947605107933,
+    "visible": 1,
+    "hidden_share": 0.0,
+    "est": 1.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue Davy",
+    "cap": 20,
+    "L": 123.60173998963405,
+    "visible": 4,
+    "hidden_share": 0.011,
+    "est": 4.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue de Brigode",
+    "cap": 37,
+    "L": 213.89026582121028,
+    "visible": 7,
+    "hidden_share": 0.002,
+    "est": 7.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'Antin",
+    "cap": 40,
+    "L": 232.97296623676198,
+    "visible": 6,
+    "hidden_share": 0.0,
+    "est": 6.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue de la Gendarmerie",
+    "cap": 9,
+    "L": 63.76948845436451,
+    "visible": 3,
+    "hidden_share": 0.0,
+    "est": 3.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue Manuel",
+    "cap": 62,
+    "L": 355.4605103255842,
+    "visible": 7,
+    "hidden_share": 0.013,
+    "est": 7.8
+   },
+   {
+    "kind": "street",
+    "name": "Rue Jules Lefebvre",
+    "cap": 64,
+    "L": 187.78275147820383,
+    "visible": 13,
+    "hidden_share": 0.0,
+    "est": 14.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue Corneille",
+    "cap": 49,
+    "L": 283.28670593699786,
+    "visible": 1,
+    "hidden_share": 0.106,
+    "est": 1.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue Chevreul",
+    "cap": 20,
+    "L": 123.23306696979137,
+    "visible": 7,
+    "hidden_share": 0.008,
+    "est": 7.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue Hovelacque",
+    "cap": 14,
+    "L": 89.52536386128389,
+    "visible": 1,
+    "hidden_share": 0.0,
+    "est": 1.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue Gustave Joncquet",
+    "cap": 50,
+    "L": 149.36161833155833,
+    "visible": 4,
+    "hidden_share": 0.0,
+    "est": 4.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue Sainte-Barbe",
+    "cap": 29,
+    "L": 170.95785586324078,
+    "visible": 3,
+    "hidden_share": 0.013,
+    "est": 3.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue Franklin",
+    "cap": 22,
+    "L": 131.68232142666193,
+    "visible": 2,
+    "hidden_share": 0.0,
+    "est": 2.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue de l'Amidonnerie",
+    "cap": 9,
+    "L": 62.83943747854516,
+    "visible": 2,
+    "hidden_share": 0.0,
+    "est": 2.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue Stappaert",
+    "cap": 26,
+    "L": 83.94651905070114,
+    "visible": 3,
+    "hidden_share": 0.0,
+    "est": 3.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'I\u00e9na",
+    "cap": 142,
+    "L": 405.70097391709027,
+    "visible": 33,
+    "hidden_share": 0.065,
+    "est": 38.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue Saint-Pierre Saint-Paul",
+    "cap": 32,
+    "L": 98.1364126732444,
+    "visible": 1,
+    "hidden_share": 0.0,
+    "est": 1.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue Degland",
+    "cap": 22,
+    "L": 134.040273039097,
+    "visible": 6,
+    "hidden_share": 0.0,
+    "est": 6.6
+   },
+   {
+    "kind": "street",
+    "name": "Place de la Nouvelle Aventure",
+    "cap": 0,
+    "L": 81.59720591004942,
+    "visible": 0,
+    "hidden_share": 0.012,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Charles Quint",
+    "cap": 14,
+    "L": 91.71834140903819,
+    "visible": 1,
+    "hidden_share": 0.0,
+    "est": 1.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue du Soleil Levant",
+    "cap": 38,
+    "L": 118.42252060484603,
+    "visible": 3,
+    "hidden_share": 0.143,
+    "est": 3.8
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Meuniers",
+    "cap": 4,
+    "L": 34.6654337360744,
+    "visible": 0,
+    "hidden_share": 0.002,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Barth\u00e9l\u00e9my Delespaul",
+    "cap": 240,
+    "L": 674.7892062792375,
+    "visible": 11,
+    "hidden_share": 0.006,
+    "est": 12.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue du Faubourg Notre-Dame",
+    "cap": 10,
+    "L": 68.6082553408447,
+    "visible": 4,
+    "hidden_share": 0.0,
+    "est": 4.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue Mass\u00e9na",
+    "cap": 14,
+    "L": 52.42388433382497,
+    "visible": 5,
+    "hidden_share": 0.0,
+    "est": 5.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue Louis Faure",
+    "cap": 78,
+    "L": 224.74619121070566,
+    "visible": 1,
+    "hidden_share": 0.001,
+    "est": 1.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue de l'Abb\u00e9 Aerts",
+    "cap": 14,
+    "L": 52.596726633342875,
+    "visible": 5,
+    "hidden_share": 0.0,
+    "est": 5.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue Volta",
+    "cap": 14,
+    "L": 92.20118843469425,
+    "visible": 0,
+    "hidden_share": 0.001,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Auber",
+    "cap": 106,
+    "L": 306.92507841625996,
+    "visible": 2,
+    "hidden_share": 0.062,
+    "est": 2.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Postes",
+    "cap": 110,
+    "L": 317.59682522166406,
+    "visible": 18,
+    "hidden_share": 0.0,
+    "est": 19.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue de Solf\u00e9rino",
+    "cap": 26,
+    "L": 83.6779549707273,
+    "visible": 2,
+    "hidden_share": 0.0,
+    "est": 2.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue de Solf\u00e9rino",
+    "cap": 0,
+    "L": 16.05613596813451,
+    "visible": 0,
+    "hidden_share": 0.0,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Chateaubriand",
+    "cap": 15,
+    "L": 92.83472739137416,
+    "visible": 3,
+    "hidden_share": 0.0,
+    "est": 3.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue \u00c9mile Desmet",
+    "cap": 21,
+    "L": 130.68684586576663,
+    "visible": 12,
+    "hidden_share": 0.0,
+    "est": 13.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'I\u00e9na",
+    "cap": 58,
+    "L": 170.98142311689242,
+    "visible": 15,
+    "hidden_share": 0.03,
+    "est": 16.9
+   },
+   {
+    "kind": "street",
+    "name": "Rue Newton",
+    "cap": 22,
+    "L": 131.5513888816779,
+    "visible": 5,
+    "hidden_share": 0.002,
+    "est": 5.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue Duhem",
+    "cap": 19,
+    "L": 116.04290421706003,
+    "visible": 4,
+    "hidden_share": 0.009,
+    "est": 4.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Stations",
+    "cap": 138,
+    "L": 392.698664267065,
+    "visible": 39,
+    "hidden_share": 0.021,
+    "est": 43.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue Henri Loyer",
+    "cap": 44,
+    "L": 135.9870851159986,
+    "visible": 4,
+    "hidden_share": 0.044,
+    "est": 4.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue de la Justice",
+    "cap": 108,
+    "L": 308.552438832648,
+    "visible": 4,
+    "hidden_share": 0.069,
+    "est": 4.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue Ratisbonne",
+    "cap": 65,
+    "L": 372.57867122011555,
+    "visible": 18,
+    "hidden_share": 0.0,
+    "est": 19.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Postes",
+    "cap": 178,
+    "L": 501.18914287618185,
+    "visible": 7,
+    "hidden_share": 0.019,
+    "est": 7.8
+   },
+   {
+    "kind": "street",
+    "name": "Rue du March\u00e9",
+    "cap": 58,
+    "L": 334.41902043558906,
+    "visible": 8,
+    "hidden_share": 0.004,
+    "est": 8.8
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Postes",
+    "cap": 3,
+    "L": 29.933060239827054,
+    "visible": 0,
+    "hidden_share": 0.163,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Postes",
+    "cap": 3,
+    "L": 29.564381937682953,
+    "visible": 0,
+    "hidden_share": 0.037,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Postes",
+    "cap": 5,
+    "L": 38.848086966844676,
+    "visible": 4,
+    "hidden_share": 0.085,
+    "est": 4.8
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Postes",
+    "cap": 5,
+    "L": 38.47467427546944,
+    "visible": 0,
+    "hidden_share": 0.166,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Colbert",
+    "cap": 15,
+    "L": 97.80983753185272,
+    "visible": 2,
+    "hidden_share": 0.004,
+    "est": 2.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue de Flandre",
+    "cap": 0,
+    "L": 145.680960827889,
+    "visible": 5,
+    "hidden_share": 0.006,
+    "est": 5.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue Corbet",
+    "cap": 34,
+    "L": 76.70157270907923,
+    "visible": 1,
+    "hidden_share": 0.0,
+    "est": 1.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'Arcole",
+    "cap": 12,
+    "L": 77.65796831205353,
+    "visible": 3,
+    "hidden_share": 0.0,
+    "est": 3.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue Racine",
+    "cap": 52,
+    "L": 296.50108366187624,
+    "visible": 9,
+    "hidden_share": 0.043,
+    "est": 10.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue Nationale",
+    "cap": 21,
+    "L": 126.41461695479369,
+    "visible": 1,
+    "hidden_share": 0.007,
+    "est": 1.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue Nationale",
+    "cap": 12,
+    "L": 46.63301660524817,
+    "visible": 1,
+    "hidden_share": 0.0,
+    "est": 1.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue du Port",
+    "cap": 24,
+    "L": 78.52490886323505,
+    "visible": 1,
+    "hidden_share": 0.001,
+    "est": 1.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue Nationale",
+    "cap": 54,
+    "L": 162.07560824949314,
+    "visible": 4,
+    "hidden_share": 0.0,
+    "est": 4.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue Meurein",
+    "cap": 52,
+    "L": 155.73073493200013,
+    "visible": 7,
+    "hidden_share": 0.0,
+    "est": 7.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue Mass\u00e9na",
+    "cap": 40,
+    "L": 123.78821113332185,
+    "visible": 14,
+    "hidden_share": 0.0,
+    "est": 15.3
+   },
+   {
+    "kind": "street",
+    "name": "Place Philippe de Girard",
+    "cap": 24,
+    "L": 77.28967537467892,
+    "visible": 2,
+    "hidden_share": 0.05,
+    "est": 2.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue Jean Sans Peur",
+    "cap": 44,
+    "L": 132.95059570278363,
+    "visible": 17,
+    "hidden_share": 0.0,
+    "est": 18.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue Deschodt",
+    "cap": 31,
+    "L": 183.25139979921053,
+    "visible": 2,
+    "hidden_share": 0.005,
+    "est": 2.2
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Postes",
+    "cap": 94,
+    "L": 272.8760991730089,
+    "visible": 0,
+    "hidden_share": 0.094,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Franklin",
+    "cap": 0,
+    "L": 15.82441297205483,
+    "visible": 0,
+    "hidden_share": 0.0,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue L\u00e9on Gambetta",
+    "cap": 358,
+    "L": 995.066917315397,
+    "visible": 60,
+    "hidden_share": 0.0,
+    "est": 65.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Stations",
+    "cap": 152,
+    "L": 432.2508319169254,
+    "visible": 26,
+    "hidden_share": 0.0,
+    "est": 28.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Stations",
+    "cap": 22,
+    "L": 131.78729347530165,
+    "visible": 7,
+    "hidden_share": 0.0,
+    "est": 7.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'Antin",
+    "cap": 8,
+    "L": 57.47734118315529,
+    "visible": 8,
+    "hidden_share": 0.0,
+    "est": 8.7
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'I\u00e9na",
+    "cap": 0,
+    "L": 17.49677386012352,
+    "visible": 0,
+    "hidden_share": 0.271,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'I\u00e9na",
+    "cap": 0,
+    "L": 22.64521233622844,
+    "visible": 0,
+    "hidden_share": 0.039,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Le Glay",
+    "cap": 7,
+    "L": 52.57821085326914,
+    "visible": 5,
+    "hidden_share": 0.0,
+    "est": 5.5
+   },
+   {
+    "kind": "street",
+    "name": "Rue de Solf\u00e9rino",
+    "cap": 22,
+    "L": 71.97713509605578,
+    "visible": 4,
+    "hidden_share": 0.0,
+    "est": 4.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue Ratisbonne",
+    "cap": 11,
+    "L": 71.04749566320027,
+    "visible": 6,
+    "hidden_share": 0.0,
+    "est": 6.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue Duhem",
+    "cap": 6,
+    "L": 43.165338571181216,
+    "visible": 0,
+    "hidden_share": 0.0,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue Newton",
+    "cap": 6,
+    "L": 43.8441171838285,
+    "visible": 0,
+    "hidden_share": 0.0,
+    "est": 0.0
+   },
+   {
+    "kind": "street",
+    "name": "Rue d'Antin",
+    "cap": 7,
+    "L": 51.008976748182796,
+    "visible": 1,
+    "hidden_share": 0.0,
+    "est": 1.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Stations",
+    "cap": 26,
+    "L": 85.70547751151605,
+    "visible": 6,
+    "hidden_share": 0.0,
+    "est": 6.6
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Stations",
+    "cap": 8,
+    "L": 56.956317860130355,
+    "visible": 3,
+    "hidden_share": 0.002,
+    "est": 3.3
+   },
+   {
+    "kind": "street",
+    "name": "Rue des Stations",
+    "cap": 0,
+    "L": 45.703919385320916,
+    "visible": 1,
+    "hidden_share": 0.0,
+    "est": 1.1
+   },
+   {
+    "kind": "street",
+    "name": "Rue Masquelier",
+    "cap": 6,
+    "L": 26.761525701958927,
+    "visible": 4,
+    "hidden_share": 0.005,
+    "est": 4.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue Masquelier",
+    "cap": 7,
+    "L": 25.408382981238063,
+    "visible": 4,
+    "hidden_share": 0.0,
+    "est": 4.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue de l'Abb\u00e9 Aerts",
+    "cap": 14,
+    "L": 51.821356364273825,
+    "visible": 4,
+    "hidden_share": 0.002,
+    "est": 4.4
+   },
+   {
+    "kind": "street",
+    "name": "Rue du March\u00e9",
+    "cap": 38,
+    "L": 221.07246166307132,
+    "visible": 4,
+    "hidden_share": 0.001,
+    "est": 4.4
+   }
+  ]
+ }
+}
