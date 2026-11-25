@@ -126,7 +126,7 @@ a{color:inherit}
       <button id="mDraw">Draw an area</button><button class="go" id="mGo" disabled>Get photo, parking and free spaces</button></div>
     <div class="tmsg" id="mMsg">Zoom in on a street, press Draw an area, then click two opposite corners (up to 500 m across).</div>
     <div id="lmap" style="height:420px;border-radius:8px;overflow:hidden;background:#0002"></div>
-    <p class="src">The page downloads the IGN aerial photo of your area (Géoplateforme, free) and the parking mapped in OpenStreetMap (Overpass API), then counts below. This needs the page to be opened from our GitHub site: claude.ai pages may not download from other websites.</p>
+    <p class="src">The page downloads the IGN aerial photo of your area (Géoplateforme, free) and the parking mapped in OpenStreetMap (Overpass API, or the main OpenStreetMap server when Overpass is busy), then counts below. This needs the page to be opened from our GitHub site: claude.ai pages may not download from other websites.</p>
   </div>
   <div class="tool">
     <div class="tbar">
@@ -416,10 +416,18 @@ fetch('sq/squares.json').then(r=>r.json()).then(j=>{SQ=j;$('tSample').insertAdja
       catch(e){mm('The IGN photo could not be downloaded here (blocked or offline). Open this page from our GitHub site, or download it with the link in the console and load it as your photo.');console.log('IGN photo link:',url);throw e}
       mm('Downloading OpenStreetMap parking…');
       const q=`[out:json][timeout:25];(way["highway"]["parking:left"](${S},${W},${N},${E});way["highway"]["parking:right"](${S},${W},${N},${E});way["highway"]["parking:both"](${S},${W},${N},${E});way["highway"]["parking:lane:left"](${S},${W},${N},${E});way["highway"]["parking:lane:right"](${S},${W},${N},${E});way["highway"]["parking:lane:both"](${S},${W},${N},${E});way["amenity"="parking"](${S},${W},${N},${E}););out geom;`;
-      let osm={elements:[]},osmFail=false;
-      for(let k=0;k<3;k++){try{if(k){mm('OpenStreetMap is busy; trying again ('+(k+1)+' of 3)…');await new Promise(r=>setTimeout(r,4000*k))}
-        const c=new AbortController(),tm=setTimeout(()=>c.abort(),30000);const r=await fetch('https://overpass-api.de/api/interpreter',{method:'POST',signal:c.signal,body:'data='+encodeURIComponent(q),headers:{'Content-Type':'application/x-www-form-urlencoded'}});clearTimeout(tm);if(!r.ok)throw new Error(r.status);osm=await r.json();osmFail=false;break}
-        catch(e){osmFail=true}}
+      let osm={elements:[]},osmFail=true,osmSrc='';
+      const tfetch=async(u,o,ms)=>{const c=new AbortController(),tm=setTimeout(()=>c.abort(),ms);try{const r=await fetch(u,{...o,signal:c.signal});if(!r.ok)throw new Error(r.status);return await r.json()}finally{clearTimeout(tm)}};
+      // 1st server: Overpass (two tries)
+      for(let k=0;k<2&&osmFail;k++){try{if(k){mm('OpenStreetMap (Overpass) is busy; trying again…');await new Promise(r=>setTimeout(r,3000))}
+        osm=await tfetch('https://overpass-api.de/api/interpreter',{method:'POST',body:'data='+encodeURIComponent(q),headers:{'Content-Type':'application/x-www-form-urlencoded'}},20000);osmFail=false;osmSrc='Overpass'}catch(e){}}
+      // 2nd server: the main OpenStreetMap API (all data in the square; keep the same ways as the Overpass query)
+      if(osmFail){try{mm('Overpass is busy; asking the main OpenStreetMap server instead…');
+        const j=await tfetch(`https://api.openstreetmap.org/api/0.6/map.json?bbox=${W},${S},${E},${N}`,{},30000),nd=new Map();
+        for(const e of j.elements)if(e.type==='node')nd.set(e.id,e);
+        const want=t=>t.amenity==='parking'||(t.highway&&Object.keys(t).some(k=>/^parking:(lane:)?(left|right|both)$/.test(k)));
+        osm={elements:j.elements.filter(e=>e.type==='way'&&e.tags&&want(e.tags)).map(w=>({type:'way',tags:w.tags,geometry:w.nodes.map(i=>nd.get(i)).filter(Boolean).map(n=>({lat:n.lat,lon:n.lon}))}))};
+        osmFail=false;osmSrc='OpenStreetMap API'}catch(e){}}
       const px=(lon,lat)=>[(lon-W)/(E-W)*Wp,(N-lat)/(N-S)*Hp],U=[];
       // keep only what lies inside the square: cut street segments and car-park outlines at its edge
       const clipSeg=(a,b)=>{let t0=0,t1=1;const dx=b[0]-a[0],dy=b[1]-a[1];for(const [p,q] of [[-dx,a[0]],[dx,Wp-a[0]],[-dy,a[1]],[dy,Hp-a[1]]]){if(p===0){if(q<0)return null}else{const r=q/p;if(p<0)t0=Math.max(t0,r);else t1=Math.min(t1,r)}}return t0<t1?[[a[0]+t0*dx,a[1]+t0*dy],[a[0]+t1*dx,a[1]+t1*dy]]:null};
@@ -433,9 +441,9 @@ fetch('sq/squares.json').then(r=>r.json()).then(j=>{SQ=j;$('tSample').insertAdja
         else{let Lm=0;for(let i=1;i<p.length;i++)Lm+=Math.hypot(p[i][0]-p[i-1][0],p[i][1]-p[i-1][1])*g;const cap=sideSpaces(t,'left',Lm)+sideSpaces(t,'right',Lm);
           if(cap>0)for(let i=1;i<p.length;i++){const sgm=clipSeg(p[i-1],p[i]);if(sgm&&Math.hypot(sgm[1][0]-sgm[0][0],sgm[1][1]-sgm[0][1])*g>1)U.push({t:'line',n:t.name||'unnamed street',p:sgm,spm:cap/Lm,band:7})}}}
       document.getElementById('tSample').value='';document.getElementById('tGsd').value='0.20';
-      const why=osmFail?'OpenStreetMap did not answer (its server is busy), so no street is marked and the parking will be found automatically from the cars. Press the button again in a minute to get the streets.':U.length?'OpenStreetMap parking drawn ('+new Set(U.map(u=>u.n)).size+' streets and car parks). Streets without parking mapped in OpenStreetMap are not counted.':'no street parking is mapped in OpenStreetMap here, so the parking will be found automatically from the cars.';
+      const why=osmFail?'OpenStreetMap did not answer (both servers busy), so no street is marked and the parking will be found automatically from the cars. Press the button again in a minute to get the streets.':U.length?'OpenStreetMap parking drawn ('+new Set(U.map(u=>u.n)).size+' streets and car parks, from '+osmSrc+'). Streets without parking mapped in OpenStreetMap are not counted.':'no street parking is mapped in OpenStreetMap here, so the parking will be found automatically from the cars.';
       window.__loadArea(b,U,`IGN photo of your area (${Math.round(wm)} m × ${Math.round(hm)} m): ${why}`);
-      mm(osmFail?'Done, but without OpenStreetMap streets (server busy): press the button again in a minute.':U.length?'Done: the count is below.':'Done: no street parking mapped in OpenStreetMap here, so rows were found automatically.');document.getElementById('tDrop').scrollIntoView({behavior:'smooth',block:'center'});
+      mm(osmFail?'Done, but without OpenStreetMap streets (both servers busy): press the button again in a minute.':U.length?'Done: the count is below.':'Done: no street parking mapped in OpenStreetMap here, so rows were found automatically.');document.getElementById('tDrop').scrollIntoView({behavior:'smooth',block:'center'});
     }catch(e){console.error(e)}
     go.disabled=false};
   if('IntersectionObserver' in window){const io=new IntersectionObserver(es=>{if(es.some(x=>x.isIntersecting)){io.disconnect();initMap()}});io.observe(el)}else initMap();
