@@ -84,7 +84,7 @@ Folder `prototypes/5_parking_v2/`:
 
 The scripts still use workspace paths (`/home/claude/...`); adjust them before re-running. The IGN mosaics (5000×5000 px at 0.20 m/px, bbox 50.6220–50.6310 N, 3.0424–3.0566 E) are not included; links are in the results file.
 
-Limits to keep stating:
+Limits to keep stating (also in section B of `docs/APPENDIX_prompt_log_and_limits.md`):
 - IGN flight days and hours are unknown.
 - Capacity ignores driveways and loading bays, so occupancy is a lower bound.
 - OpenStreetMap misses some kerbs.
