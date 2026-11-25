@@ -25,11 +25,17 @@ Only ONE prototype counts. Question A is on the professor's list. Prototypes 1�
 **Question it answers:** can free aerial photos plus an open AI model measure how full a city district's public parking is, and could paid weekly satellite photos turn that into a service for many towns?
 Also published as a claude.ai artifact: https://claude.ai/artifact/9CRQXJrTDybZfxNWyUNBRP (private until the user shares it).
 
-What the page does (all in the browser, nothing uploaded):
+What the page does (all in the browser, nothing uploaded). The retraining, three-tests, business-case and sources sections were removed from the page at the user's request (their numbers stay in this file and in the note):
 - Map of Wazemmes (Lille, about 1 km²) on 3 IGN photo dates (latest, 2021 market day, 2018), every street coloured by estimated occupancy.
-- **Upload tool:** load any aerial photo (or one of 12 hand-checked Wazemmes squares with OpenStreetMap parking pre-drawn), set metres per pixel, draw rows of parked cars or car-park outlines, and press "Count free spaces". Output: free spaces with a range, and a table per street.
-- Sections on the live page (`site/v2/`): how it works step by step; why city streets are harder than retail car parks; a short Sources footer (IGN and OpenStreetMap credits, link to the first prototype).
+- **Live map (GitHub site only):** draw a square up to 500 m anywhere in France. The page downloads the IGN photo for that square (latest, 2021 or 2018) at 0.20 m/px and the OpenStreetMap parking (Overpass), clips both to the square, and counts the free spaces. Claude.ai artifacts block downloads from other sites, so there it shows a note instead.
+- **Upload tool:** load any aerial photo, or one of 12 hand-checked Wazemmes squares with OpenStreetMap parking pre-drawn, and set metres per pixel. Then press "Count free spaces":
+  - With no marks, it finds rows of parked cars automatically (cars linked within 14 m along their row's direction, rows extended up to 25 m and joined across gaps up to 30 m). Car-sized gaps count as free spaces, minus the cars the model misses.
+  - Users can also draw rows or car-park outlines by hand.
+  - Output: free spaces with a range, and a table per street or row.
+- Remaining sections: how it works step by step; why city streets are harder than retail car parks.
 - Removed from the live page on 25 Nov at the user's request: the retraining results (confusion matrices), the three tests (other dates, satellite sharpness, real change), the weekly-service business case, and the "Method, limits and sources" footer. The numbers stay below and in `prototypes/5_parking_v2/results/`; the claude.ai artifact and `satellite-insight 3/prototypes/5_parking_v2/web/` still have the full page.
+- **Latest version at `site/v3/`** (live at https://raphlt.github.io/Satellite-insights/v3/, added 25 Nov): adds the live map and automatic row finding. `site/v2/` is kept unchanged at its old address; the old car counter page now links to v3.
+  - Live map test: a 273 m square of Wazemmes gave ≈426 free of 647 spaces (34% full) in a stand-in test. If the IGN photo is blocked (CORS error), try the WMTS tiles or tell the user; do not add a proxy without asking. If Overpass is busy (HTTP 429/504), the page falls back to finding parking automatically.
 
 Method (same model as v1, `own-model.wasm` = YOLO11n trained on COWC; the "new" part is the method):
 1. Resize the photo to 0.10 m/px and cut it into 640 px tiles with a 96 px overlap.
@@ -108,7 +114,8 @@ Limits to keep stating (also in section B of `docs/APPENDIX_prompt_log_and_limit
 
 ## Website (live)
 - https://raphlt.github.io/Satellite-insights/ is the car counter only (user's choice, 18 Nov).
-- https://raphlt.github.io/Satellite-insights/v2/ is prototype v2, Wazemmes Parking from Above (added 25 Nov), served from `site/v2/`; the old page links to it. Repo: https://github.com/RaphLT/Satellite-insights
+- https://raphlt.github.io/Satellite-insights/v2/ is prototype v2, Wazemmes Parking from Above (added 25 Nov), served from `site/v2/`.
+- https://raphlt.github.io/Satellite-insights/v3/ is the latest v2 page (live map of France and automatic rows), served from `site/v3/`; the old page links to it. Repo: https://github.com/RaphLT/Satellite-insights
 - An earlier multi-page site (home, supporting pages, conclusion, appendix page) was removed from `site/`; it is in git history (commit "Merge updated project...") if ever needed.
 - The tool links to the prompt log on GitHub (`docs/APPENDIX_prompt_log_and_limits.md`).
 - Publish: commit, `git push`, then `git subtree push --prefix site origin gh-pages`. No GitHub Actions: the user's token cannot push workflow files.
@@ -116,7 +123,8 @@ Limits to keep stating (also in section B of `docs/APPENDIX_prompt_log_and_limit
 ## Folder map
 - `prototypes/1_signal_decay/`: `index.html` (interactive, Chart.js), `signal_decay_simulation.ipynb`, `build.py` (generates the notebook), figures.
 - `site/`: the official prototype, Car Counter from Above (see above).
-- `site/v2/`: prototype v2, Wazemmes Parking from Above (see "Prototype v2").
+- `site/v2/`: prototype v2 as first published (25 Nov).
+- `site/v3/`: latest prototype v2 page, with the live map (see "Prototype v2").
 - `prototypes/5_parking_v2/`: v2 code, hand labels and results (`code/`, `labels/`, `results/`).
 - `prototypes/2_car_counter/`: `carcount.py` (**shared library, colour bug fixed**: tiling, detection, de-duplication, COWC label reading, matching), `run_eval.py`, Colab notebook, results page and images.
 - `prototypes/3_own_model/`: `train_prep.py` (COWC dots → YOLO dataset), `train.py`, `eval_own.py`, `train_own_model.ipynb`, trained weights `own_cowc_yolo11n.pt`, `results.csv`, results page.
