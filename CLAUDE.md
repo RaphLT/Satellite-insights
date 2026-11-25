@@ -28,7 +28,8 @@ Also published as a claude.ai artifact: https://claude.ai/artifact/9CRQXJrTDybZf
 What the page does (all in the browser, nothing uploaded):
 - Map of Wazemmes (Lille, about 1 km²) on 3 IGN photo dates (latest, 2021 market day, 2018), every street coloured by estimated occupancy.
 - **Upload tool:** load any aerial photo (or one of 12 hand-checked Wazemmes squares with OpenStreetMap parking pre-drawn), set metres per pixel, draw rows of parked cars or car-park outlines, and press "Count free spaces". Output: free spaces with a range, and a table per street.
-- Sections: how it works step by step; why city streets are harder than retail car parks; retraining results (confusion matrices); tests on other dates and at satellite sharpness; the business case for weekly paid photos.
+- Sections on the live page (`site/v2/`): how it works step by step; why city streets are harder than retail car parks; a short Sources footer (IGN and OpenStreetMap credits, link to the first prototype).
+- Removed from the live page on 25 Nov at the user's request: the retraining results (confusion matrices), the three tests (other dates, satellite sharpness, real change), the weekly-service business case, and the "Method, limits and sources" footer. The numbers stay below and in `prototypes/5_parking_v2/results/`; the claude.ai artifact and `satellite-insight 3/prototypes/5_parking_v2/web/` still have the full page.
 
 Method (same model as v1, `own-model.wasm` = YOLO11n trained on COWC; the "new" part is the method):
 1. Resize the photo to 0.10 m/px and cut it into 640 px tiles with a 96 px overlap.
